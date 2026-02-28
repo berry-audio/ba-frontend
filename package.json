@@ -1,13 +1,39 @@
 {
   "name": "berryaudio-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "BerryAudio Kiosk Interface",
+  "author": "BerryAudio",
   "type": "module",
+  "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite --host",
+    "electron": "electron .",
+    "start": "electron . --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox",
     "build": "tsc -b && vite build",
+    "build:electron": "electron-builder",
     "lint": "eslint .",
     "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.berryaudio.display",
+    "productName": "Berryaudio",
+    "executableName": "ba-frontend-app",
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
+    "buildDependenciesFromSource": false,
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "AudioVideo",
+      "artifactName": "berryaudio-${version}-app.AppImage"
+    }
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
@@ -54,6 +80,8 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "electron": "^40.6.1",
+    "electron-builder": "^26.8.1",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
