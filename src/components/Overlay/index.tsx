@@ -50,7 +50,7 @@ const Overlay = ({
                       ? "bottom-[0px]"
                       : "lg:bottom-[82px] bottom-[70px]"
                   }`
-            } fixed transition-transform duration-300 ease-in-out left-0`,
+            } absolute overflow-hidden transform-gpu duration-800 ease-in-out left-0`,
         show
           ? "translate-y-0"
           : "pointer-events-none translate-y-full",

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalService } from "@/services/local";
-import { getArtists, getImage } from "@/util";
+import { getArtists } from "@/util";
 import { useNavigate } from "react-router-dom";
 import { OVERLAY_EVENTS } from "@/store/constants";
 import { CaretDownIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
-import { Ref } from "@/types";
+import { REF } from "@/constants/refs";
+import { Item } from "@/types";
 
 import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
@@ -22,7 +23,6 @@ import ButtonAddToQueue from "@/components/Button/ButtonAddToQueue";
 import ButtonPlayAll from "@/components/Button/ButtonPlayAll";
 import ButtonAddToPlaylist from "@/components/Button/ButtonAddToPlaylist";
 import ButtonInfo from "@/components/Button/ButtonInfo";
-import { REF } from "@/constants/refs";
 
 const OverlayLibrary = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const OverlayLibrary = () => {
   const { getDirectory } = useLocalService();
   const { overlay, payload } = useSelector((state: any) => state.overlay);
 
-  const [item, setItem] = useState<Ref>();
+  const [item, setItem] = useState<Item>();
   const [itemsDetailList, setItemsDetailList] = useState<any[]>([]);
   const [isItemDetailLoading, setIsItemDetailLoading] = useState<boolean>(true);
 
@@ -70,11 +70,7 @@ const OverlayLibrary = () => {
   }, [payload?.view, payload?.id]);
 
   return (
-    <Overlay
-      show={overlay === OVERLAY_EVENTS.OVERLAY_LIBRARY}
-      zindex={10}
-      hideplayer
-    >
+    <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_LIBRARY} zindex={10} hideplayer>
       <Page backButtonOnClick={handleDetailClose}>
         {isItemDetailLoading ? (
           <LayoutHeightWrapper>
@@ -95,10 +91,7 @@ const OverlayLibrary = () => {
                   <div className="flex">
                     <div className="justify-center flex w-2/5">
                       <div className="mr-4 w-full">
-                        <Cover
-                          type={item?.type}
-                          image={getImage(item?.images?.[0]?.uri)}
-                        />
+                        <Cover item={item} cover_only/>
                       </div>
                     </div>
 
@@ -109,9 +102,7 @@ const OverlayLibrary = () => {
 
                       {item?.performers.length ? (
                         <div className="text-sm dark:text-neutral-100 text-neutral-900 mt-1">
-                          <TruncateText>
-                            Performers : {getArtists(item.artists)}
-                          </TruncateText>
+                          <TruncateText>Performers : {getArtists(item.artists)}</TruncateText>
                         </div>
                       ) : null}
 
@@ -157,7 +148,7 @@ const OverlayLibrary = () => {
 
                         {payload?.view === REF.ARTIST && (
                           <div className="mr-1">
-                            <ButtonInfo item={item}/>
+                            <ButtonInfo item={item} />
                           </div>
                         )}
                       </div>
@@ -169,7 +160,7 @@ const OverlayLibrary = () => {
             <div className="w-full">
               {itemsDetailList.length &&
                 itemsDetailList.map((item: any, index: number) => (
-                  <ItemWrapper>
+                  <ItemWrapper key={index}>
                     <ListItem item={item} index={index} key={index} />
                   </ItemWrapper>
                 ))}

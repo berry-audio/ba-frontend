@@ -4,7 +4,7 @@ import { useLocalService } from "@/services/local";
 import { usePlaybackService } from "@/services/playback";
 import { usePlaylistService } from "@/services/playlist";
 import { useTracklistService } from "@/services/tracklist";
-import { Ref, TlTrack, Track } from "@/types";
+import { Item, TlTrack, Track } from "@/types";
 
 export function usePlayNow() {
   const { add, clear } = useTracklistService();
@@ -14,11 +14,11 @@ export function usePlayNow() {
 
    const [loading, setLoading] = useState<boolean>(false);
 
-  const handlePlayNow = async (item: Ref) => {
+  const handlePlayNow = async (item: Item) => {
     setLoading(true);
     const tracksUris: string[] = [];
     switch (item.type) {
-      case REF.DIRECTORY:
+      case REF.CATEGORY:
       case REF.ARTIST:
       case REF.ALBUM:
       case REF.GENRE: {

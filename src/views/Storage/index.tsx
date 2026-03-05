@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useConfigService } from "@/services/config";
 import { useStorageService } from "@/services/storage";
-import { EjectSimpleIcon, HardDriveIcon } from "@phosphor-icons/react";
-import { StorageDevice, StorageInfo, Ref } from "@/types";
+import { useStorageActions } from "@/hooks/useStorageActions";
+import { EjectSimpleIcon, GearIcon, HardDriveIcon } from "@phosphor-icons/react";
+import { StorageItem, StorageList, Item } from "@/types";
 import { formatBytes, splitUri } from "@/util";
 import { ACTIONS } from "@/constants/actions";
 import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
@@ -17,22 +17,33 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import ListItem from "@/components/ListItem";
 import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 import ItemPadding from "@/components/Wrapper/ItemPadding";
+import ButtonIcon from "@/components/Button/ButtonIcon";
 
 const Storage = () => {
+  const connected = useSelector((state: any) => state.socket.connected);
   const navigate = useNavigate();
 
-  const { getStorage, setMount, setUnMount } = useStorageService();
-  const { setConfig, getConfig } = useConfigService();
-  const { storage } = useSelector((state: any) => state.storage);
+  const { getStorage, setMount, setUnMount, setShare, setUnshare, addToLibrary } = useStorageService();
+  const { fetchStorages, loading } = useStorageActions();
+  const { storages, last_shared_event } = useSelector((state: any) => state.storage);
   const { "*": path } = useParams<{ "*": string }>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dirlist, setDirList] = useState<any[]>([]);
   const [dirCur, setDirCur] = useState<string>();
-  const [storages, setStorages] = useState<StorageInfo>({
-    mounted: [],
-    unmounted: [],
-  });
+
+  useEffect(() => {
+    if (!connected) return;
+    fetchStorages();
+  }, [connected]);
+
+    useEffect(() => {
+    if (!last_shared_event) return;
+    setDirList(prev => prev.map(item => {
+        if (item.uri !== last_shared_event.uri) return item;
+        return { ...item, shared: last_shared_event.event === "storage_shared" };
+    }));
+}, [last_shared_event]);
 
   useEffect(() => {
     const fetchStorage = async () => {
@@ -44,9 +55,7 @@ const Storage = () => {
         const cur_dir = path.split("/");
         setDirCur(cur_dir[cur_dir.length - 1]);
       } else {
-        const res = await getStorage();
         setDirList([]);
-        setStorages(res);
         navigate(`/storage`);
       }
 
@@ -56,38 +65,21 @@ const Storage = () => {
     fetchStorage();
   }, [path]);
 
-  useEffect(() => {
-    setStorages((prev) => {
-      const newState: StorageInfo = { ...prev };
-      Object.keys(prev).forEach((key) => {
-        const _storage = prev[key as keyof StorageInfo] as StorageDevice[];
-        newState[key as keyof StorageInfo] = _storage.filter((i) => i.dev !== storage.dev);
-      });
-      if (storage.status !== "removed") {
-        const status = storage.status as keyof StorageInfo;
-        if (status) {
-          newState[status] = [...newState[status], { ...storage }];
-        }
-      }
-      return newState;
-    });
-  }, [storage]);
+  const onClickActionMenu = async (action: ACTIONS, item: Item) => {
+    if (action === ACTIONS.ADD_LIBRARY) {
+      await addToLibrary(item.uri);
+    }
 
-  const onClickActionMenu = async (action: ACTIONS, item: Ref) => {
-    const current_settings = await getConfig();
+    if (action === ACTIONS.DIRECTORY_SHARE) {
+      await setShare(item.uri);
+    }
 
-    if (action === "add_library") {
-      const { path } = splitUri(item.uri);
-      const current_lib_path = current_settings["local"]["library_path"].length ? current_settings["local"]["library_path"] : [];
-      current_lib_path.push(path);
-      const updated_lib_path_config = {
-        local: { library_path: current_lib_path },
-      };
-      await setConfig(updated_lib_path_config);
+    if (action === ACTIONS.DIRECTORY_UNSHARE) {
+      await setUnshare(item.uri);
     }
   };
 
-  const onClickHandler = async (item: Ref) => {
+  const onClickHandler = async (item: Item) => {
     if (item.type === REF.DIRECTORY) {
       fetchDir(item.uri);
     }
@@ -106,19 +98,19 @@ const Storage = () => {
     navigate(`/storage${path}`);
   };
 
-  const ListItemStorage = ({ item, mounted }: { item: StorageDevice; mounted: boolean }) => {
+  const ListItemStorage = ({ item, mounted }: { item: StorageItem; mounted: boolean }) => {
     const actionItems = [
       {
         name: "Mount",
         icon: <HardDriveIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: () => onClickActionHandler("mount", item.dev),
-        hide: item.status == "mounted"
+        hide: item.status == "mounted",
       },
       {
         name: "Eject",
         icon: <EjectSimpleIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: () => onClickActionHandler("unmount", item.dev),
-        hide: item.status == "unmounted"
+        hide: item.status == "unmounted",
       },
     ];
 
@@ -151,8 +143,18 @@ const Storage = () => {
   };
 
   return dirlist?.length > 0 ? (
-    <Page backButton title={dirCur || "Storage"}>
-      {isLoading ? (
+    <Page
+      backButton
+      title={dirCur || "Storage"}
+      rightComponent={
+        <div className="mr-4">
+          <ButtonIcon onClick={() => navigate("/settings/local")}>
+            <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
+          </ButtonIcon>
+        </div>
+      }
+    >
+      {isLoading || loading ? (
         <LayoutHeightWrapper>
           <Spinner />
         </LayoutHeightWrapper>
@@ -165,16 +167,26 @@ const Storage = () => {
       )}
     </Page>
   ) : (
-    <Page backButton title="Storage">
+    <Page
+      backButton
+      title="Storage"
+      rightComponent={
+        <div className="mr-4">
+          <ButtonIcon onClick={() => navigate("/settings/local")}>
+            <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
+          </ButtonIcon>
+        </div>
+      }
+    >
       {isLoading ? (
         <LayoutHeightWrapper>
           <Spinner />
         </LayoutHeightWrapper>
       ) : (
         Object.keys(storages).map((key) => {
-          const storage: StorageDevice[] = storages[key as keyof StorageInfo];
+          const storage: StorageItem[] = storages[key as keyof StorageList];
 
-          return storage.map((item: StorageDevice) => (
+          return storage.map((item: StorageItem) => (
             <ItemWrapper key={item.dev}>
               <ItemPadding>
                 <ListItemStorage mounted={key === "mounted"} item={item} />

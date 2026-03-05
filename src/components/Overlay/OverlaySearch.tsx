@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSearchService } from "@/services/search";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/Form/Input";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { OVERLAY_EVENTS } from "@/store/constants";
 import { REF } from "@/constants/refs";
@@ -17,7 +17,7 @@ import Overlay from "@/components/Overlay";
 import Page from "@/components/Page";
 import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 
-type SearchResults = Record<string, Ref[]>;
+type SearchResults = Record<string, Item[]>;
 
 const OverlaySearch = () => {
   const dispatch = useDispatch();
@@ -101,12 +101,12 @@ const OverlaySearch = () => {
               />
             </LayoutHeightWrapper>
           ) : (
-            results && Object.entries(results).map(([table, items]: [string, Ref[]]) => (
+            results && Object.entries(results).map(([table, items]: [string, Item[]]) => (
               <div key={table} className="mt-4">
                 <h2 className="pl-5 font-bold text-lg">{title[table]}</h2>
                 <ul className="list-disc">
                   {results[table] &&
-                    items.map((item: Ref, index: number) => (
+                    items.map((item: Item, index: number) => (
                       <ItemWrapper key={index}>
                         <ListItem
                           item={item}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { MusicNoteSimpleIcon } from "@phosphor-icons/react";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { REF } from "@/constants/refs";
 import { ACTIONS } from "@/constants/actions";
 import { INFO_EVENTS } from "@/store/constants";
@@ -17,8 +17,8 @@ import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 interface Grid {
   query: REF;
   getDirectory: (uri?: string, limit?: number, offset?: number) => Promise<[]>;
-  onClickCallback?: (item: Ref) => void;
-  onClickActionCallback?: (action: ACTIONS, item: Ref) => void;
+  onClickCallback?: (item: Item) => void;
+  onClickActionCallback?: (action: ACTIONS, item: Item) => void;
 }
 
 const List = ({
@@ -27,7 +27,7 @@ const List = ({
   onClickCallback,
   onClickActionCallback,
 }: Grid) => {
-  const loadMoreCount = 9;
+  const loadMoreCount = 15;
   const action = useSelector((state: any) => state.event);
 
   const [items, setItems] = useState<any[]>([]);

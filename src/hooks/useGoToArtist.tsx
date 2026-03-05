@@ -1,10 +1,10 @@
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { useNavigate } from "react-router-dom";
 
 export function useGoToArtist() {
   const navigate = useNavigate();
 
-  const handleGoToArtist = (item: Ref) => {
+  const handleGoToArtist = (item: Item) => {
     if (!item?.artists?.length) return;
     const [view, id] = item?.artists[0].uri.split(":");
     navigate(`/local/${view}/${id}`);

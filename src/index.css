@@ -40,11 +40,11 @@
   --input: oklch(0.922 0 0);
   --input-foreground: oklch(10.668% 0.00001 271.152);
   --ring: oklch(0.708 0 0);
-  --primary: #87602a;
+  --primary: #e15f41;
   --primary-foreground: #ffffff;
   --secondary: #737373;
   --secondary-foreground: oklch(0.205 0 0);
-  --accent: #87602a;
+  --accent: #e15f41;
   --accent-foreground: #ffffff;
   --button-hover: rgba(189, 189, 189, 0.5);
 }
@@ -126,6 +126,7 @@
   html,
   body,
   #root {
+     overflow: hidden;
     height: 100%;
   }
   body {
@@ -183,18 +184,6 @@
   @apply bg-transparent;
 }
 
-.seek-slider-overlay [data-slot="slider-range"],
-.seek-slider-overlay [data-slot="slider-range"]:hover {
-  @apply bg-white rounded-full;
-}
-
-.seek-slider-overlay [data-slot="slider-thumb"]{
-  @apply bg-transparent
-}
-
-.seek-slider-overlay [data-slot="slider-thumb"]:hover {
-  @apply bg-white;
-}
 
 .seek-slider-mini [data-slot="slider-range"],
 .seek-slider-mini [data-slot="slider-range"]:hover {

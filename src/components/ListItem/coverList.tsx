@@ -1,21 +1,22 @@
-import { MusicNotesIcon } from "@phosphor-icons/react";
-import { formatNo } from "@/util";
-import { REF } from "@/constants/refs";
-
-import React from "react";
+import React, { useState } from "react";
 import Directory from "./directory";
 import TruncateText from "../TruncateText";
 import Spinner from "../Spinner";
 import ListImageWrapper from "../Wrapper/ListImageWrapper";
 
+import { MusicNotesIcon } from "@phosphor-icons/react";
+import { formatNo, getImage } from "@/util";
+import { getDuration, getSubtitle } from ".";
+import { Item } from "@/types";
+import { REF } from "@/constants/refs";
+import { SharedUnsharedIcon } from "../Icons";
+
 interface CoverList {
-  type?: REF;
   no?: number;
+  item: Item;
+  view?: REF;
   loading?: boolean;
   image?: string;
-  title: string;
-  subtitle?: string | React.ReactNode;
-  duration?: string;
   selected?: boolean;
 }
 /**
@@ -32,9 +33,17 @@ interface CoverList {
  * @param {string} props.selected - Highlighted
  * @returns {JSX.Element} The rendered cover list element.
  */
-const CoverList = ({ type = REF.TRACK, no, loading = false, image, title, subtitle, duration, selected = false }: CoverList) => {
+const CoverList = ({ no, item, view = REF.TRACK, loading = false, selected = false }: CoverList) => {
+  const title = item.name;
+  const type = item.type;
+  const subtitle = getSubtitle(item, view);
+  const duration = getDuration(item);
+  const image = getImage(item.images?.[0]?.uri);
+
+  const [imgError, setImgError] = useState(false);
+
   return (
-    <div className="flex items-center w-full">
+    <div className="flex items-center w-full relative">
       {no && <div className="-ml-1 mr-4 text-sm text-secondary w-[10px] text-center">{formatNo(no)}</div>}
       <ListImageWrapper>
         {loading && (
@@ -42,8 +51,13 @@ const CoverList = ({ type = REF.TRACK, no, loading = false, image, title, subtit
             <Spinner />
           </div>
         )}
-        {image ? <img src={image} alt={title} className="object-cover aspect-square w-full grayscale-25" /> : <Directory type={type} />}
+        {image && !imgError ? (
+          <img src={image} alt={title} className="object-cover aspect-square w-full grayscale-25" onError={() => setImgError(true)} />
+        ) : (
+          <Directory type={type} />
+        )}
       </ListImageWrapper>
+      <SharedUnsharedIcon shared={item.shared} classname="absolute -top-1 left-8" />
       <div className="text-left flex-grow w-0 pr-5">
         <h2 className={`text-lg font-medium tracking-tight flex`}>
           <TruncateText>{title}</TruncateText>

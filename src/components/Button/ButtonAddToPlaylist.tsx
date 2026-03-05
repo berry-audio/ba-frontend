@@ -1,11 +1,11 @@
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { PlaylistIcon } from "@phosphor-icons/react";
 import { useAddToPlaylist } from "@/hooks/useAddToPlaylist";
 
 import ButtonIcon from "@/components/Button/ButtonIcon";
 
-const ButtonAddToPlaylist = ({ item }: { item: Ref }) => {
+const ButtonAddToPlaylist = ({ item }: { item: Item }) => {
   const { handleAddToPlaylist } = useAddToPlaylist();
 
   return (

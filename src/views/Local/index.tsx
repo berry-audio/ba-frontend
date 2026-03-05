@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLocalService } from "@/services/local";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import {
   FolderSimpleIcon,
   GearIcon,
@@ -78,7 +78,7 @@ const Local = () => {
    * @param {any} item Item object
    * @returns {*} Plays or navigates from Item
    */
-  const handleItemClick = async (item: Ref) => {
+  const handleItemClick = async (item: Item) => {
     if (item.type === REF.TRACK) return;
     const [view, id] = item.uri.split(":");
     dispatch({

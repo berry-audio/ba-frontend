@@ -132,19 +132,17 @@ export default function Layout({ children }: { children: any }) {
   return loading ? (
     <Spinner />
   ) : (
-    <>
       <div className="flex flex-col h-full relative">
         <Menu />
         <div className="flex-1 overflow-hidden">{children}</div>
         <Player />
+        <Dialog />
+        <OverlaySearch />
+        <OverlayNowPlaying />
+        <OverlayLibrary />
+        <OverlayStandby />
+        <OverlayOffline />
+        <OverlayVolume />
       </div>
-      <Dialog />
-      <OverlaySearch />
-      <OverlayNowPlaying />
-      <OverlayLibrary />
-      <OverlayStandby />
-      <OverlayOffline />
-      <OverlayVolume />
-    </>
   );
 }

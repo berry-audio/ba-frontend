@@ -2,8 +2,8 @@ const dev = import.meta.env.DEV
 const dev_host = import.meta.env.VITE_DEV_HOST
 const host = dev ? dev_host : window.location.hostname;
 
-export const WEBSOCKET_URL = `ws://${host}:8080/ws`;
-export const SERVER_URL = `http://${host}:8080`;
+export const WEBSOCKET_URL = `ws://${host}/ws`;
+export const SERVER_URL = `http://${host}`;
 export const CAMILLA_DSP_URL = `http://${host}:8081`;
 export const STROKE_WIDTH = 1.5
 

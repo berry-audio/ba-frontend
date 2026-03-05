@@ -1,4 +1,4 @@
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { PlusIcon } from "@phosphor-icons/react";
 import { useAddToQueue } from "@/hooks/useAddToQueue";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
@@ -6,7 +6,7 @@ import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import ButtonIcon from "@/components/Button/ButtonIcon";
 import Spinner from "@/components/Spinner";
 
-const ButtonAddToQueue = ({ item }: { item: Ref }) => {
+const ButtonAddToQueue = ({ item }: { item: Item }) => {
   const { handleAddToQueue, loading } = useAddToQueue();
 
   return (

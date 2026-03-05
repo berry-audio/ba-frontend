@@ -8,6 +8,8 @@ export enum ACTIONS {
     REMOVE = 'remove',
     RENAME = 'rename',
     ADD_LIBRARY = 'add_library',
+    DIRECTORY_SHARE = 'directory_share',
+    DIRECTORY_UNSHARE = 'directory_unshare',
     ADD_TO_PLAYLIST = 'add_to_playlist',
     CLOSE_DIALOG = 'close_dialog',
   }

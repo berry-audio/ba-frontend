@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { usePlaylistService } from "@/services/playlist";
 import { useLocalService } from "@/services/local";
-import { Ref, Track } from "@/types";
+import { Item, Track } from "@/types";
 import { DIALOG_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { REF } from "@/constants/refs";
@@ -16,7 +16,7 @@ import ItemPadding from "@/components/Wrapper/ItemPadding";
 import useVirtual from "react-cool-virtual";
 import NoItems from "../ListItem/NoItems";
 
-const DialogAddToPlaylist = ({ item }: { item: Ref }) => {
+const DialogAddToPlaylist = ({ item }: { item: Item }) => {
   const dispatch = useDispatch();
   const query = REF.PLAYLIST;
 
@@ -32,18 +32,18 @@ const DialogAddToPlaylist = ({ item }: { item: Ref }) => {
   const [items, setItems] = useState<any[]>([]);
   const [startOffset, setStartOffset] = useState<number>(0);
 
-  const onClickSelectPlaylist = (item: Ref) => {
+  const onClickSelectPlaylist = (item: Item) => {
     setSelectedItems((prev) => (prev.includes(item.uri) ? prev.filter((uri) => uri !== item.uri) : [...prev, item.uri]));
   };
 
-  const onClickAddHandler = async (item: Ref) => {
+  const onClickAddHandler = async (item: Item) => {
     if (!selectedItems.length) return;
     setIsButtonLoading(true);
 
     const trackUris: string[] = [];
 
     switch (item.type) {
-      case REF.DIRECTORY:
+      case REF.CATEGORY:
       case REF.ARTIST:
       case REF.ALBUM:
       case REF.GENRE: {
@@ -117,7 +117,7 @@ const DialogAddToPlaylist = ({ item }: { item: Ref }) => {
                 <ItemWrapper key={index}>
                   <button className="w-full cursor-pointer" onClick={() => onClickSelectPlaylist(item)}>
                     <ItemPadding>
-                      <CoverList type={REF.PLAYLIST} title={item.name} subtitle={`${String(item.length)} Tracks`} />
+                      <CoverList item={item}/>
                       {selectedItems.includes(item.uri) ? (
                         <CheckCircleIcon weight="fill" size={ICON_SM} />
                       ) : (

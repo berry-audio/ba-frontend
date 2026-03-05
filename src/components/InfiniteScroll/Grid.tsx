@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MusicNotesSimpleIcon } from "@phosphor-icons/react";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 import { REF } from "@/constants/refs";
 import { ACTIONS } from "@/constants/actions";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
@@ -17,7 +17,7 @@ interface Grid {
   query: REF;
   getDirectory: (uri?: string, limit?: number, offset?: number) => Promise<[]>;
   onClickCallback?: (item: any) => void;
-  onClickActionCallback?: (action: ACTIONS, item: Ref) => void;
+  onClickActionCallback?: (action: ACTIONS, item: Item) => void;
 }
 
 const calculateCols = () => {
@@ -32,7 +32,7 @@ const calculateCols = () => {
 const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: Grid) => {
   const dispatch = useDispatch();
 
-  const loadMoreCount = 3;
+  const loadMoreCount = 5;
   const action = useSelector((state: any) => state.event);
 
   const [items, setItems] = useState<any[]>([]);

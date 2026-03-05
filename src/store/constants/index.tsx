@@ -19,6 +19,7 @@ export enum INFO_EVENTS {
    WLAN_SCAN_COMPLETED = 'event/wlan/scan/completed',
    SNAPCAST_SCAN_COMPLETED = 'event/snapcast/scan/completed',
    SNAPCAST_VOLUME_DRAGGING = 'event/snapcast/volume/dragging',
+   STORAGE_UPDATED = 'event/storage/updated',
 }
 
 export enum DIALOG_EVENTS {

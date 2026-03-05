@@ -1,3 +1,4 @@
+import { EVENTS } from "@/constants/events";
 import { REF } from "@/constants/refs";
 import { PLAYBACK_STATE, REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { SelectProps } from "antd";
@@ -67,8 +68,9 @@ export interface Playlist {
   last_modified: string;
 }
 
-export interface Ref {
-  __model__: "Ref";
+
+export interface Item {
+  __model__: "Item";
   uri: string;
   name: string;
   type: REF;
@@ -87,6 +89,7 @@ export interface Ref {
   musicbrainz_id: string | null;
   last_modified: string;
   images: Image[];
+  shared?: boolean;
 }
 
 export interface MediaPlayer {
@@ -169,7 +172,12 @@ export interface SnapcastState {
   dragging:boolean;
 }
 
-export interface StorageDevice {
+export interface StorageState {
+  last_shared_event: {event:EVENTS, uri:string } | {},
+  storages: StorageList;
+}
+
+export interface StorageItem {
   __model__: "Storage";
   dev: string;
   parent: string;
@@ -178,9 +186,10 @@ export interface StorageDevice {
   type: string;
   removable: boolean;
   size: number;
-  marketed_gb: number;
+  actual_size: number;
+  shared : boolean;
   fstype: string;
-  status: "mounted" | "unmounted" | "removed";
+  status: "mounted" | "unmounted";
   mount: string;
   total: number;
   used: number;
@@ -188,9 +197,9 @@ export interface StorageDevice {
   percent: number;
 }
 
-export interface StorageInfo {
-  mounted: StorageDevice[];
-  unmounted: StorageDevice[];
+export interface StorageList {
+  mounted: StorageItem[];
+  unmounted: StorageItem[];
 }
 
 export interface NetworkState {

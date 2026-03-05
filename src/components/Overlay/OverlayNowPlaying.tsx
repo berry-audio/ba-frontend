@@ -42,7 +42,7 @@ const OverlayNowPlaying = () => {
   };
 
   return (
-    <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_NOWPLAYING} full className="dark text-white" zindex={30}>
+    <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_NOWPLAYING} full className="dark text-white" zindex={50}>
       <div className="bg-background w-full h-full absolute">
         <div
           className="h-full bg-cover blur-3xl opacity-80"
@@ -103,7 +103,7 @@ const OverlayNowPlaying = () => {
           </div>
 
           <div className="flex items-center justify-center mt-2 w-full ">
-            <div className="mt-6 seek-slider-overlay max-w-800 w-100">
+            <div className="mt-6 max-w-800 w-100">
               <PositionSlider className={"rounded-full"} showElapsedNumber={true} />
             </div>
           </div>
@@ -205,7 +205,7 @@ const OverlayNowPlaying = () => {
               </div>
               <ButtonQueue />
             </div>
-            <div className="mt-3 seek-slider-overlay md:max-w-800  w-full">
+            <div className="mt-3 md:max-w-800  w-full">
               <PositionSlider className={"rounded-full"} showElapsedNumber={true} />
             </div>
           </div>

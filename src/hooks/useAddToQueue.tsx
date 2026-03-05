@@ -3,7 +3,7 @@ import { REF } from "@/constants/refs";
 import { useLocalService } from "@/services/local";
 import { usePlaylistService } from "@/services/playlist";
 import { useTracklistService } from "@/services/tracklist";
-import { Ref, TlTrack, Track } from "@/types";
+import { Item, TlTrack, Track } from "@/types";
 
 export function useAddToQueue() {
   const { add } = useTracklistService();
@@ -12,11 +12,11 @@ export function useAddToQueue() {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleAddToQueue = async (item: Ref) => {
+  const handleAddToQueue = async (item: Item) => {
     const tracksUris: string[] = [];
     setLoading(true);
     switch (item.type) {
-      case REF.DIRECTORY:
+      case REF.CATEGORY:
       case REF.ARTIST:
       case REF.ALBUM:
       case REF.GENRE: {

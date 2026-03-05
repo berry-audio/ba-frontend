@@ -8,7 +8,7 @@ import { DIALOG_EVENTS } from "@/store/constants";
 import { ACTIONS } from "@/constants/actions";
 import { REF } from "@/constants/refs";
 import { splitUri } from "@/util";
-import { Playlist, Ref, ViewMode } from "@/types";
+import { Playlist, Item, ViewMode } from "@/types";
 
 import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
@@ -40,7 +40,7 @@ const Playlists = () => {
     setIsLoading(false);
   };
 
-  const onClickPlaylistItem = async (item: Ref) => {
+  const onClickPlaylistItem = async (item: Item) => {
     const { path } = splitUri(item.uri);
     navigate(`/playlist/${path}`);
   };
@@ -60,7 +60,7 @@ const Playlists = () => {
     await move(`playlist:${id}`, start, end, to_position);
   };
 
-  const onClickAction = async (action: string, item: Ref) => {
+  const onClickAction = async (action: string, item: Item) => {
     switch (action) {
       case ACTIONS.RENAME:
         dispatch({

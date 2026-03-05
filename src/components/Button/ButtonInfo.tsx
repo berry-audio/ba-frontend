@@ -1,11 +1,11 @@
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { InfoIcon } from "@phosphor-icons/react";
 import { useLibraryInfo } from "@/hooks/useLibraryInfo";
-import { Ref } from "@/types";
+import { Item } from "@/types";
 
 import ButtonIcon from "@/components/Button/ButtonIcon";
 
-const ButtonInfo = ({ item }: { item: Ref }) => {
+const ButtonInfo = ({ item }: { item: Item }) => {
   const { handleArtistInfo } = useLibraryInfo();
 
   return (

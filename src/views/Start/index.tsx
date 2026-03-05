@@ -89,7 +89,7 @@ const Start = () => {
   const { source } = useSelector((state: any) => state.player);
 
   const onClickHandler = async (item: SourceItem) => {
-    await setSource(item.alias);
+    ["spotify", "shairportsync", "bluetooth"].includes(item.alias) && (await setSource(item.alias));
     navigate(`/${item.alias}`);
   };
 
@@ -143,8 +143,8 @@ const Start = () => {
                     key={item.alias}
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
-                    className={`touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary" : " hover:opacity-70"}`}
+                    className={`hover:dark:bg-black/40  touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
+                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary " : ""}`}
                   >
                     <div className="flex flex-col items-center">
                       <div className="mb-2">{item.icon}</div>

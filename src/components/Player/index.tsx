@@ -49,8 +49,7 @@ const Player = () => {
   }, [playback_state]);
 
   return (
-    <>
-      <div className="z-5 bg-neutral-900 dark:bg-neutral-950 text-white">
+      <div className="bg-neutral-900 dark:bg-neutral-950 text-white relative z-0">
         <div className="seek-slider seek-slider-mini h-1 overflow-hidden">
           <PositionSlider/>
         </div>
@@ -151,7 +150,6 @@ const Player = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

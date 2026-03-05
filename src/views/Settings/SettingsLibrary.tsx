@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useConfigService } from "@/services/config";
-
 import Page from "@/components/Page";
 import ButtonIcon from "@/components/Button/ButtonIcon";
 import TruncateText from "@/components/TruncateText";
@@ -9,33 +6,32 @@ import ButtonScanArtist from "@/components/Button/ButtonScanArtist";
 import ButtonClearLibrary from "@/components/Button/ButtonClearLibrary";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import NoItems from "@/components/ListItem/NoItems";
-import {
-  FolderIcon,
-  StackSimpleIcon,
-  TrashSimpleIcon,
-} from "@phosphor-icons/react";
+
+import { FolderIcon, StackSimpleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
+import { useStorageService } from "@/services/storage";
+import { useEffect, useState } from "react";
+import { useConfigService } from "@/services/config";
 
 const SettingsLocal = () => {
-  const { getConfig, setConfig } = useConfigService();
+  const { getConfig } = useConfigService();
+  const { removeFromLibrary } = useStorageService();
 
   const [pathList, setPathList] = useState<string[]>();
 
   useEffect(() => {
     (async () => {
-      const config = await getConfig();
-      setPathList(config["local"]["library_path"]);
+      await getConfig().then((config) => {
+        setPathList(config["local"]["library_path"]);
+      });
     })();
   }, []);
 
-  const onClickRemovePath = async (path: string) => {
-    const current_lib_path = pathList?.length ? pathList : [];
-    const updated_lib_path = current_lib_path.filter((item) => item !== path);
-    const build_lib_path_config = {
-      local: { library_path: updated_lib_path },
-    };
-    await setConfig(build_lib_path_config);
-    setPathList(updated_lib_path);
+  const onClickRemovePath = async (uri: string) => {
+    await removeFromLibrary(uri);
+    await getConfig().then((config) => {
+      setPathList(config["local"]["library_path"]);
+    });
   };
 
   return (
@@ -58,28 +54,18 @@ const SettingsLocal = () => {
     >
       {pathList?.length ? (
         <div className="lg:px-0 px-6 py-3">
-            {pathList &&
-              pathList.map((path: string) => (
-                <div
-                  key={path}
-                  className="pl-4 pr-2 py-2 rounded-sm mt-1 flex items-center justify-between bg-popover hover:bg-primary"
-                >
-                  <div className="flex items-center overflow-hidden">
-                    <FolderIcon
-                      weight={ICON_WEIGHT}
-                      size={ICON_SM}
-                      className="mr-2"
-                    />
-                    <TruncateText>{path}</TruncateText>
-                  </div>
-                  <ButtonIcon
-                    className="text-right ml-5"
-                    onClick={() => onClickRemovePath(path)}
-                  >
-                    <TrashSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />
-                  </ButtonIcon>
+          {pathList &&
+            pathList.map((uri: string) => (
+              <div key={uri} className="pl-4 pr-2 py-2 rounded-sm mt-1 flex items-center justify-between bg-popover hover:bg-primary">
+                <div className="flex items-center overflow-hidden">
+                  <FolderIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />
+                  <TruncateText>{uri}</TruncateText>
                 </div>
-              ))}
+                <ButtonIcon className="text-right ml-5" onClick={() => onClickRemovePath(uri)}>
+                  <TrashSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />
+                </ButtonIcon>
+              </div>
+            ))}
         </div>
       ) : (
         <LayoutHeightWrapper>

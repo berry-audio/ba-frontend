@@ -1,6 +1,8 @@
 import React from "react";
 import {
   MusicNotesMinusIcon,
+  NetworkIcon,
+  NetworkSlashIcon,
   PenIcon,
   PlayIcon,
   PlaylistIcon,
@@ -16,8 +18,8 @@ import { usePlayNow } from "@/hooks/usePlayNow";
 import { useGoToArtist } from "@/hooks/useGoToArtist";
 import { useGoToAlbum } from "@/hooks/useGoToAlbum";
 import { useAddToPlaylist } from "@/hooks/useAddToPlaylist";
-import { convertMillisecondstoTime, formatDate, getImage } from "@/util";
-import { Ref } from "@/types";
+import { convertMillisecondstoTime, formatDate } from "@/util";
+import { Item } from "@/types";
 import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import { ACTIONS } from "@/constants/actions";
 import { REF } from "@/constants/refs";
@@ -40,7 +42,7 @@ const ListItem = ({
   onClickCallback,
   onClickActionCallback,
 }: {
-  item: Ref;
+  item: Item;
   cover?: boolean;
   view?: REF;
   isPlaylist?: boolean;
@@ -49,8 +51,8 @@ const ListItem = ({
   style?: {};
   className?: string;
   selected?: boolean;
-  onClickCallback?: (item: Ref) => void;
-  onClickActionCallback?: (action: ACTIONS, item: Ref) => void;
+  onClickCallback?: (item: Item) => void;
+  onClickActionCallback?: (action: ACTIONS, item: Item) => void;
 }) => {
   const { handleAddToQueue } = useAddToQueue();
   const { handlePlayNow } = usePlayNow();
@@ -123,35 +125,30 @@ const ListItem = ({
       hide: ![REF.DIRECTORY].includes(item.type),
       action: () => onClickActionCallback?.(ACTIONS.ADD_LIBRARY, item),
     },
+    {
+      name: "Share",
+      icon: <NetworkIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+      hide: ![REF.DIRECTORY].includes(item.type) || item.shared == true,
+      action: () => onClickActionCallback?.(ACTIONS.DIRECTORY_SHARE, item),
+    },
+    {
+      name: "Unshare",
+      icon: <NetworkSlashIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+      hide: ![REF.DIRECTORY].includes(item.type) || item.shared == false,
+      action: () => onClickActionCallback?.(ACTIONS.DIRECTORY_UNSHARE, item),
+    },
   ];
 
   return cover ? (
     <div key={index} className={`cursor-pointer w-full relative ${className ? className : ""}`} style={{ ...style }}>
-      <Cover
-        type={item.type}
-        loading={isLoading}
-        title={item.name}
-        subtitle={getSubtitle(item, view)}
-        image={getImage(item.images?.[0]?.uri)}
-        onClick={() => onClickCallback?.(item)}
-        actions={<ActionMenu items={itemsMenu} />}
-      />
+      <Cover item={item} view={view} loading={isLoading} onClick={() => onClickCallback?.(item)} actions={<ActionMenu items={itemsMenu} />} />
     </div>
   ) : (
     <>
       {/* Not a button else draggable wont work */}
       <div className="flex items-center w-full cursor-pointer justify-between relative" onClick={() => onClickCallback?.(item)}>
         <ItemPadding>
-          <CoverList
-            no={index === null ? undefined : index + 1}
-            type={item.type}
-            loading={isLoading}
-            title={item.name}
-            subtitle={getSubtitle(item, view)}
-            duration={getDuration(item)}
-            image={getImage(item.images?.[0]?.uri)}
-            selected={selected}
-          />
+          <CoverList no={index === null ? undefined : index + 1} item={item} view={view} loading={isLoading} selected={selected} />
         </ItemPadding>
       </div>
       <div className="pr-2">
@@ -163,7 +160,7 @@ const ListItem = ({
 
 export default React.memo(ListItem);
 
-export const getDuration = (item: Ref): string | undefined => {
+export const getDuration = (item: Item): string | undefined => {
   switch (item.type) {
     case REF.TRACK:
       return item.length ? convertMillisecondstoTime(item.length) : undefined;
@@ -174,7 +171,7 @@ export const getDuration = (item: Ref): string | undefined => {
   }
 };
 
-export const getSubtitle = (item: Ref, view: REF): string => {
+export const getSubtitle = (item: Item, view: REF): string => {
   switch (item.type) {
     case REF.TRACK:
     case REF.ALBUM:
