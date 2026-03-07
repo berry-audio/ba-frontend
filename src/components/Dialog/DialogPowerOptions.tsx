@@ -17,6 +17,7 @@ const DialogPowerOptions = () => {
   const onClickRebootHandler = async () => {
     setIsLoading("reboot");
     await setReboot();
+    dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
     setIsLoading("");
   };
 
@@ -30,6 +31,7 @@ const DialogPowerOptions = () => {
   const onClickShutdownHandler = async () => {
     setIsLoading("shutdown");
     await setShutdown();
+    dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
     setIsLoading("");
   };
 
