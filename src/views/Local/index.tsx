@@ -106,19 +106,18 @@ const Local = () => {
               />
             </div>
           }
-          backButtonOnClick={() => navigate("/local")}
           backButton
         >
           {layout === "list" && (
             <List
-              query={view}
+              uri={view}
               getDirectory={getDirectory}
               onClickCallback={handleItemClick}
             />
           )}
           {layout === "grid" && (
             <Grid
-              query={view}
+              uri={view}
               getDirectory={getDirectory}
               onClickCallback={handleItemClick}
             />
@@ -128,7 +127,6 @@ const Local = () => {
         <Page
           title="Library"
           backButton
-          backButtonOnClick={() => navigate("/")}
           rightComponent={
             <div className="mr-4">
               <ButtonIcon onClick={()=>navigate("/settings/local")}>

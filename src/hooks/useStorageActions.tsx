@@ -6,13 +6,13 @@ import { useStorageService } from "@/services/storage";
 export function useStorageActions() {
   const dispatch = useDispatch();
 
-  const { getStorage } = useStorageService();
+  const { getDirectory } = useStorageService();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchStorages = async () => {
     setLoading(true);
-    const response = await getStorage();
+    const response = await getDirectory();
 
     dispatch({
       type: INFO_EVENTS.STORAGE_UPDATED,

@@ -4,7 +4,7 @@ export const useStorageService = () => {
   const { request } = useSocketRequest();
 
   return {
-    getStorage: (uri?: string) => request("storage.directory", {uri}),
+    getDirectory:  (uri?: string, limit?: number, offset?:number) => request("storage.directory", {uri, limit, offset}),
     setMount: (dev: string) => request("storage.mount", {dev}),
     setUnMount: (dev: string) => request("storage.unmount", {dev}),
     setShare: (uri: string) => request("storage.share", {uri}),

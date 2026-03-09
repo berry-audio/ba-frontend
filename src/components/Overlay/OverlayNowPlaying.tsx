@@ -43,7 +43,7 @@ const OverlayNowPlaying = () => {
 
   return (
     <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_NOWPLAYING} full className="dark text-white" zindex={50}>
-      <div className="bg-background w-full h-full absolute">
+      <div className="bg-background w-full h-full absolute bg-neutral-950">
         <div
           className="h-full bg-cover blur-3xl opacity-80"
           style={overlay === OVERLAY_EVENTS.OVERLAY_NOWPLAYING ? { backgroundImage: `url(${image})` } : {}}
@@ -64,7 +64,7 @@ const OverlayNowPlaying = () => {
                   className={"object-cover rounded-xs h-full w-full bg-black"}
                 />
               ) : (
-                <Directory width={"100%"} height={"100%"} type={REF.ALBUM} />
+                <Directory width={"100%"} height={"100%"} type={REF.ALBUM}  variant="primary"/>
               )}
             </div>
           </div>
@@ -142,7 +142,7 @@ const OverlayNowPlaying = () => {
                 {image ? (
                   <img src={image} alt={current_track?.track.album?.name} className={"object-cover rounded-xs h-full w-full "} />
                 ) : (
-                  <Directory width={"100%"} height={"100%"} type={REF.ALBUM} />
+                  <Directory width={"100%"} height={"100%"} type={REF.ALBUM} variant="primary"/>
                 )}
               </div>
             </div>

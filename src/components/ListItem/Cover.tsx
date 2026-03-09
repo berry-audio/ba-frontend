@@ -7,6 +7,7 @@ import { REF } from "@/constants/refs";
 import { Item } from "@/types";
 import { getSubtitle } from ".";
 import { getImage } from "@/util";
+import { SharedUnsharedIcon } from "../Icons";
 
 interface Cover {
   loading?: boolean;
@@ -39,9 +40,11 @@ const Cover = ({ item, view = REF.TRACK, loading = false, shadow = false, action
           {image && !imgError ? (
             <img src={image} alt={title} className="object-cover w-full scale-101 aspect-square grayscale-25 " onError={() => setImgError(true)} />
           ) : (
-            <Directory type={item_type} />
+            <Directory type={item_type} variant="primary" />
+           
           )}
         </div>
+         <SharedUnsharedIcon shared={item.shared} classname="absolute top-2 right-2" />
       </button>
       {!cover_only && (
         <div className="flex justify-between">

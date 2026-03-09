@@ -90,7 +90,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({ items }) => {
       </div>
 
       {/* Mobile */}
-      <div className="md:hidden ">
+      <div className="md:hidden">
         <ButtonIcon onClick={() => setDrawerOpen(true)}>
           <DotsThreeIcon size={24} />
         </ButtonIcon>

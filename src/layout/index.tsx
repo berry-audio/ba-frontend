@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSourceService } from "@/services/source";
 import { usePlaybackService } from "@/services/playback";
@@ -31,13 +31,8 @@ export default function Layout({ children }: { children: any }) {
   const { getDevices } = useNetworkService();
   const { getSource } = useSourceService();
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
-    if (!connected) return;
-
     const initialize = async () => {
-      setLoading(true);
       try {
         const [
           _getNetworkDevices,
@@ -121,28 +116,27 @@ export default function Layout({ children }: { children: any }) {
         });
       } catch (err) {
         console.error("Error initiazing:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
+    if (!connected) return;
     initialize();
   }, [connected]);
 
-  return loading ? (
-    <Spinner />
+  return connected ? (
+    <div className="flex flex-col h-full relative">
+      <Menu />
+      <div className="flex-1 overflow-hidden">{children}</div>
+      <Player />
+      <Dialog />
+      <OverlaySearch />
+      <OverlayNowPlaying />
+      <OverlayLibrary />
+      <OverlayStandby />
+      <OverlayOffline />
+      <OverlayVolume />
+    </div>
   ) : (
-      <div className="flex flex-col h-full relative">
-        <Menu />
-        <div className="flex-1 overflow-hidden">{children}</div>
-        <Player />
-        <Dialog />
-        <OverlaySearch />
-        <OverlayNowPlaying />
-        <OverlayLibrary />
-        <OverlayStandby />
-        <OverlayOffline />
-        <OverlayVolume />
-      </div>
+    <Spinner />
   );
 }

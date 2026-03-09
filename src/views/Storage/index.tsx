@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useStorageService } from "@/services/storage";
 import { useStorageActions } from "@/hooks/useStorageActions";
-import { EjectSimpleIcon, GearIcon, HardDriveIcon } from "@phosphor-icons/react";
-import { StorageItem, StorageList, Item } from "@/types";
-import { formatBytes, splitUri } from "@/util";
+import { EjectSimpleIcon, FolderOpenIcon, GearIcon, HardDriveIcon } from "@phosphor-icons/react";
+import { StorageItem, StorageList, Item, ViewMode } from "@/types";
+import { formatBytes } from "@/util";
 import { ACTIONS } from "@/constants/actions";
 import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
 import { REF } from "@/constants/refs";
@@ -14,87 +14,60 @@ import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
 import ActionMenu from "@/components/Actions";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
-import ListItem from "@/components/ListItem";
 import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 import ItemPadding from "@/components/Wrapper/ItemPadding";
 import ButtonIcon from "@/components/Button/ButtonIcon";
+import List from "@/components/InfiniteScroll/List";
+import Grid from "@/components/InfiniteScroll/Grid";
+import NoItems from "@/components/ListItem/NoItems";
+import ButtonLayoutToggle from "@/components/Button/ButtonLayoutToggle";
 
 const Storage = () => {
-  const connected = useSelector((state: any) => state.socket.connected);
   const navigate = useNavigate();
 
-  const { getStorage, setMount, setUnMount, setShare, setUnshare, addToLibrary } = useStorageService();
+  const { getDirectory, setMount, setUnMount, setShare, setUnshare, addToLibrary } = useStorageService();
   const { fetchStorages, loading } = useStorageActions();
-  const { storages, last_shared_event } = useSelector((state: any) => state.storage);
+  const { storages } = useSelector((state: any) => state.storage);
   const { "*": path } = useParams<{ "*": string }>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [dirlist, setDirList] = useState<any[]>([]);
+  const [layout, setLayout] = useState<ViewMode>("list");
   const [dirCur, setDirCur] = useState<string>();
 
   useEffect(() => {
-    if (!connected) return;
     fetchStorages();
-  }, [connected]);
-
-    useEffect(() => {
-    if (!last_shared_event) return;
-    setDirList(prev => prev.map(item => {
-        if (item.uri !== last_shared_event.uri) return item;
-        return { ...item, shared: last_shared_event.event === "storage_shared" };
-    }));
-}, [last_shared_event]);
+  }, []);
 
   useEffect(() => {
-    const fetchStorage = async () => {
-      setIsLoading(true);
-
-      if (path) {
-        const res = await getStorage(`storage:/${path}`);
-        setDirList(res);
-        const cur_dir = path.split("/");
-        setDirCur(cur_dir[cur_dir.length - 1]);
-      } else {
-        setDirList([]);
-        navigate(`/storage`);
-      }
-
-      setIsLoading(false);
-    };
-
-    fetchStorage();
+    if (!path) return;
+    const cur_dir = path.split("/");
+    setDirCur(cur_dir[cur_dir.length - 1]);
   }, [path]);
 
-  const onClickActionMenu = async (action: ACTIONS, item: Item) => {
-    if (action === ACTIONS.ADD_LIBRARY) {
-      await addToLibrary(item.uri);
-    }
+  const onClickActionMenu = async (action: ACTIONS, _item: Item | StorageItem) => {
+    const item = _item as StorageItem;
 
-    if (action === ACTIONS.DIRECTORY_SHARE) {
-      await setShare(item.uri);
-    }
-
-    if (action === ACTIONS.DIRECTORY_UNSHARE) {
-      await setUnshare(item.uri);
-    }
-  };
-
-  const onClickHandler = async (item: Item) => {
-    if (item.type === REF.DIRECTORY) {
-      fetchDir(item.uri);
-    }
-  };
-
-  const onClickActionHandler = async (action: string, dev: string) => {
-    if (action === "mount") {
-      await setMount(dev);
-    } else if (action === "unmount") {
-      await setUnMount(dev);
+    switch (action) {
+      case ACTIONS.ADD_LIBRARY:
+        await addToLibrary(item.uri);
+        break;
+      case ACTIONS.DIRECTORY_SHARE:
+        await setShare(item.uri);
+        break;
+      case ACTIONS.DIRECTORY_UNSHARE:
+        await setUnshare(item.uri);
+        break;
+      case ACTIONS.MOUNT:
+        await setMount(item.dev);
+        break;
+      case ACTIONS.UNMOUNT:
+        await setUnMount(item.dev);
+        break;
     }
   };
 
-  const fetchDir = async (uri: string) => {
-    const { path } = splitUri(uri);
+  const onClickItem = async (item: Item | StorageItem) => {
+    if (item.type === REF.TRACK) return;
+    const path = item.uri.replace("storage:", "");
     navigate(`/storage${path}`);
   };
 
@@ -103,13 +76,13 @@ const Storage = () => {
       {
         name: "Mount",
         icon: <HardDriveIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-        action: () => onClickActionHandler("mount", item.dev),
+        action: () => onClickActionMenu(ACTIONS.MOUNT, item),
         hide: item.status == "mounted",
       },
       {
         name: "Eject",
         icon: <EjectSimpleIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-        action: () => onClickActionHandler("unmount", item.dev),
+        action: () => onClickActionMenu(ACTIONS.UNMOUNT, item),
         hide: item.status == "unmounted",
       },
     ];
@@ -117,7 +90,7 @@ const Storage = () => {
     return (
       <div className="w-full">
         <div className="flex justify-between">
-          <button onClick={() => mounted && fetchDir(item.uri)} className="cursor-pointer w-full">
+          <button onClick={() => mounted && onClickItem(item)} className="cursor-pointer w-full">
             <div className="font-medium">
               <div className="w-full flex">
                 <div className="flex text-lg ">
@@ -130,62 +103,64 @@ const Storage = () => {
               }`}</div>
             </div>
           </button>
-          <div className="-mr-2">
-            <ActionMenu items={actionItems} />
-          </div>
+          <div className="-mr-2">{item.removable && <ActionMenu items={actionItems} />}</div>
         </div>
 
-        <div className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
+        <div onClick={() => mounted && onClickItem(item)} className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
           <div className={`${mounted ? "bg-primary" : ""} h-1 rounded-full`} style={{ width: `${item.percent}%` }}></div>
         </div>
       </div>
     );
   };
 
-  return dirlist?.length > 0 ? (
+  return (
     <Page
       backButton
+      wfull={layout === "grid" && path != ""}
       title={dirCur || "Storage"}
       rightComponent={
-        <div className="mr-4">
-          <ButtonIcon onClick={() => navigate("/settings/local")}>
-            <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
-          </ButtonIcon>
+        <div className="flex items-center">
+          <div className="mr-2">
+            <ButtonLayoutToggle setLayoutype={setLayout} layoutType={layout} />
+          </div>
+          <div className="mr-4">
+            <ButtonIcon onClick={() => navigate("/settings/local")}>
+              <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
+            </ButtonIcon>
+          </div>
         </div>
       }
     >
-      {isLoading || loading ? (
-        <LayoutHeightWrapper>
-          <Spinner />
-        </LayoutHeightWrapper>
-      ) : (
-        dirlist.map((item, index) => (
-          <ItemWrapper key={index}>
-            <ListItem item={item} onClickCallback={onClickHandler} onClickActionCallback={onClickActionMenu} />
-          </ItemWrapper>
-        ))
-      )}
-    </Page>
-  ) : (
-    <Page
-      backButton
-      title="Storage"
-      rightComponent={
-        <div className="mr-4">
-          <ButtonIcon onClick={() => navigate("/settings/local")}>
-            <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
-          </ButtonIcon>
-        </div>
-      }
-    >
-      {isLoading ? (
-        <LayoutHeightWrapper>
-          <Spinner />
-        </LayoutHeightWrapper>
+      {path ? (
+        loading ? (
+          <LayoutHeightWrapper>
+            <Spinner />
+          </LayoutHeightWrapper>
+        ) : (
+          <>
+            {layout === "list" && (
+              <List
+                uri={`storage:/${path}`}
+                getDirectory={getDirectory}
+                onClickCallback={onClickItem}
+                onClickActionCallback={onClickActionMenu}
+                emptyComponent={<NoItems title="Empty Folder" desc="No files here" icon={<FolderOpenIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
+              />
+            )}
+            {layout === "grid" && (
+              <Grid
+                uri={`storage:/${path}`}
+                getDirectory={getDirectory}
+                onClickCallback={onClickItem}
+                onClickActionCallback={onClickActionMenu}
+                emptyComponent={<NoItems title="Empty Folder" desc="No files here" icon={<FolderOpenIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
+              />
+            )}
+          </>
+        )
       ) : (
         Object.keys(storages).map((key) => {
           const storage: StorageItem[] = storages[key as keyof StorageList];
-
           return storage.map((item: StorageItem) => (
             <ItemWrapper key={item.dev}>
               <ItemPadding>

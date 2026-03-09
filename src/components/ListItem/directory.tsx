@@ -12,7 +12,17 @@ import { REF } from "@/constants/refs";
  * @param {number} [props.height=50] - The height of the icon container in pixels.
  * @returns {JSX.Element} A styled icon inside a container div.
  */
-const Directory = ({ type, width = "auto", height = "auto", variant }: { type?: REF; width?: number | string; height?: number | string, variant?:string }) => {
+const Directory = ({
+  type,
+  width = "auto",
+  height = "auto",
+  variant,
+}: {
+  type?: REF;
+  width?: number | string;
+  height?: number | string;
+  variant?: string;
+}) => {
   const getIconByType = (type?: string) => {
     switch (type) {
       case REF.DIRECTORY:
@@ -26,7 +36,7 @@ const Directory = ({ type, width = "auto", height = "auto", variant }: { type?: 
       case REF.PLAYLIST:
         return <PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />;
       case REF.ROOM:
-        return <CouchIcon weight={ICON_WEIGHT} size={ICON_SM} />;  
+        return <CouchIcon weight={ICON_WEIGHT} size={ICON_SM} />;
       default:
         return <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />;
     }
@@ -36,7 +46,7 @@ const Directory = ({ type, width = "auto", height = "auto", variant }: { type?: 
     <div
       style={{ width, height }}
       className={`bg-neutral-900   text-white  flex items-center justify-center aspect-square w-full overflow-hidden ${
-        variant === "primary" ? "bg-radial-[at_15%_5%] " : ""
+        variant === "primary" ? "text-primary" : ""
       }`}
     >
       {getIconByType(type)}

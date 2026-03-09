@@ -23,7 +23,7 @@ const Player = () => {
   const dispatch = useDispatch();
 
   const { getCurrentTrackPos } = usePlaybackService();
-  const { openNowPlayingOverlay } = usePlayerActions()
+  const { openNowPlayingOverlay } = usePlayerActions();
 
   const { source } = useSelector((state: any) => state.player);
   const { current_track, playback_state } = useSelector((state: any) => state.player);
@@ -49,22 +49,20 @@ const Player = () => {
   }, [playback_state]);
 
   return (
+    <>
+      <div className="seek-slider seek-slider-mini relative z-10 bg-neutral-950">
+        <PositionSlider className="h-1"/>
+      </div>
       <div className="bg-neutral-900 dark:bg-neutral-950 text-white relative z-0">
-        <div className="seek-slider seek-slider-mini h-1 overflow-hidden">
-          <PositionSlider/>
-        </div>
         <div className="lg:flex hidden px-4 py-2 items-center ">
           <div className="w-3/8">
-            <button
-              onClick={openNowPlayingOverlay}
-              className="flex items-center cursor-pointer w-full  text-left"
-            >
+            <button onClick={openNowPlayingOverlay} className="flex items-center cursor-pointer w-full  text-left">
               <div className="flex items-center grow">
                 <div className="overflow-hidden flex-none rounded-sm mr-3 grayscale-25 w-[50px]  min-w-[50px]">
                   {image ? (
                     <img src={image} alt={current_track?.track.album?.name} className={"object-cover aspect-square w-full"} />
                   ) : (
-                    <Directory type={REF.ALBUM} variant="primary"/>
+                    <Directory type={REF.ALBUM} variant="primary" />
                   )}
                 </div>
                 {source.uri && (
@@ -119,7 +117,7 @@ const Player = () => {
                   {image ? (
                     <img src={image} alt={current_track?.track.album?.name} className={`object-cover aspect-square w-full`} />
                   ) : (
-                    <Directory type={REF.ALBUM} variant="primary"/>
+                    <Directory type={REF.ALBUM} variant="primary" />
                   )}
                 </div>
                 {source.uri && (
@@ -150,6 +148,7 @@ const Player = () => {
           </div>
         </div>
       </div>
+    </>
   );
 };
 

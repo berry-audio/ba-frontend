@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -29,31 +25,31 @@ const App = () => {
   return (
     <ThemeProvider>
       <Provider store={store}>
-          <Router>
-              <Layout>
-                <Routes key={location.pathname}>
-                  <Route path="/" element={<Start />} />
-                  <Route path="/bluetooth" element={<Bluetooth />} />
-                  <Route path="/spotify" element={<Start />} />
-                  <Route path="/shairportsync" element={<Start />} />
-                  <Route path="/multiroom" element={<Snapcast />} />
-                  <Route path="/queue" element={<Queue />} />
-                  <Route path="/playlist/:id?" element={<Playlists />} />
-                  <Route path="/local/:view?/:id?" element={<Local />} />
-                  <Route path="/radio" element={<Radio />} />
-                  <Route path="/storage/*" element={<Storage />} />
-                  <Route path="/settings/" element={<Settings />} />
-                  <Route path="/settings/about/" element={<SettingsAbout />} />
-                  <Route path="/settings/general/" element={<SettingsGeneral />} />
-                  <Route path="/settings/local/" element={<SettingsLocal />} />
-                  <Route path="/settings/bluetooth/" element={<Bluetooth />} />
-                  <Route path="/settings/network/" element={<SettingsNetwork />} />
-                  <Route path="/settings/dsp/" element={<SettingsCamillaDsp />} />
-                  <Route path="/settings/display/" element={<SettingsDisplay />} />
-                  <Route path="/settings/multiroom/" element={<SettingsSnapcast />} />
-                </Routes>
-              </Layout>
-          </Router>
+        <Router>
+          <Layout>
+            <Routes key={location.pathname}>
+              <Route path="/" element={<Start />} />
+              <Route path="/bluetooth" element={<Bluetooth />} />
+              <Route path="/spotify" element={<Start />} />
+              <Route path="/shairportsync" element={<Start />} />
+              <Route path="/multiroom" element={<Snapcast />} />
+              <Route path="/queue" element={<Queue />} />
+              <Route path="/playlist/:id?" element={<Playlists />} />
+              <Route path="/local/:view?/:id?" element={<Local />} />
+              <Route path="/radio" element={<Radio />} />
+              <Route path="/storage/*" element={<Storage />} />
+              <Route path="/settings/" element={<Settings />} />
+              <Route path="/settings/about/" element={<SettingsAbout />} />
+              <Route path="/settings/general/" element={<SettingsGeneral />} />
+              <Route path="/settings/local/" element={<SettingsLocal />} />
+              <Route path="/settings/bluetooth/" element={<Bluetooth />} />
+              <Route path="/settings/network/" element={<SettingsNetwork />} />
+              <Route path="/settings/dsp/" element={<SettingsCamillaDsp />} />
+              <Route path="/settings/display/" element={<SettingsDisplay />} />
+              <Route path="/settings/multiroom/" element={<SettingsSnapcast />} />
+            </Routes>
+          </Layout>
+        </Router>
       </Provider>
     </ThemeProvider>
   );

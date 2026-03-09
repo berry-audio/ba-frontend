@@ -5,6 +5,7 @@ import { useSourceService } from "@/services/source";
 import {
   AirplayIcon,
   BluetoothIcon,
+  FadersIcon,
   GearIcon,
   GlobeHemisphereWestIcon,
   PlaylistIcon,
@@ -39,6 +40,11 @@ const sources: SourceItem[] = [
     name: "Playlists",
     icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_LG} />,
     alias: "playlist",
+  },
+    {
+    name: "DSP",
+    icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+    alias: "settings/dsp",
   },
   {
     name: "Library",
@@ -144,7 +150,7 @@ const Start = () => {
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
                     className={`hover:dark:bg-black/40  touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary " : ""}`}
+                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary bg-selected" : ""}`}
                   >
                     <div className="flex flex-col items-center">
                       <div className="mb-2">{item.icon}</div>

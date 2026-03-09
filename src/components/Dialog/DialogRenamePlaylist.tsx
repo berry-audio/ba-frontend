@@ -37,15 +37,14 @@ const DialogRenamePlaylist = ({ item }: { item: Item }) => {
       buttonOnClick={onClickEditPlaylist}
       buttonDisabled={playlistName === ""}
     >
-     
-        <Input
-          type="text"
-          placeholder="Playlist Name"
-          value={playlistName}
-          onChange={(e) => setPlaylistName(e.target.value)}
-          onClickClear={() => setPlaylistName("")}
-        />
-     
+      <Input
+        type="text"
+        placeholder="Playlist Name"
+        value={playlistName}
+        onChange={(e) => setPlaylistName(e.target.value)}
+        onClickClear={() => setPlaylistName("")}
+        className="my-1"
+      />
     </Modal>
   );
 };
