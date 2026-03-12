@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useStorageService } from "@/services/storage";
 import { useStorageActions } from "@/hooks/useStorageActions";
-import { EjectSimpleIcon, FolderOpenIcon, GearIcon, HardDriveIcon } from "@phosphor-icons/react";
-import { StorageItem, StorageList, Item, ViewMode } from "@/types";
+import { EjectSimpleIcon, FolderOpenIcon, GearIcon, HardDriveIcon, NetworkIcon, UsbIcon } from "@phosphor-icons/react";
+import { StorageItem, Item, ViewMode } from "@/types";
 import { formatBytes } from "@/util";
 import { ACTIONS } from "@/constants/actions";
 import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
@@ -21,11 +21,12 @@ import List from "@/components/InfiniteScroll/List";
 import Grid from "@/components/InfiniteScroll/Grid";
 import NoItems from "@/components/ListItem/NoItems";
 import ButtonLayoutToggle from "@/components/Button/ButtonLayoutToggle";
+import ButtonAddSmb from "@/components/Button/ButtonAddSmb";
 
 const Storage = () => {
   const navigate = useNavigate();
 
-  const { getDirectory, setMount, setUnMount, setShare, setUnshare, addToLibrary } = useStorageService();
+  const { getDirectory, setMount, setUnMount, setUnMountShared, setShare, setUnshare, addToLibrary } = useStorageService();
   const { fetchStorages, loading } = useStorageActions();
   const { storages } = useSelector((state: any) => state.storage);
   const { "*": path } = useParams<{ "*": string }>();
@@ -38,9 +39,12 @@ const Storage = () => {
   }, []);
 
   useEffect(() => {
-    if (!path) return;
-    const cur_dir = path.split("/");
-    setDirCur(cur_dir[cur_dir.length - 1]);
+    if (path) {
+      const cur_dir = path.split("/");
+      setDirCur(cur_dir[cur_dir.length - 1]);
+    } else {
+      setDirCur("Storage");
+    }
   }, [path]);
 
   const onClickActionMenu = async (action: ACTIONS, _item: Item | StorageItem) => {
@@ -62,6 +66,10 @@ const Storage = () => {
       case ACTIONS.UNMOUNT:
         await setUnMount(item.dev);
         break;
+      case ACTIONS.UNMOUNT_SHARED:
+        console.log(item.dev);
+        await setUnMountShared(item.dev);
+        break;
     }
   };
 
@@ -71,43 +79,61 @@ const Storage = () => {
     navigate(`/storage${path}`);
   };
 
-  const ListItemStorage = ({ item, mounted }: { item: StorageItem; mounted: boolean }) => {
+  const ListItemStorage = ({ item }: { item: Item | StorageItem }) => {
+    const is_mounted = item.status == "mounted";
+    const is_unmounted = item.status == "unmounted";
+    const is_removable = item.type === "removable";
+    const is_nas = item.type === "nas";
+
     const actionItems = [
       {
         name: "Mount",
         icon: <HardDriveIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: () => onClickActionMenu(ACTIONS.MOUNT, item),
-        hide: item.status == "mounted",
+        hide: is_mounted,
       },
       {
         name: "Eject",
         icon: <EjectSimpleIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: () => onClickActionMenu(ACTIONS.UNMOUNT, item),
-        hide: item.status == "unmounted",
+        hide: is_unmounted || is_nas,
+      },
+      {
+        name: "Unmount",
+        icon: <EjectSimpleIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+        action: () => onClickActionMenu(ACTIONS.UNMOUNT_SHARED, item),
+        hide: is_unmounted || is_removable,
       },
     ];
 
     return (
       <div className="w-full">
         <div className="flex justify-between">
-          <button onClick={() => mounted && onClickItem(item)} className="cursor-pointer w-full">
+          <button onClick={() => is_mounted && onClickItem(item)} className="cursor-pointer w-full">
             <div className="font-medium">
               <div className="w-full flex">
                 <div className="flex text-lg ">
-                  <HardDriveIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />
+                  {item.type === "storage" && <HardDriveIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />}
+                  {item.type === "removable" && <UsbIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />}
+                  {item.type === "nas" && <NetworkIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />}
                   {item.name}
                 </div>
               </div>
               <div className="mb-1  text-secondary text-left">{`${
-                mounted ? `${formatBytes(item.free)} available of ${formatBytes(item.total)}` : "Unmounted"
+                is_mounted ? `${formatBytes(item.usage?.free as number)} available of ${formatBytes(item.usage?.total as number)}` : "Unmounted"
               }`}</div>
             </div>
           </button>
-          <div className="-mr-2">{item.removable && <ActionMenu items={actionItems} />}</div>
+          <div className="-mr-2">{item.type !== "storage" && <ActionMenu items={actionItems} />}</div>
         </div>
 
-        <div onClick={() => mounted && onClickItem(item)} className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
-          <div className={`${mounted ? "bg-primary" : ""} h-1 rounded-full`} style={{ width: `${item.percent}%` }}></div>
+        <div onClick={() => is_mounted && onClickItem(item)} className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
+          {item.usage?.used && item.usage?.total && (
+            <div
+              className={`${is_mounted ? "bg-primary" : ""} h-1 rounded-full`}
+              style={{ width: `${(item.usage?.used / item.usage?.total) * 100}%` }}
+            ></div>
+          )}
         </div>
       </div>
     );
@@ -120,9 +146,18 @@ const Storage = () => {
       title={dirCur || "Storage"}
       rightComponent={
         <div className="flex items-center">
-          <div className="mr-2">
-            <ButtonLayoutToggle setLayoutype={setLayout} layoutType={layout} />
-          </div>
+          {path && (
+            <div className="mr-2">
+              <ButtonLayoutToggle setLayoutype={setLayout} layoutType={layout} />
+            </div>
+          )}
+
+          {!path && (
+            <div className="mr-4">
+              <ButtonAddSmb />
+            </div>
+          )}
+
           <div className="mr-4">
             <ButtonIcon onClick={() => navigate("/settings/local")}>
               <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
@@ -159,16 +194,13 @@ const Storage = () => {
           </>
         )
       ) : (
-        Object.keys(storages).map((key) => {
-          const storage: StorageItem[] = storages[key as keyof StorageList];
-          return storage.map((item: StorageItem) => (
-            <ItemWrapper key={item.dev}>
-              <ItemPadding>
-                <ListItemStorage mounted={key === "mounted"} item={item} />
-              </ItemPadding>
-            </ItemWrapper>
-          ));
-        })
+        storages.map((item: StorageItem) => (
+          <ItemWrapper key={item.uri}>
+            <ItemPadding>
+              <ListItemStorage item={item} />
+            </ItemPadding>
+          </ItemWrapper>
+        ))
       )}
     </Page>
   );

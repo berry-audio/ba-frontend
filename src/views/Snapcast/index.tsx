@@ -96,7 +96,7 @@ const Snapcast = () => {
             {item.ip != LOCAL_IP && <ActionMenu items={actionItems} />}
           </div>
         </div>
-        {status?.server?.host?.name === item?.name && status?.groups?.length && (
+        {status?.server?.host?.name === item?.name && status?.groups?.length > 0 && (
           <div className="mt-3 pb-3 px-4">
             {status.groups.map((group: any) =>
               group?.clients?.map((client: any, index: number) => (

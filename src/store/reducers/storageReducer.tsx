@@ -2,10 +2,9 @@ import { EVENTS } from "@/constants/events";
 import { INFO_EVENTS } from "../constants";
 import { StorageState } from "@/types";
 
-
 const initialState: StorageState = {
   last_shared_event: {},
-  storages: { mounted: [], unmounted: [] },
+  storages: [],
 };
 
 export const storageReducer = (state = initialState, action: any): StorageState => {
@@ -15,39 +14,25 @@ export const storageReducer = (state = initialState, action: any): StorageState 
     case INFO_EVENTS.STORAGE_UPDATED:
       return { ...state, storages: payload };
     case EVENTS.STORAGE_MOUNTED:
-      return {
-        ...state,
-        storages: {
-          mounted: [...state.storages.mounted.filter((s: any) => s.dev !== payload.storage.dev), payload.storage],
-          unmounted: state.storages.unmounted.filter((s: any) => s.dev !== payload.storage.dev),
-        },
-      };
-
     case EVENTS.STORAGE_UNMOUNTED:
+      console.log(payload.storage)
       return {
         ...state,
-        storages: {
-          mounted: state.storages.mounted.filter((s: any) => s.dev !== payload.storage.dev),
-          unmounted: [...state.storages.unmounted.filter((s: any) => s.dev !== payload.storage.dev), payload.storage],
-        },
+        storages: [...state.storages.filter((s: any) => s.dev !== payload.storage.dev), payload.storage],
       };
 
     case EVENTS.STORAGE_REMOVED:
       return {
         ...state,
-        storages: {
-          mounted: state.storages.mounted.filter((s: any) => s.dev !== payload.storage.dev),
-          unmounted: state.storages.unmounted.filter((s: any) => s.dev !== payload.storage.dev),
-        },
+        storages: [...state.storages.filter((s: any) => s.dev !== payload.storage.dev)],
       };
-     
+
     case EVENTS.STORAGE_SHARED:
-    case EVENTS.STORAGE_UNSHARED:  
+    case EVENTS.STORAGE_UNSHARED:
       return {
         ...state,
         last_shared_event: { event: type, uri: payload.uri },
       };
-
 
     default:
       return state;

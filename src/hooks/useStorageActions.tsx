@@ -6,7 +6,7 @@ import { useStorageService } from "@/services/storage";
 export function useStorageActions() {
   const dispatch = useDispatch();
 
-  const { getDirectory } = useStorageService();
+  const { getDirectory, addShared, setMountShared } = useStorageService();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -21,8 +21,24 @@ export function useStorageActions() {
     setLoading(false);
   };
 
+  const connectStorage = async (ip: string, username: string = "", password: string = "") => {
+    setLoading(true);
+    const response = await addShared(ip, username, password);
+    setLoading(false);
+    return response;
+  };
+
+  const mountSharedStorage = async (devs: string[]) => {
+    setLoading(true);
+    const response = await setMountShared(devs);
+    setLoading(false);
+    return response;
+  };
+
   return {
     fetchStorages,
+    connectStorage,
+    mountSharedStorage,
     loading,
   };
 }

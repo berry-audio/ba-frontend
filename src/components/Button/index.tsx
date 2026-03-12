@@ -19,7 +19,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={`px-6 py-4 transition flex rounded-4xl ${type === "ghost" && " hover:bg-button-hover disabled:opacity-50 "}  ${
-        type === "primary" && " hover:bg-neutral-300 "
+        type === "primary" && " hover:bg-primary"
       } cursor-pointer ${loading ? "disabled:opacity-50" : ""}`}
     >
       {loading && (

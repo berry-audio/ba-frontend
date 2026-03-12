@@ -34,6 +34,7 @@ export enum DIALOG_EVENTS {
    DIALOG_INFO_LIBRARY = "dialog/local/info",
    DIALOG_SCAN_LIBRARY_ARTIST = "dialog/local/scan/artist",
    DIALOG_BLUETOOTH_NOT_CONNECTED = "dialog/bluetooth/unavailable",
+   DIALOG_ADD_SMB = "dialog/storage/smb",
    DIALOG_WIFI_AUTH = "dialog/wifi/auth",
    DIALOG_EDIT_NETWORK = "dialog/network/edit",
    DIALOG_REBOOT = "dialog/system/reboot",

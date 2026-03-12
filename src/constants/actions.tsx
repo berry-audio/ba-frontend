@@ -12,6 +12,7 @@ export enum ACTIONS {
     DIRECTORY_UNSHARE = 'directory_unshare',
     MOUNT = 'mount',
     UNMOUNT = 'unmount',
+    UNMOUNT_SHARED = 'unmount_shared',
     ADD_TO_PLAYLIST = 'add_to_playlist',
     CLOSE_DIALOG = 'close_dialog',
   }

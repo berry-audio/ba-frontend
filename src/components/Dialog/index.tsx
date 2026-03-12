@@ -16,6 +16,7 @@ import DialogError from "./DialogError";
 import DialogEditNetwork from "./DialogEditNetwork";
 import DialogWifiAuth from "./DialogWifiAuth";
 import DialogSnapcastInfo from "./DialogSnapcastInfo";
+import DialogAddSmb from "./DialogAddSmb";
 
 const Dialog = () => {
   const { dialog, payload: item } = useSelector((state: any) => state.dialog);
@@ -56,6 +57,9 @@ const Dialog = () => {
       )}
       {dialog === DIALOG_EVENTS.DIALOG_SNAPCAST_INFO && (
         <DialogSnapcastInfo/>
+      )}
+      {dialog === DIALOG_EVENTS.DIALOG_ADD_SMB && (
+        <DialogAddSmb/>
       )}
     </>
   );
