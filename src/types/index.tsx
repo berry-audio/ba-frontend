@@ -99,7 +99,7 @@ export interface MediaPlayer {
   playback_state: PLAYBACK_STATE;
   repeat_mode: REPEAT_MODE;
   shuffle_mode: SHUFFLE_MODE;
-  volume: number;
+  volume: number | undefined;
   mute: boolean;
   elapsed_ms: number;
   current_track: TlTrack;

@@ -53,6 +53,8 @@ const DialogAddSmb = () => {
       buttonLoading={loading}
       buttonOnClick={smbResponse?.ip ? onClickMount : onClickConnect}
       buttonDisabled={smbResponse?.ip ? smbResponse?.ip && !selectedItems.length : smbIpAddress == ""}
+      padding
+
     >
       {smbResponse?.ip ? (
         <div className="overflow-auto">
@@ -60,7 +62,7 @@ const DialogAddSmb = () => {
             <NoItems title="No Shared Drives" icon={<HardDriveIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
           ) : (
             <>
-              <div className="pt-2 pb-4 text-secondary">Found {smbResponse?.shares?.length} items. Select the items you want to add and they will appear in your Storage section.</div>
+              <div className="pt-2 pb-4 text-secondary px-5">Found {smbResponse?.shares?.length} items. Select the items you want to add and they will appear in your Storage section.</div>
               {smbResponse?.shares?.map((item: StorageItem) => (
                 <ItemWrapper key={item.dev}>
                   <button className="w-full cursor-pointer" onClick={() => onClickSelectSmbs(item)}>
@@ -79,7 +81,7 @@ const DialogAddSmb = () => {
           )}
         </div>
       ) : (
-        <>
+        <div className="px-5">
           <div className="pt-2 pb-4 text-secondary">
             Enter the details of the SMB share you want to connect to. Make sure the host device is on the same network and has file sharing enabled.
           </div>
@@ -111,7 +113,7 @@ const DialogAddSmb = () => {
             onClickClear={() => setSmbPassword("")}
             disabled={loading}
           />
-        </>
+        </div>
       )}
     </Modal>
   );

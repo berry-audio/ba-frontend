@@ -16,7 +16,7 @@ const initialMediaPlayer: MediaPlayer = {
   playback_state: PLAYBACK_STATE.STOPPED,
   repeat_mode: REPEAT_MODE.REPEAT_OFF,
   shuffle_mode: SHUFFLE_MODE.SHUFFLE_OFF,
-  volume: 0,
+  volume: undefined,
   mute: false,
   elapsed_ms: 0,
   current_track_cover: undefined,

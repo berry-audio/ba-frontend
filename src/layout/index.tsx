@@ -14,7 +14,6 @@ import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
 import OverlaySearch from "@/components/Overlay/OverlaySearch";
 import OverlayNowPlaying from "@/components/Overlay/OverlayNowPlaying";
-import OverlayLibrary from "@/components/Overlay/OverlayLibrary";
 import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
@@ -131,7 +130,6 @@ export default function Layout({ children }: { children: any }) {
       <Dialog />
       <OverlaySearch />
       <OverlayNowPlaying />
-      <OverlayLibrary />
       <OverlayStandby />
       <OverlayOffline />
       <OverlayVolume />

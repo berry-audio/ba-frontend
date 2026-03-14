@@ -55,9 +55,10 @@ const OverlaySearch = () => {
     radio: "Radio",
   };
 
-  const handleItemClick = async (item: any) => {
+  const onClickItem = async (item: any) => {
     if (item.type === REF.TRACK) return;
     const [view, id] = item.uri.split(":");
+    dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE })
     navigate(`/local/${view}/${id}`);
   };
 
@@ -110,7 +111,7 @@ const OverlaySearch = () => {
                       <ItemWrapper key={index}>
                         <ListItem
                           item={item}
-                          onClickCallback={handleItemClick}
+                          onClickCallback={onClickItem}
                         />
                       </ItemWrapper>
                     ))}

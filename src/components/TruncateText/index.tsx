@@ -1,22 +1,22 @@
 import React from "react";
 
-/**
- * A simple component that truncates text to a given character limit.
- *
- * @param children - The text to truncate.
- * @param limit - Maximum number of characters to display.
- * @returns JSX element with truncated text.
- */
 const TruncateText = ({
   children,
+  limit,
+  className = "",
 }: {
   children: React.ReactNode;
   title?: string;
   className?: string;
   limit?: number;
 }) => {
+  if (limit && typeof children === "string") {
+    const truncated = children.length > limit ? children.slice(0, limit) + "…" : children;
+    return <span className={`block ${className}`}>{truncated}</span>;
+  }
+
   return (
-    <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
+    <span className={`block overflow-hidden text-ellipsis whitespace-nowrap ${className}`}>
       {children}
     </span>
   );
