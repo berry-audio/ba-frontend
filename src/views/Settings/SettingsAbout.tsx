@@ -10,9 +10,9 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 
 export interface SystemInfo {
   os: string;
+  os_version:string;
   hostname: string;
   model: string;
-  software: string;
   version: string;
   cpu: {
     volts: number;
@@ -38,10 +38,11 @@ export interface SystemInfo {
 
 const defaultSystemInfo: SystemInfo = {
   os: "unknown",
+  os_version: "unknown",
   hostname: "unknown",
   model: "unknown",
-  software: "unknown",
   version: "unknown",
+
   cpu: {
     volts: 0,
     usage_percent: 0,
@@ -160,9 +161,9 @@ const SettingsAbout = () => {
             <div className="text-lg font-medium mb-2">Hardware</div>
             <ListHardwareItem title="Model" desc={systemInfo?.model} />
             <ListHardwareItem title="OS" desc={systemInfo?.os} />
-            <ListHardwareItem title="Version" desc={systemInfo?.version} />
+            <ListHardwareItem title="OS Version" desc={systemInfo?.os_version} />
             <ListHardwareItem title="Hostname" desc={systemInfo?.hostname} />
-            <ListHardwareItem title="Software" desc={systemInfo?.software} />
+            <ListHardwareItem title="Version" desc={systemInfo?.version} />
           </div>
         </div>
       )}
