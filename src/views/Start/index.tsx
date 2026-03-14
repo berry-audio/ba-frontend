@@ -95,7 +95,7 @@ const Start = () => {
   const { source } = useSelector((state: any) => state.player);
 
   const onClickHandler = async (item: SourceItem) => {
-    ["spotify", "shairportsync", "bluetooth"].includes(item.alias) && (await setSource(item.alias));
+    ["spotify", "shairportsync"].includes(item.alias) && (await setSource(item.alias));
     navigate(`/${item.alias}`);
   };
 

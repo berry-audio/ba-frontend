@@ -3,34 +3,32 @@ import { useConfigService } from "@/services/config";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { InputNumber } from "@/components/Form/InputNumber";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useDispatch } from "react-redux";
 import { DIALOG_EVENTS } from "@/store/constants";
 import { z } from "zod";
 
 import Page from "@/components/Page";
-import SelectPcmDevices from "@/components/Form/SelectPcmDevices";
-import SelectTimezone from "@/components/Form/SelectTimezone";
 import ButtonSave from "@/components/Button/ButtonSave";
 
 export const formSchema = z.object({
-  system: z.object({
-    hostname: z.string().min(1, "Hostname is required"),
-    timezone: z.string().min(6, "Timezone is required"),
-  }),
-  mixer: z.object({
-    output_device: z
+  storage: z.object({
+    username: z
       .string()
-      .nullable()
-      .refine((val) => val !== null && val.length > 0, {
-        message: "Audio output device is required",
+      .optional()
+      .refine((val) => !val || val.length >= 3, {
+        message: "Username must be at least 2 characters",
       }),
-    volume_default: z.number(),
+    password: z
+      .string()
+      .optional()
+      .refine((val) => !val || val.length >= 6, {
+        message: "Password must be at least 6 characters",
+      }),
   }),
 });
 
-const SettingsGeneral = () => {
+const SettingsSharing = () => {
   const dispatch = useDispatch();
   const { getConfig, setConfig } = useConfigService();
 
@@ -58,7 +56,7 @@ const SettingsGeneral = () => {
   return (
     <Page
       backButton
-      title="General"
+      title="Sharing"
       rightComponent={
         <div className="flex">
           <div className="mr-4">
@@ -71,18 +69,21 @@ const SettingsGeneral = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-md">
           <div className="lg:px-0 px-6 py-3 lg:w-90">
             <div>
-              <h2 className="mt-3 mb-3 text-xl">Device</h2>
+              <h2 className="mt-3 mb-3 text-xl">Authentication</h2>
+            </div>
+            <div className="pt-2 pb-4 text-secondary">
+              To access shared folders on BerryAudio OS, users will be required to use the credentials below. Leave blank for no authentication.
             </div>
 
             <div className="mb-6">
               <FormField
                 control={form.control}
-                name="system.hostname"
+                name="storage.username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium text-muted">Hostname</FormLabel>
+                    <FormLabel className="text-md block font-medium text-muted">Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="Device Name" {...field} />
+                      <Input placeholder="Username" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -93,48 +94,12 @@ const SettingsGeneral = () => {
             <div className="mb-6">
               <FormField
                 control={form.control}
-                name="mixer.output_device"
+                name="storage.password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium text-muted">Audio device</FormLabel>
+                    <FormLabel className="text-md block font-medium text-muted">Password</FormLabel>
                     <FormControl>
-                      <SelectPcmDevices placeholder="Select Device" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="mb-6">
-              <FormField
-                control={form.control}
-                name="mixer.volume_default"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-md block font-medium text-muted">Initial Volume</FormLabel>
-                    <FormControl>
-                      <InputNumber {...field} max={100} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div>
-              <h2 className="mt-10  mb-3 text-xl">Date & Time</h2>
-            </div>
-
-            <div className="mb-6">
-              <FormField
-                control={form.control}
-                name="system.timezone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-md block font-medium text-muted">Timezone</FormLabel>
-                    <FormControl>
-                      <SelectTimezone placeholder="Select Timezone" {...field} />
+                      <Input type="password" placeholder="Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -148,4 +113,4 @@ const SettingsGeneral = () => {
   );
 };
 
-export default SettingsGeneral;
+export default SettingsSharing;

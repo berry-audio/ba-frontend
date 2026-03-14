@@ -20,6 +20,7 @@ import SettingsSnapcast from "./views/Settings/SettingsSnapcast";
 import Bluetooth from "./views/Bluetooth";
 import SettingsLocal from "./views/Settings/SettingsLibrary";
 import SettingsDisplay from "./views/Settings/SettingsDisplay";
+import SettingsSharing from "./views/Settings/SettingsSharing";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/settings/local/" element={<SettingsLocal />} />
               <Route path="/settings/bluetooth/" element={<Bluetooth />} />
               <Route path="/settings/network/" element={<SettingsNetwork />} />
+              <Route path="/settings/sharing/" element={<SettingsSharing />} />
               <Route path="/settings/dsp/" element={<SettingsCamillaDsp />} />
               <Route path="/settings/display/" element={<SettingsDisplay />} />
               <Route path="/settings/multiroom/" element={<SettingsSnapcast />} />

@@ -1,6 +1,16 @@
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { BluetoothIcon, CpuIcon, GearIcon, InfoIcon, MonitorIcon, NetworkIcon, SpeakerHifiIcon, StackIcon } from "@phosphor-icons/react";
+import {
+  BluetoothIcon,
+  CpuIcon,
+  FolderSimpleIcon,
+  GearIcon,
+  InfoIcon,
+  MonitorIcon,
+  NetworkIcon,
+  SpeakerHifiIcon,
+  StackIcon,
+} from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import Page from "@/components/Page";
@@ -38,6 +48,12 @@ const SettingsItems: SettingsItem[] = [
     alias: "network",
     icon: <NetworkIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/network",
+  },
+  {
+    name: "Sharing",
+    alias: "sharing",
+    icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/sharing",
   },
   {
     name: "Camilla DSP",
