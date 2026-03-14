@@ -5,6 +5,7 @@ import {
   CpuIcon,
   FolderSimpleIcon,
   GearIcon,
+  HandHeartIcon,
   InfoIcon,
   MonitorIcon,
   NetworkIcon,
@@ -75,10 +76,16 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/display",
   },
   {
-    name: "About",
-    alias: "about",
+    name: "System",
+    alias: "system",
     icon: <InfoIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/about",
+    url: "/settings/system",
+  },
+  {
+    name: "Support",
+    alias: "support",
+    icon: <HandHeartIcon weight={ICON_WEIGHT} size={ICON_SM} className="text-primary" />,
+    url: "/settings/support",
   },
 ];
 

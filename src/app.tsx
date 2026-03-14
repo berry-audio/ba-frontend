@@ -9,7 +9,6 @@ import Start from "./views/Start";
 import Layout from "./layout";
 import Queue from "./views/Queue";
 import Settings from "./views/Settings";
-import SettingsAbout from "./views/Settings/SettingsAbout";
 import Radio from "./views/Radio";
 import Playlists from "./views/Playlist";
 import SettingsGeneral from "./views/Settings/SettingsGeneral";
@@ -21,6 +20,8 @@ import Bluetooth from "./views/Bluetooth";
 import SettingsLocal from "./views/Settings/SettingsLibrary";
 import SettingsDisplay from "./views/Settings/SettingsDisplay";
 import SettingsSharing from "./views/Settings/SettingsSharing";
+import SettingsSupport from "./views/Settings/SettingsSupport";
+import SettingsSystem from "./views/Settings/SettingsSystem";
 
 const App = () => {
   return (
@@ -40,7 +41,7 @@ const App = () => {
               <Route path="/radio" element={<Radio />} />
               <Route path="/storage/*" element={<Storage />} />
               <Route path="/settings/" element={<Settings />} />
-              <Route path="/settings/about/" element={<SettingsAbout />} />
+              <Route path="/settings/system/" element={<SettingsSystem />} />
               <Route path="/settings/general/" element={<SettingsGeneral />} />
               <Route path="/settings/local/" element={<SettingsLocal />} />
               <Route path="/settings/bluetooth/" element={<Bluetooth />} />
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/settings/dsp/" element={<SettingsCamillaDsp />} />
               <Route path="/settings/display/" element={<SettingsDisplay />} />
               <Route path="/settings/multiroom/" element={<SettingsSnapcast />} />
+              <Route path="/settings/support/" element={<SettingsSupport />} />
             </Routes>
           </Layout>
         </Router>

@@ -65,7 +65,7 @@ const defaultSystemInfo: SystemInfo = {
   },
 };
 
-const SettingsAbout = () => {
+const SettingsSystem = () => {
   const { getSystemInfo } = useSystemService();
   const [systemInfo, setSystemInfo] = useState<SystemInfo>(defaultSystemInfo);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -116,7 +116,7 @@ const SettingsAbout = () => {
   };
 
   return (
-    <Page backButton title="About">
+    <Page backButton title="System">
       {isLoading ? (
         <LayoutHeightWrapper>
           <Spinner />
@@ -171,4 +171,4 @@ const SettingsAbout = () => {
   );
 };
 
-export default SettingsAbout;
+export default SettingsSystem;
