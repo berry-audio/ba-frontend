@@ -54,7 +54,7 @@ const CoverList = ({ no, item, view = REF.TRACK, loading = false, selected = fal
         {image && !imgError ? (
           <img src={image} alt={title} className="object-cover aspect-square w-full grayscale-25" onError={() => setImgError(true)} />
         ) : (
-          <Directory type={type} />
+          <Directory type={type} variant="primary" />
         )}
       </ListImageWrapper>
       <SharedUnsharedIcon shared={item.shared} classname="absolute -top-1 left-8" />

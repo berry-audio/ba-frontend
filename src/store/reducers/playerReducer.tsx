@@ -2,6 +2,7 @@ import { PLAYER_EVENTS } from "../constants";
 import { PLAYBACK_STATE, REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { EVENTS } from "@/constants/events";
 import { MediaPlayer, Source } from "@/types";
+import { getRepeatMode, getShuffleMode } from "@/util";
 
 const initialSource: Source = {
   type: undefined,
@@ -16,7 +17,7 @@ const initialMediaPlayer: MediaPlayer = {
   playback_state: PLAYBACK_STATE.STOPPED,
   repeat_mode: REPEAT_MODE.REPEAT_OFF,
   shuffle_mode: SHUFFLE_MODE.SHUFFLE_OFF,
-  volume: 0,
+  volume: undefined,
   mute: false,
   elapsed_ms: 0,
   current_track_cover: undefined,
@@ -115,8 +116,9 @@ export const playerReducer = (state = initialMediaPlayer, action: any): MediaPla
       };
     case EVENTS.OPTIONS_CHANGED:
       return {
-        // todo
         ...state,
+        repeat_mode: getRepeatMode(payload.repeat, payload.single),
+        shuffle_mode: getShuffleMode(payload.shuffle),
       };
 
     default:

@@ -1,6 +1,17 @@
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { BluetoothIcon, CpuIcon, GearIcon, InfoIcon, MonitorIcon, NetworkIcon, SpeakerHifiIcon, StackIcon } from "@phosphor-icons/react";
+import {
+  BluetoothIcon,
+  CpuIcon,
+  FolderSimpleIcon,
+  GearIcon,
+  HandHeartIcon,
+  InfoIcon,
+  MonitorIcon,
+  NetworkIcon,
+  SpeakerHifiIcon,
+  StackIcon,
+} from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import Page from "@/components/Page";
@@ -40,6 +51,12 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/network",
   },
   {
+    name: "Sharing",
+    alias: "sharing",
+    icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/sharing",
+  },
+  {
     name: "Camilla DSP",
     alias: "camilladsp",
     icon: <CpuIcon weight={ICON_WEIGHT} size={ICON_SM} />,
@@ -59,10 +76,16 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/display",
   },
   {
-    name: "About",
-    alias: "about",
+    name: "System",
+    alias: "system",
     icon: <InfoIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/about",
+    url: "/settings/system",
+  },
+  {
+    name: "Support",
+    alias: "support",
+    icon: <HandHeartIcon weight={ICON_WEIGHT} size={ICON_SM} className="text-primary" />,
+    url: "/settings/support",
   },
 ];
 

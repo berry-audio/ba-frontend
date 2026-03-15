@@ -140,7 +140,7 @@ const ListItem = ({
   ];
 
   return cover ? (
-    <div key={index} className={`cursor-pointer w-full relative ${className ? className : ""}`} style={{ ...style }}>
+    <div key={index} className={`cursor-pointer w-full h-full relative ${className ? className : ""}`} style={{ ...style }}>
       <Cover item={item} view={view} loading={isLoading} onClick={() => onClickCallback?.(item)} actions={<ActionMenu items={itemsMenu} />} />
     </div>
   ) : (

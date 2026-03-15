@@ -7,6 +7,7 @@ import { REF } from "@/constants/refs";
 import { Item } from "@/types";
 import { getSubtitle } from ".";
 import { getImage } from "@/util";
+import { SharedUnsharedIcon } from "../Icons";
 
 interface Cover {
   loading?: boolean;
@@ -29,7 +30,7 @@ const Cover = ({ item, view = REF.TRACK, loading = false, shadow = false, action
   return (
     <div className="w-full">
       <button onClick={onClick} className="w-full cursor-pointer  shadow-1xl">
-        <div className={`overflow-hidden rounded-md transition-all relative  ${shadow ?? "shadow-[1px_14px_21px_-6px_rgba(0,0,0,0.1)]"}`}>
+        <div className={`mb-2 md:mb-1 overflow-hidden rounded-md transition-all ${shadow ?? "shadow-[1px_14px_21px_-6px_rgba(0,0,0,0.1)]"}`}>
           {loading && (
             <div className="absolute w-full h-full flex items-center justify-center z-10 dark:bg-black/80 bg-white/80">
               <Spinner />
@@ -37,11 +38,17 @@ const Cover = ({ item, view = REF.TRACK, loading = false, shadow = false, action
           )}
 
           {image && !imgError ? (
-            <img src={image} alt={title} className="object-cover w-full scale-101 aspect-square grayscale-25 " onError={() => setImgError(true)} />
+            <img
+              src={image}
+              alt={title}
+              className="object-cover w-full scale-101 aspect-square grayscale-30 inline-block"
+              onError={() => setImgError(true)}
+            />
           ) : (
-            <Directory type={item_type} />
+            <Directory type={item_type} variant="primary" />
           )}
         </div>
+        <SharedUnsharedIcon shared={item.shared} classname="absolute top-2 right-2" />
       </button>
       {!cover_only && (
         <div className="flex justify-between">

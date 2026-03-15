@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSourceService } from "@/services/source";
 import { usePlaybackService } from "@/services/playback";
@@ -8,13 +8,11 @@ import { useSystemService } from "@/services/system";
 import { useNetworkService } from "@/services/network";
 import { EVENTS } from "@/constants/events";
 import { Menu } from "../components/Menu";
-import { getRepeatMode, getShuffleMode } from "@/util";
 
 import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
 import OverlaySearch from "@/components/Overlay/OverlaySearch";
 import OverlayNowPlaying from "@/components/Overlay/OverlayNowPlaying";
-import OverlayLibrary from "@/components/Overlay/OverlayLibrary";
 import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
@@ -31,13 +29,8 @@ export default function Layout({ children }: { children: any }) {
   const { getDevices } = useNetworkService();
   const { getSource } = useSourceService();
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
-    if (!connected) return;
-
     const initialize = async () => {
-      setLoading(true);
       try {
         const [
           _getNetworkDevices,
@@ -114,35 +107,30 @@ export default function Layout({ children }: { children: any }) {
 
         dispatch({
           type: EVENTS.OPTIONS_CHANGED,
-          payload: {
-            repeat_mode: getRepeatMode(_getRepeat, _getSingle),
-            shuffle_mode: getShuffleMode(_getShuffle),
-          },
+          payload: { single: _getSingle, repeat: _getRepeat, shuffle: _getShuffle },
         });
       } catch (err) {
         console.error("Error initiazing:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
+    if (!connected) return;
     initialize();
   }, [connected]);
 
-  return loading ? (
-    <Spinner />
+  return connected ? (
+    <div className="flex flex-col h-full relative">
+      <Menu />
+      <div className="flex-1 overflow-hidden">{children}</div>
+      <Player />
+      <Dialog />
+      <OverlaySearch />
+      <OverlayNowPlaying />
+      <OverlayStandby />
+      <OverlayOffline />
+      <OverlayVolume />
+    </div>
   ) : (
-      <div className="flex flex-col h-full relative">
-        <Menu />
-        <div className="flex-1 overflow-hidden">{children}</div>
-        <Player />
-        <Dialog />
-        <OverlaySearch />
-        <OverlayNowPlaying />
-        <OverlayLibrary />
-        <OverlayStandby />
-        <OverlayOffline />
-        <OverlayVolume />
-      </div>
+    <Spinner />
   );
 }

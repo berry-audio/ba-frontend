@@ -17,13 +17,12 @@ import {
 } from "@phosphor-icons/react";
 import { EVENTS } from "@/constants/events";
 import { INFO_EVENTS } from "@/store/constants";
-import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
+import { ICON_SM, ICON_WEIGHT, ICON_XS, LOCAL_IP } from "@/constants";
 import { REF } from "@/constants/refs";
 
 import Page from "@/components/Page";
 import ActionMenu from "@/components/Actions";
 import ItemWrapper from "@/components/Wrapper/ItemWrapper";
-import ItemPadding from "@/components/Wrapper/ItemPadding";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import Spinner from "@/components/Spinner";
 import NoItems from "@/components/ListItem/NoItems";
@@ -49,13 +48,13 @@ const Snapcast = () => {
   const ListServer = ({ item }: { item: SnapcastServer }) => {
     const actionItems = [
       {
-        name: "Connect",
+        name: "Join Room",
         icon: <SpeakerHighIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: () => connect(item.ip),
         hide: item?.connected,
       },
       {
-        name: "Disconnect",
+        name: "Leave Room",
         icon: <SpeakerSimpleXIcon size={ICON_XS} weight={ICON_WEIGHT} />,
         action: async () => disconnect(),
         hide: !item?.connected,
@@ -76,12 +75,12 @@ const Snapcast = () => {
     };
 
     return (
-      <div className="w-full">
-        <div className="flex justify-between items-center">
+      <div className={`w-full`}>
+        <div className="flex justify-between items-center border-b-1 border-background py-3 px-4">
           <div className="flex items-center">
             <div className="text-lg font-medium">
-              <div className="w-full flex mt-1">
-                <div className={`overflow-hidden rounded-sm mr-3 min-w-13 w-13 h-13 grayscale-25 ${item?.connected ? "text-primary" : ""}`}>
+              <div className="w-full flex mt-1 ">
+                <div className={`overflow-hidden rounded-sm mr-3 min-w-13 w-13 h-13  ${item?.connected ? "text-primary" : ""}`}>
                   <Directory type={REF.ROOM} variant={item?.connected ? "primary" : ""} />
                 </div>
                 <div>
@@ -94,11 +93,11 @@ const Snapcast = () => {
             </div>
           </div>
           <div className="-mr-2">
-            <ActionMenu items={actionItems} />
+            {item.ip != LOCAL_IP && <ActionMenu items={actionItems} />}
           </div>
         </div>
         {status?.server?.host?.name === item?.name && status?.groups?.length > 0 && (
-          <div className="mt-3">
+          <div className="mt-3 pb-3 px-4">
             {status.groups.map((group: any) =>
               group?.clients?.map((client: any, index: number) => (
                 <div className="mt-5" key={index}>
@@ -228,10 +227,8 @@ const Snapcast = () => {
         <>
           {servers.length ? (
             servers.map((item: SnapcastServer, index: number) => (
-              <ItemWrapper key={index}>
-                <ItemPadding>
+              <ItemWrapper key={index} highlight={item?.connected}>
                   <ListServer item={item} />
-                </ItemPadding>
               </ItemWrapper>
             ))
           ) : (

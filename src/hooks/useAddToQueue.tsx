@@ -20,7 +20,7 @@ export function useAddToQueue() {
       case REF.ARTIST:
       case REF.ALBUM:
       case REF.GENRE: {
-        const tracks = await getDirectory(`${item.uri}:list`);
+        const tracks = await getDirectory(`${item.uri}:tracks`);
         if (tracks?.length) {
           tracksUris.push(...tracks.map((track: Track) => track.uri));
         }

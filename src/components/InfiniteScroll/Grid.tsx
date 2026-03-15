@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { MusicNotesSimpleIcon } from "@phosphor-icons/react";
+import { FolderSimpleIcon } from "@phosphor-icons/react";
 import { Item } from "@/types";
 import { REF } from "@/constants/refs";
 import { ACTIONS } from "@/constants/actions";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DIALOG_EVENTS, INFO_EVENTS } from "@/store/constants";
+import { EVENTS } from "@/constants/events";
+
 
 import Spinner from "@/components/Spinner";
 import NoItems from "@/components/ListItem/NoItems";
@@ -14,10 +16,11 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import ListItem from "@/components/ListItem";
 
 interface Grid {
-  query: REF;
+  uri: string;
   getDirectory: (uri?: string, limit?: number, offset?: number) => Promise<[]>;
   onClickCallback?: (item: any) => void;
   onClickActionCallback?: (action: ACTIONS, item: Item) => void;
+  emptyComponent?: React.ReactNode;
 }
 
 const calculateCols = () => {
@@ -29,11 +32,13 @@ const calculateCols = () => {
   else return 8;
 };
 
-const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: Grid) => {
+const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, emptyComponent }: Grid) => {
   const dispatch = useDispatch();
 
-  const loadMoreCount = 5;
+  const loadMoreCount = 6;
   const action = useSelector((state: any) => state.event);
+    const { last_shared_event } = useSelector((state: any) => state.storage);
+
 
   const [items, setItems] = useState<any[]>([]);
   const [startOffset, setStartOffset] = useState<number>(0);
@@ -47,14 +52,15 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
     scrollTo,
   } = useVirtual<HTMLDivElement, HTMLDivElement>({
     itemCount: Math.ceil(items?.length / columns),
-    itemSize: 280,
+    itemSize: 255,
+    useIsScrolling: true, 
     loadMoreCount: loadMoreCount,
     loadMore: async ({ startIndex }) => {
       const currentOffset = startIndex * columns;
 
       if (currentOffset > startOffset) {
         setStartOffset(currentOffset);
-        const response = await getDirectory(query, loadMoreCount * columns, currentOffset);
+        const response = await getDirectory(uri, loadMoreCount * columns, currentOffset);
         setItems((prev: any) => [...prev, ...response]);
       }
     },
@@ -63,8 +69,8 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
   const fetch = async () => {
     setIsLoading(true);
 
-    const response = (await getDirectory(query, loadMoreCount * columns, 0)) || [];
-    if (!response.length && [REF.ARTIST, REF.ALBUM, REF.GENRE, REF.TRACK].includes(query)) {
+    const response = (await getDirectory(uri, loadMoreCount * columns, 0)) || [];
+    if (!response.length && [REF.ARTIST, REF.ALBUM, REF.GENRE, REF.TRACK].includes(uri as REF)) {
       dispatch({ type: DIALOG_EVENTS.DIALOG_ADD_LIBRARY });
     }
 
@@ -75,6 +81,16 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
   };
 
   useEffect(() => {
+      if (!last_shared_event) return;
+      setItems((prev) =>
+        prev.map((item) => {
+          if (item.uri !== last_shared_event.uri) return item;
+          return { ...item, shared: last_shared_event.event === EVENTS.STORAGE_SHARED };
+        }),
+      );
+    }, [last_shared_event]);
+
+  useEffect(() => {
     if (action.event === INFO_EVENTS.PLAYLISTS_UPDATED) {
       fetch();
     }
@@ -82,7 +98,7 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
 
   useEffect(() => {
     fetch();
-  }, [query]);
+  }, [uri]);
 
   useEffect(() => {
     const handler = () => {
@@ -98,11 +114,11 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
     </LayoutHeightWrapper>
   ) : !items?.length ? (
     <LayoutHeightWrapper>
-      <NoItems
-        title="Empty Library"
-        desc={"Your library is empty. Add music to begin"}
-        icon={<MusicNotesSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />}
-      />
+      {emptyComponent ? (
+        emptyComponent
+      ) : (
+        <NoItems title="Empty List" desc="Nothing to show here" icon={<FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
+      )}
     </LayoutHeightWrapper>
   ) : (
     <LayoutHeightWrapper ref={outerRef}>
@@ -117,7 +133,7 @@ const Grid = ({ query, getDirectory, onClickCallback, onClickActionCallback }: G
                   item={item}
                   key={index}
                   style={{ width: `${100 / columns}%` }}
-                  className="p-4 pb-6"
+                  className="p-3 lg:p-4 pb-6"
                   onClickCallback={onClickCallback}
                   onClickActionCallback={onClickActionCallback}
                   cover

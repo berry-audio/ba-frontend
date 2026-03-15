@@ -90,7 +90,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({ items }) => {
       </div>
 
       {/* Mobile */}
-      <div className="md:hidden ">
+      <div className="md:hidden">
         <ButtonIcon onClick={() => setDrawerOpen(true)}>
           <DotsThreeIcon size={24} />
         </ButtonIcon>
@@ -103,7 +103,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({ items }) => {
         )}
 
         <div
-          className={`fixed overflow-auto max-h-60 bottom-[-1px] left-0 right-0 z-10 rounded-t-sm shadow-lg transform transition-transform duration-200  ${
+          className={`fixed  z-100 overflow-auto max-h-60 bottom-[-1px] left-0 right-0 z-10 rounded-t-sm shadow-lg transform transition-transform duration-200  ${
             isDrawerOpen ? "translate-y-0" : "translate-y-full"
           }`}
         >

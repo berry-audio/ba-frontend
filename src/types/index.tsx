@@ -90,6 +90,8 @@ export interface Item {
   last_modified: string;
   images: Image[];
   shared?: boolean;
+  status?: string;
+  usage?: StorageUsage;
 }
 
 export interface MediaPlayer {
@@ -97,7 +99,7 @@ export interface MediaPlayer {
   playback_state: PLAYBACK_STATE;
   repeat_mode: REPEAT_MODE;
   shuffle_mode: SHUFFLE_MODE;
-  volume: number;
+  volume: number | undefined;
   mute: boolean;
   elapsed_ms: number;
   current_track: TlTrack;
@@ -174,32 +176,30 @@ export interface SnapcastState {
 
 export interface StorageState {
   last_shared_event: {event:EVENTS, uri:string } | {},
-  storages: StorageList;
+  storages: StorageItem[];
+}
+
+export interface StorageUsage {
+  total: number;
+  used: number;
+  free: number;
 }
 
 export interface StorageItem {
   __model__: "Storage";
-  dev: string;
-  parent: string;
-  uri: string;
+  type: "internal" | "removable" | "nas" | "directory";
   name: string;
-  type: string;
-  removable: boolean;
-  size: number;
-  actual_size: number;
-  shared : boolean;
+  dev: string;
+  shared: boolean;
   fstype: string;
   status: "mounted" | "unmounted";
-  mount: string;
-  total: number;
-  used: number;
-  free: number;
-  percent: number;
-}
-
-export interface StorageList {
-  mounted: StorageItem[];
-  unmounted: StorageItem[];
+  uri: string;
+  usage: StorageUsage | null;
+  read_only: boolean | null;
+  guest_allowed: boolean | null;
+  user: string | null;
+  create_permissions: string | null;
+  directory_permissions: string | null;
 }
 
 export interface NetworkState {

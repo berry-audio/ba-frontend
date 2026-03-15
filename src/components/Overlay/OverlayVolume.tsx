@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { OVERLAY_EVENTS } from "@/store/constants";
 import { XIcon } from "@phosphor-icons/react";
@@ -14,7 +14,11 @@ const OverlayVolume = () => {
   const { overlay } = useSelector((state: any) => state.overlay);
   const { volume } = useSelector((state: any) => state.player);
 
-  const [mixerVolume, setMixerVolume] = useState<number>(volume);
+  const [mixerVolume, setMixerVolume] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    setMixerVolume(volume);
+  }, [volume]);
 
   return (
     <Overlay zindex={100} show={overlay === OVERLAY_EVENTS.OVERLAY_VOLUME} overlay>

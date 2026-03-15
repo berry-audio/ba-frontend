@@ -30,14 +30,14 @@ const Radio = () => {
     >
       {layout === "list" && (
         <List
-          query={REF.RADIO}
+          uri={REF.RADIO}
           getDirectory={getDirectory}
           onClickCallback={undefined}
         />
       )}
       {layout === "grid" && (
         <Grid
-          query={REF.RADIO}
+          uri={REF.RADIO}
           getDirectory={getDirectory}
           onClickCallback={undefined}
         />

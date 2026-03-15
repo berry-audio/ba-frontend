@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { usePlaylistService } from "@/services/playlist";
-import { MusicNoteIcon } from "@phosphor-icons/react";
+import { MusicNoteIcon, PlaylistIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DIALOG_EVENTS } from "@/store/constants";
 import { ACTIONS } from "@/constants/actions";
@@ -19,7 +19,6 @@ import NoItems from "@/components/ListItem/NoItems";
 import ButtonPlaylistCreate from "@/components/Button/ButtonPlaylistCreate";
 import List from "@/components/InfiniteScroll/List";
 import Grid from "@/components/InfiniteScroll/Grid";
-
 
 const Playlists = () => {
   const dispatch = useDispatch();
@@ -52,11 +51,7 @@ const Playlists = () => {
     }
   };
 
-  const onActionMove = async (
-    start: number,
-    end: number,
-    to_position: number
-  ) => {
+  const onActionMove = async (start: number, end: number, to_position: number) => {
     await move(`playlist:${id}`, start, end, to_position);
   };
 
@@ -104,44 +99,34 @@ const Playlists = () => {
     >
       {layout === "list" && (
         <List
-          query={REF.RADIO}
+          uri={REF.RADIO}
           getDirectory={getDirectory}
           onClickCallback={onClickPlaylistItem}
           onClickActionCallback={onClickAction}
+          emptyComponent={<NoItems title="No Playlists" desc="Nothing here yet." icon={<PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
         />
       )}
       {layout === "grid" && (
         <Grid
-          query={REF.RADIO}
+          uri={REF.RADIO}
           getDirectory={getDirectory}
           onClickCallback={onClickPlaylistItem}
           onClickActionCallback={onClickAction}
+          emptyComponent={<NoItems title="No Playlists" desc="Nothing here yet." icon={<PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
         />
       )}
     </Page>
   ) : (
-    <Page
-      title={playlist?.name}
-      backButtonOnClick={() => navigate("/playlist")}
-      backButton
-    >
+    <Page title={playlist?.name} backButtonOnClick={() => navigate("/playlist")} backButton>
       {isLoading ? (
         <LayoutHeightWrapper>
           <Spinner />
         </LayoutHeightWrapper>
       ) : playlist?.tracks.length ? (
-        <SortableList
-          tracks={playlist?.tracks}
-          onMoveCallback={onActionMove}
-          onActionCallback={onClickActionTrack}
-        />
+        <SortableList tracks={playlist?.tracks} onMoveCallback={onActionMove} onActionCallback={onClickActionTrack} />
       ) : (
         <LayoutHeightWrapper>
-          <NoItems
-            title="Empty Playlist"
-            desc={"No tracks here"}
-            icon={<MusicNoteIcon weight={ICON_WEIGHT} size={ICON_SM} />}
-          />
+          <NoItems title="Empty Playlist" desc={"No tracks here"} icon={<MusicNoteIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
         </LayoutHeightWrapper>
       )}
     </Page>

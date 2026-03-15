@@ -10,7 +10,7 @@ const LayoutHeightWrapper = forwardRef<HTMLDivElement, LayoutHeightWrapper>(
     return (
       <div
         ref={ref}
-        className={`h-[calc(100dvh-170px)] lg:h-[calc(100dvh-180px)] overflow-auto ${className ?? ""}`}
+        className={`h-[calc(100dvh-165px)] lg:h-[calc(100dvh-180px)] overflow-auto ${className ?? ""}`}
       >
         {children}
       </div>

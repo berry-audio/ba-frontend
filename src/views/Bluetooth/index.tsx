@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useBluetoothService } from "@/services/bluetooth";
 import { useBluetoothActions } from "@/hooks/useBluetoothActions";
 import { BluetoothDevice } from "@/types";
@@ -14,7 +14,6 @@ import {
 } from "@phosphor-icons/react";
 import { getBitDepth, getSampleRate } from "@/util";
 import { DotIcon } from "lucide-react";
-import { DIALOG_EVENTS, OVERLAY_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
 
 import Page from "@/components/Page";
@@ -28,20 +27,13 @@ import ButtonBluetoothToggle from "@/components/Button/ButtonBluetoothToggle";
 import NoItems from "@/components/ListItem/NoItems";
 
 const Bluetooth = () => {
-  const connected = useSelector((state: any) => state.socket.connected);
-  const dispatch = useDispatch();
-
   const { devices } = useSelector((state: any) => state.bluetooth);
   const { removeDevice, disconnectDevice, connectDevice } = useBluetoothService();
   const { fetchDevices, loading } = useBluetoothActions();
 
   useEffect(() => {
-    if (!connected) return;
-    // Closes connect to bluetooth dialog
-    dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
-    dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE });
     fetchDevices();
-  }, [connected]);
+  }, []);
 
   const ListItem = ({ item }: { item: BluetoothDevice }) => {
     const actionItems = [

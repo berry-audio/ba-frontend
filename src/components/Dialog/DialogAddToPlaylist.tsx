@@ -109,27 +109,28 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <div ref={outerRef} className={`h-[50vh] overflow-auto`}>
+        <div ref={outerRef} className="h-[50vh] overflow-auto">
           <div ref={innerRef}>
-            {virtualRows.map(({ index }) => {
-              const item = items[index] || [];
-              return (
-                <ItemWrapper key={index}>
-                  <button className="w-full cursor-pointer" onClick={() => onClickSelectPlaylist(item)}>
-                    <ItemPadding>
-                      <CoverList item={item}/>
-                      {selectedItems.includes(item.uri) ? (
-                        <CheckCircleIcon weight="fill" size={ICON_SM} />
-                      ) : (
-                        <CircleIcon size={25} className="opacity-50" />
-                      )}
-                    </ItemPadding>
-                  </button>
-                </ItemWrapper>
-              );
-            })}
+            {items.length === 0 ? (
+              <NoItems title="No playlists" icon={<PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
+            ) : (
+              virtualRows.map(({ index }) => {
+                const item = items[index];
+                if (!item) return null;
+                const isSelected = selectedItems.includes(item.uri);
+                return (
+                  <ItemWrapper key={index}>
+                    <button className="w-full cursor-pointer" onClick={() => onClickSelectPlaylist(item)}>
+                      <ItemPadding>
+                        <CoverList item={item} />
+                        {isSelected ? <CheckCircleIcon weight="fill" size={ICON_SM} /> : <CircleIcon size={25} className="opacity-50" />}
+                      </ItemPadding>
+                    </button>
+                  </ItemWrapper>
+                );
+              })
+            )}
           </div>
-          {!items.length && <NoItems title="No playlists" icon={<PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
         </div>
       )}
     </Modal>
