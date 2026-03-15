@@ -82,7 +82,7 @@ const Local = () => {
   useEffect(() => {
     if (listType === "detail") {
       (async () => {
-        await Promise.all([fetchDetailList(`${view}:${id}:list`), fetchDetail(`${view}:${id}`)]);
+        await Promise.all([fetchDetailList(`${view}:${id}:tracks`), fetchDetail(`${view}:${id}`)]);
         setIsItemDetailLoading(false);
       })();
     }
