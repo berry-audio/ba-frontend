@@ -8,7 +8,6 @@ import { useSystemService } from "@/services/system";
 import { useNetworkService } from "@/services/network";
 import { EVENTS } from "@/constants/events";
 import { Menu } from "../components/Menu";
-import { getRepeatMode, getShuffleMode } from "@/util";
 
 import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
@@ -108,10 +107,7 @@ export default function Layout({ children }: { children: any }) {
 
         dispatch({
           type: EVENTS.OPTIONS_CHANGED,
-          payload: {
-            repeat_mode: getRepeatMode(_getRepeat, _getSingle),
-            shuffle_mode: getShuffleMode(_getShuffle),
-          },
+          payload: { single: _getSingle, repeat: _getRepeat, shuffle: _getShuffle },
         });
       } catch (err) {
         console.error("Error initiazing:", err);

@@ -35,7 +35,7 @@ const calculateCols = () => {
 const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, emptyComponent }: Grid) => {
   const dispatch = useDispatch();
 
-  const loadMoreCount = 5;
+  const loadMoreCount = 6;
   const action = useSelector((state: any) => state.event);
     const { last_shared_event } = useSelector((state: any) => state.storage);
 
@@ -52,7 +52,8 @@ const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, empty
     scrollTo,
   } = useVirtual<HTMLDivElement, HTMLDivElement>({
     itemCount: Math.ceil(items?.length / columns),
-    itemSize: 280,
+    itemSize: 255,
+    useIsScrolling: true, 
     loadMoreCount: loadMoreCount,
     loadMore: async ({ startIndex }) => {
       const currentOffset = startIndex * columns;
@@ -132,7 +133,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, empty
                   item={item}
                   key={index}
                   style={{ width: `${100 / columns}%` }}
-                  className="p-4 pb-6"
+                  className="p-3 lg:p-4 pb-6"
                   onClickCallback={onClickCallback}
                   onClickActionCallback={onClickActionCallback}
                   cover
