@@ -8,7 +8,6 @@ import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DIALOG_EVENTS, INFO_EVENTS } from "@/store/constants";
 import { EVENTS } from "@/constants/events";
 
-
 import Spinner from "@/components/Spinner";
 import NoItems from "@/components/ListItem/NoItems";
 import useVirtual from "react-cool-virtual";
@@ -37,8 +36,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, empty
 
   const loadMoreCount = 6;
   const action = useSelector((state: any) => state.event);
-    const { last_shared_event } = useSelector((state: any) => state.storage);
-
+  const { last_shared_event } = useSelector((state: any) => state.storage);
 
   const [items, setItems] = useState<any[]>([]);
   const [startOffset, setStartOffset] = useState<number>(0);
@@ -53,7 +51,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, empty
   } = useVirtual<HTMLDivElement, HTMLDivElement>({
     itemCount: Math.ceil(items?.length / columns),
     itemSize: 255,
-    useIsScrolling: true, 
+    useIsScrolling: true,
     loadMoreCount: loadMoreCount,
     loadMore: async ({ startIndex }) => {
       const currentOffset = startIndex * columns;
@@ -81,17 +79,18 @@ const Grid = ({ uri, getDirectory, onClickCallback, onClickActionCallback, empty
   };
 
   useEffect(() => {
-      if (!last_shared_event) return;
-      setItems((prev) =>
-        prev.map((item) => {
-          if (item.uri !== last_shared_event.uri) return item;
-          return { ...item, shared: last_shared_event.event === EVENTS.STORAGE_SHARED };
-        }),
-      );
-    }, [last_shared_event]);
+    if (!last_shared_event) return;
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.uri !== last_shared_event.uri) return item;
+        return { ...item, shared: last_shared_event.event === EVENTS.STORAGE_SHARED };
+      }),
+    );
+  }, [last_shared_event]);
 
   useEffect(() => {
-    if (action.event === INFO_EVENTS.PLAYLISTS_UPDATED) {
+    const PLAYLIST_EVENTS = [EVENTS.PLAYLIST_UPDATED, INFO_EVENTS.PLAYLIST_CREATED, INFO_EVENTS.PLAYLIST_REMOVED, INFO_EVENTS.PLAYLIST_UPDATED];
+    if (PLAYLIST_EVENTS.includes(action.event)) {
       fetch();
     }
   }, [action]);

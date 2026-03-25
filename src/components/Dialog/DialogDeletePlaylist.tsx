@@ -15,10 +15,14 @@ const DialogDeletePlaylist = ({ item }: { item: Item }) => {
 
   const onClickDeletePlaylist = async () => {
     setButtonLoading(true);
-    await deleteItem(item?.uri as string);
-    dispatch({ type: INFO_EVENTS.PLAYLISTS_UPDATED });
+    if (await deleteItem(item?.uri as string)) {
+      dispatch({
+        type: INFO_EVENTS.PLAYLIST_REMOVED,
+        payload: item,
+      });
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+    }
     setButtonLoading(false);
-    dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
   };
 
   return (

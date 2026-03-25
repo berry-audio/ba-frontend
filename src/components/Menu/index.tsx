@@ -7,7 +7,6 @@ import { ICON_SM } from "@/constants";
 import Source from "../Source";
 import DateTime from "../DateTime";
 import ButtonIcon from "../Button/ButtonIcon";
-import ButtonThemeToggle from "../Button/ButtonThemeToggle";
 import ButtonSearch from "../Button/ButtonSearch";
 import ButtonVolume from "../Player/ButtonVolume";
 
@@ -42,7 +41,7 @@ export function Menu() {
             <Source hideText={true} className="scale-90" />
           </div>
         )}
-        <ButtonThemeToggle />
+       
         <ButtonVolume />
       </div>
     </div>

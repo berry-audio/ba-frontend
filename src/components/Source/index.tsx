@@ -14,12 +14,11 @@ const Source = ({ className, hideText, hideIcon = false }: { className?: string;
     bluetooth: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     snapcast: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />,
   };
+
   return ["spotify", "shairportsync", "bluetooth"].includes(source?.uri) ? (
     source?.state?.connected ? (
       <div className={`flex items-center ${className}`}>
-        {!hideIcon && (
-          <div className={`cursor-pointer flex items-center relative rounded-full ${!hideText && "mr-2"}`}>{sourceIcon[source.type]}</div>
-        )}
+        {!hideIcon && <div className={`cursor-pointer flex items-center relative rounded-full ${!hideText && "mr-2"}`}>{sourceIcon[source.uri]}</div>}
         {!hideText && <div>{source_name}</div>}
       </div>
     ) : (

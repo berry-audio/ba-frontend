@@ -19,6 +19,7 @@ export const snapcastReducer = (state = initialState, action: any): SnapcastStat
       };
 
     case INFO_EVENTS.SNAPCAST_SCAN_COMPLETED:
+    case INFO_EVENTS.SNAPCAST_LIST:
       return {
         ...state,
         servers: payload,

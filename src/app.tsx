@@ -3,6 +3,7 @@ import { ThemeProvider } from "./contexts/ThemeProvider";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
+import { Toaster } from "sonner";
 import Local from "./views/Local";
 import Storage from "./views/Storage";
 import Start from "./views/Start";
@@ -27,6 +28,18 @@ const App = () => {
   return (
     <ThemeProvider>
       <Provider store={store}>
+        <Toaster
+          position="bottom-center"
+          offset={{ bottom: 100 }} 
+          toastOptions={{
+            duration: 2000,
+            unstyled: true,
+            classNames: {
+              toast: "w-full",
+            },
+          }}
+        />
+
         <Router>
           <Layout>
             <Routes key={location.pathname}>

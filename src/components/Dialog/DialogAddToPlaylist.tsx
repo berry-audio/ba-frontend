@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { usePlaylistService } from "@/services/playlist";
 import { useLocalService } from "@/services/local";
 import { Item, Track } from "@/types";
-import { DIALOG_EVENTS } from "@/store/constants";
+import { DIALOG_EVENTS, INFO_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { REF } from "@/constants/refs";
 
@@ -25,7 +25,7 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<{ name: string; uri: string }[]>([]);
 
   const loadMoreCount = 9;
 
@@ -33,7 +33,9 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
   const [startOffset, setStartOffset] = useState<number>(0);
 
   const onClickSelectPlaylist = (item: Item) => {
-    setSelectedItems((prev) => (prev.includes(item.uri) ? prev.filter((uri) => uri !== item.uri) : [...prev, item.uri]));
+    setSelectedItems((prev) =>
+      prev.some((i) => i.uri === item.uri) ? prev.filter((i) => i.uri !== item.uri) : [...prev, { name: item.name, uri: item.uri }],
+    );
   };
 
   const onClickAddHandler = async (item: Item) => {
@@ -47,7 +49,7 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
       case REF.ARTIST:
       case REF.ALBUM:
       case REF.GENRE: {
-        const tracks = await getDirectoryLocal(`${item.uri}:list`);
+        const tracks = await getDirectoryLocal(`${item.uri}:tracks`);
         if (tracks.length) {
           trackUris.push(...tracks.map((track: Track) => track.uri));
         }
@@ -57,7 +59,15 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
         trackUris.push(item.uri);
         break;
     }
-    await onAdd(selectedItems, trackUris);
+
+    selectedItems.forEach(async (item) => {
+      await onAdd([item.uri], trackUris);
+      dispatch({
+        type: INFO_EVENTS.PLAYLIST_TRACK_ADDED,
+        payload: { ...item, tracks: trackUris },
+      });
+    });
+
     setIsButtonLoading(false);
     dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
   };
@@ -117,7 +127,7 @@ const DialogAddToPlaylist = ({ item }: { item: Item }) => {
               virtualRows.map(({ index }) => {
                 const item = items[index];
                 if (!item) return null;
-                const isSelected = selectedItems.includes(item.uri);
+                const isSelected = selectedItems.some((i) => i.uri === item.uri);
                 return (
                   <ItemWrapper key={index}>
                     <button className="w-full cursor-pointer" onClick={() => onClickSelectPlaylist(item)}>

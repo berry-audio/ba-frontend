@@ -22,10 +22,14 @@ const ButtonPlaylistCreate = ({ fromQueue = false }: { fromQueue?: boolean }) =>
   const onClickCreateHandler = async () => {
     setIsloading(true);
     const tl_tracks = fromQueue ? current_playlist : [];
-    await createItem(playlistName, tl_tracks);
-    dispatch({ type: INFO_EVENTS.PLAYLISTS_UPDATED });
+    if (await createItem(playlistName, tl_tracks)) {
+      dispatch({
+        type: INFO_EVENTS.PLAYLIST_CREATED,
+        payload: { name: playlistName },
+      });
+      setShowCreateModal(false);
+    }
     setIsloading(false);
-    setShowCreateModal(false);
   };
 
   const disabled = fromQueue && current_playlist.length <= 0;

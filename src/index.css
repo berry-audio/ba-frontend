@@ -27,7 +27,7 @@
 }
 :root {
   --radius: 0.625rem;
-  --background: oklch(94.611% 0.00011 271.152 / 0.958);
+  --background: rgb(245, 245, 245);
   --foreground: oklch(0.145 0 0);
   --selected: #ababab2e;
   --card: oklch(1 0 0);
@@ -41,11 +41,11 @@
   --input: oklch(0.922 0 0);
   --input-foreground: oklch(10.668% 0.00001 271.152);
   --ring: oklch(0.708 0 0);
-  --primary: #e15f41;
+  --primary: #f24f34;
   --primary-foreground: #ffffff;
   --secondary: #737373;
   --secondary-foreground: oklch(0.205 0 0);
-  --accent: #e15f41;
+  --accent: #f24f34;
   --accent-foreground: #ffffff;
   --button-hover: rgba(189, 189, 189, 0.5);
 }
@@ -246,3 +246,4 @@
   scrollbar-width: thin;
   scrollbar-color: #555 #1a1a1a;
 }
+

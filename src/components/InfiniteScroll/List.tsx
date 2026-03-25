@@ -22,7 +22,7 @@ interface List {
   emptyComponent?: React.ReactNode;
 }
 
-const List = ({ uri, getDirectory,  onClickCallback, onClickActionCallback, emptyComponent }: List) => {
+const List = ({ uri, getDirectory, onClickCallback, onClickActionCallback, emptyComponent }: List) => {
   const loadMoreCount = 15;
   const action = useSelector((state: any) => state.event);
   const { last_shared_event } = useSelector((state: any) => state.storage);
@@ -71,7 +71,8 @@ const List = ({ uri, getDirectory,  onClickCallback, onClickActionCallback, empt
   }, [last_shared_event]);
 
   useEffect(() => {
-    if (action.event === INFO_EVENTS.PLAYLISTS_UPDATED) {
+    const PLAYLIST_EVENTS = [EVENTS.PLAYLIST_UPDATED, INFO_EVENTS.PLAYLIST_CREATED, INFO_EVENTS.PLAYLIST_REMOVED, INFO_EVENTS.PLAYLIST_UPDATED];
+    if (PLAYLIST_EVENTS.includes(action.event)) {
       fetch();
     }
   }, [action]);
@@ -89,11 +90,7 @@ const List = ({ uri, getDirectory,  onClickCallback, onClickActionCallback, empt
       {emptyComponent ? (
         emptyComponent
       ) : (
-        <NoItems
-          title="Empty List"
-          desc="Nothing to show here"
-          icon={<FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />}
-        />
+        <NoItems title="Empty List" desc="Nothing to show here" icon={<FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
       )}
     </LayoutHeightWrapper>
   ) : (

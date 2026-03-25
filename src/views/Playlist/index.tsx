@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 import { usePlaylistService } from "@/services/playlist";
 import { MusicNoteIcon, PlaylistIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
-import { DIALOG_EVENTS } from "@/store/constants";
+import { DIALOG_EVENTS, INFO_EVENTS } from "@/store/constants";
 import { ACTIONS } from "@/constants/actions";
 import { REF } from "@/constants/refs";
 import { splitUri } from "@/util";
-import { Playlist, Item, ViewMode } from "@/types";
+import { Playlist, Item, ViewMode, TlTrack } from "@/types";
 
 import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
@@ -46,8 +46,17 @@ const Playlists = () => {
 
   const onClickActionTrack = async (action: ACTIONS, tlid: number) => {
     if (action === ACTIONS.REMOVE) {
-      const item = await remove(`playlist:${id}`, tlid);
-      setPlaylist({ ...item });
+      if (await remove(`playlist:${id}`, tlid)) {
+        const item = playlist?.tracks.filter((item) => item.tlid === tlid)[0];
+        setPlaylist((prev: any) => ({
+          ...prev,
+          tracks: prev?.tracks.filter((item: TlTrack) => item.tlid !== tlid),
+        }));
+        dispatch({
+          type: INFO_EVENTS.PLAYLIST_TRACK_REMOVED,
+          payload: item,
+        });
+      }
     }
   };
 

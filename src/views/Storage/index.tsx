@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useStorageService } from "@/services/storage";
 import { useStorageActions } from "@/hooks/useStorageActions";
 import { EjectSimpleIcon, FolderOpenIcon, GearIcon, HardDriveIcon, NetworkIcon, UsbIcon } from "@phosphor-icons/react";
@@ -22,8 +22,10 @@ import Grid from "@/components/InfiniteScroll/Grid";
 import NoItems from "@/components/ListItem/NoItems";
 import ButtonLayoutToggle from "@/components/Button/ButtonLayoutToggle";
 import ButtonAddSmb from "@/components/Button/ButtonAddSmb";
+import { INFO_EVENTS } from "@/store/constants";
 
 const Storage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { getDirectory, setMount, setUnMount, setUnMountShared, setShare, setUnshare, addToLibrary } = useStorageService();
@@ -52,22 +54,46 @@ const Storage = () => {
 
     switch (action) {
       case ACTIONS.ADD_LIBRARY:
-        await addToLibrary(item.uri);
+        if (await addToLibrary(item.uri)) {
+          dispatch({
+            type: INFO_EVENTS.STORAGE_ADD_TO_LIBRARY,
+            payload: item,
+          });
+        }
         break;
       case ACTIONS.DIRECTORY_SHARE:
-        await setShare(item.uri);
+        if (await setShare(item.uri)) {
+          dispatch({
+            type: INFO_EVENTS.STORAGE_SHARED,
+            payload: item,
+          });
+        }
         break;
       case ACTIONS.DIRECTORY_UNSHARE:
-        await setUnshare(item.uri);
+        if (await setUnshare(item.uri)) {
+          dispatch({
+            type: INFO_EVENTS.STORAGE_UNSHARED,
+            payload: item,
+          });
+        }
         break;
       case ACTIONS.MOUNT:
-        await setMount(item.dev);
+        if (await setMount(item.dev)) {
+          dispatch({
+            type: INFO_EVENTS.STORAGE_MOUNTED,
+            payload: item,
+          });
+        }
         break;
       case ACTIONS.UNMOUNT:
-        await setUnMount(item.dev);
+        if (await setUnMount(item.dev)) {
+          dispatch({
+            type: INFO_EVENTS.STORAGE_UNMOUNTED,
+            payload: item,
+          });
+        }
         break;
       case ACTIONS.UNMOUNT_SHARED:
-        console.log(item.dev);
         await setUnMountShared(item.dev);
         break;
     }

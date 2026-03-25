@@ -13,6 +13,7 @@ import Page from "@/components/Page";
 import SelectPcmDevices from "@/components/Form/SelectPcmDevices";
 import SelectTimezone from "@/components/Form/SelectTimezone";
 import ButtonSave from "@/components/Button/ButtonSave";
+import ButtonThemeToggle from "@/components/Button/ButtonThemeToggle";
 
 export const formSchema = z.object({
   system: z.object({
@@ -88,6 +89,16 @@ const SettingsGeneral = () => {
                   </FormItem>
                 )}
               />
+            </div>
+
+            <div className="mb-6">
+              <FormItem>
+                <FormLabel className="text-md block font-medium text-muted">Theme</FormLabel>
+                <FormControl>
+                  <ButtonThemeToggle />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             </div>
 
             <div className="mb-6">

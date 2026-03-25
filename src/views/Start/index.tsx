@@ -149,7 +149,7 @@ const Start = () => {
                     key={item.alias}
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
-                    className={`hover:dark:bg-black/40  touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
+                    className={`hover:bg-black/40 touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
                 cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary bg-selected" : ""}`}
                   >
                     <div className="flex flex-col items-center">

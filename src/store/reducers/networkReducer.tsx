@@ -12,6 +12,7 @@ export const networkReducer = (state = initialState, action: any): NetworkState 
 
   switch (type) {
     case INFO_EVENTS.WLAN_SCAN_COMPLETED:
+    case INFO_EVENTS.WLAN_LIST:
       return {
         ...state,
         networks: payload,

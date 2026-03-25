@@ -1,52 +1,80 @@
 export enum SOCKET_EVENTS {
-   SOCKET_CONNECTED = "socket/connected",
-   SOCKET_DISCONNECTED = "socket/disconnected",
-   SOCKET_EVENT = "socket/event"
+  SOCKET_CONNECTED = "socket/connected",
+  SOCKET_DISCONNECTED = "socket/disconnected",
+  SOCKET_EVENT = "socket/event",
 }
 
 export enum PLAYER_EVENTS {
-   POSITION_UPDATED = "player/position",
-   VOLUME_CHANGED ="player/volume",
+  POSITION_UPDATED = "player/position",
+  VOLUME_CHANGED = "player/volume",
 }
 
 export enum INFO_EVENTS {
-   PLAYLISTS_UPDATED = "event/playlists/updated",
-   SCAN_UPDATED = "event/local/scan/updated",
-   SCAN_ARTIST_UPDATED = "event/local/artist/scan/updated",
-   BLUETOOTH_SCAN_COMPLETED = 'event/bluetooth/scan/completed',
-   BLUETOOTH_STATE_UPDATED = 'event/bluetooth/state/updated',
-   WLAN_STATE_UPDATED = 'event/wlan/state/updated',
-   WLAN_SCAN_COMPLETED = 'event/wlan/scan/completed',
-   SNAPCAST_SCAN_COMPLETED = 'event/snapcast/scan/completed',
-   SNAPCAST_VOLUME_DRAGGING = 'event/snapcast/volume/dragging',
-   STORAGE_UPDATED = 'event/storage/updated',
+  // Playlist
+  PLAYLIST_CREATED = "event/playlist/create",
+  PLAYLIST_UPDATED = "event/playlist/update",
+  PLAYLIST_REMOVED = "event/playlist/removed",
+  PLAYLIST_TRACK_ADDED = "event/playlist/track/add",
+  PLAYLIST_TRACK_REMOVED = "event/playlist/track/removed",
+
+  // Queue
+  ADD_TO_QUEUE = "event/queue/add",
+  CLEAR_QUEUE = "event/queue/clear",
+
+  // Library
+  LIBRARY_SCAN_COMPLETED = "event/library/scan/completed",
+  SCAN_UPDATED = "event/local/scan/updated",
+  SCAN_ARTIST_UPDATED = "event/local/artist/scan/updated",
+
+  // Storage
+  STORAGE_UPDATED = "event/storage/updated",
+  STORAGE_MOUNTED = "event/storage/mounted",
+  STORAGE_UNMOUNTED = "event/storage/unmounted",
+  STORAGE_SHARED = "event/storage/shared",
+  STORAGE_UNSHARED = "event/storage/unshared",
+  STORAGE_ADD_TO_LIBRARY = "event/storage/add/library",
+
+  // Bluetooth
+  BLUETOOTH_SCAN_COMPLETED = "event/bluetooth/scan/completed",
+  BLUETOOTH_LIST = "event/bluetooth/list",
+  BLUETOOTH_STATE_UPDATED = "event/bluetooth/state/updated",
+
+  // Wifi
+  WLAN_SCAN_COMPLETED = "event/wlan/scan/completed",
+  WLAN_LIST = "event/wlan/list",
+  WLAN_STATE_UPDATED = "event/wlan/state/updated",
+
+  // Snapcast
+  SNAPCAST_SCAN_COMPLETED = "event/snapcast/scan/completed",
+  SNAPCAST_LIST = "event/snapcast/list",
+  SNAPCAST_VOLUME_DRAGGING = "event/snapcast/volume/dragging",
 }
 
 export enum DIALOG_EVENTS {
-   DIALOG_CLOSE = "dialog/close",
-   DIALOG_ERROR = "dialog/error",
-   DIALOG_PLAYLISTS = "dialog/playlists",
-   DIALOG_PLAYLIST_RENAME = "dialog/playist/rename", 
-   DIALOG_PLAYLIST_DELETE = "dialog/playist/delete",
-   DIALOG_CLEAR_LIBRARY = "dialog/local/clear",
-   DIALOG_ADD_LIBRARY = "dialog/local/add",
-   DIALOG_SCAN_LIBRARY = "dialog/local/scan",
-   DIALOG_INFO_LIBRARY = "dialog/local/info",
-   DIALOG_SCAN_LIBRARY_ARTIST = "dialog/local/scan/artist",
-   DIALOG_BLUETOOTH_NOT_CONNECTED = "dialog/bluetooth/unavailable",
-   DIALOG_ADD_SMB = "dialog/storage/smb",
-   DIALOG_WIFI_AUTH = "dialog/wifi/auth",
-   DIALOG_EDIT_NETWORK = "dialog/network/edit",
-   DIALOG_REBOOT = "dialog/system/reboot",
-   DIALOG_POWER_OPTIONS = "dialog/system/power",
-   DIALOG_SNAPCAST_INFO = "dialog/snapcast/info",
+  DIALOG_CLOSE = "dialog/close",
+  DIALOG_ERROR = "dialog/error",
+  DIALOG_PLAYLISTS = "dialog/playlists",
+  DIALOG_PLAYLIST_RENAME = "dialog/playist/rename",
+  DIALOG_PLAYLIST_DELETE = "dialog/playist/delete",
+  DIALOG_CLEAR_LIBRARY = "dialog/local/clear",
+  DIALOG_ADD_LIBRARY = "dialog/local/add",
+  DIALOG_SCAN_LIBRARY = "dialog/local/scan",
+  DIALOG_INFO_LIBRARY = "dialog/local/info",
+  DIALOG_SCAN_LIBRARY_ARTIST = "dialog/local/scan/artist",
+  DIALOG_BLUETOOTH_NOT_CONNECTED = "dialog/bluetooth/unavailable",
+  DIALOG_ADD_SMB = "dialog/storage/smb",
+  DIALOG_WIFI_AUTH = "dialog/wifi/auth",
+  DIALOG_EDIT_NETWORK = "dialog/network/edit",
+  DIALOG_REBOOT = "dialog/system/reboot",
+  DIALOG_POWER_OPTIONS = "dialog/system/power",
+  DIALOG_SNAPCAST_INFO = "dialog/snapcast/info",
 }
 
 export enum OVERLAY_EVENTS {
-   OVERLAY_SEARCH = "overlay/search",
-   OVERLAY_NOWPLAYING = "overlay/nowplaying",
-   OVERLAY_LIBRARY = "overlay/local",
-   OVERLAY_VOLUME = "overlay/volume",
-   OVERLAY_STANDBY = "overlay/standby",
-   OVERLAY_CLOSE = "overlay/close"
+  OVERLAY_SEARCH = "overlay/search",
+  OVERLAY_NOWPLAYING = "overlay/nowplaying",
+  OVERLAY_LIBRARY = "overlay/local",
+  OVERLAY_VOLUME = "overlay/volume",
+  OVERLAY_STANDBY = "overlay/standby",
+  OVERLAY_CLOSE = "overlay/close",
 }

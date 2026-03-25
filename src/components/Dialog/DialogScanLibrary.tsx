@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalService } from "@/services/local";
 import { InfoIcon } from "@phosphor-icons/react";
-import { DIALOG_EVENTS } from "@/store/constants";
+import { DIALOG_EVENTS, INFO_EVENTS } from "@/store/constants";
 import { ICON_WEIGHT } from "@/constants";
 
 import Modal from "@/components/Modal";
@@ -21,6 +21,10 @@ const DialogScanLibrary = () => {
   useEffect(() => {
     if (progress.completed) {
       setScanInProgress(false);
+        dispatch({
+              type: INFO_EVENTS.LIBRARY_SCAN_COMPLETED,
+              payload: progress,
+            });
     }
   }, [progress]);
 

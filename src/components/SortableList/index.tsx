@@ -80,8 +80,8 @@ export default function SortableList({
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {items.map((item, index) => (
               <Draggable
-                key={`item-${item.tlid}`}
-                draggableId={`item-${item.tlid}`}
+                key={`item-${item.tlid}-${index}`}
+                draggableId={`item-${item.tlid}-${index}`}
                 index={index}
               >
                 {(provided, snapshot) => (

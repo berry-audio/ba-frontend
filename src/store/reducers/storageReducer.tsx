@@ -15,7 +15,6 @@ export const storageReducer = (state = initialState, action: any): StorageState 
       return { ...state, storages: payload };
     case EVENTS.STORAGE_MOUNTED:
     case EVENTS.STORAGE_UNMOUNTED:
-      console.log(payload.storage)
       return {
         ...state,
         storages: [...state.storages.filter((s: any) => s.dev !== payload.storage.dev), payload.storage],

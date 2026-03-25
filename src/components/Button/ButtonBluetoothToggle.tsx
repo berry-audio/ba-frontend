@@ -14,11 +14,7 @@ const ButtonBluetoothToggle = () => {
   const { getAdapterState, setAdapterState } = useBluetoothService();
 
   const toggleBluetooth = async () => {
-    const res = await setAdapterState(!adapter_state.powered);
-    dispatch({
-      type: INFO_EVENTS.BLUETOOTH_STATE_UPDATED,
-      payload: res,
-    });
+    await setAdapterState(!adapter_state.powered);
   };
 
   const fetchAdapterState = async () => {

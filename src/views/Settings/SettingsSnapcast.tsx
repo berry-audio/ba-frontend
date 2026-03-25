@@ -41,7 +41,6 @@ const SettingsSnapcast = () => {
   }, []);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     setLoading(true);
     await setConfig(values);
     dispatch({ type: DIALOG_EVENTS.DIALOG_REBOOT });

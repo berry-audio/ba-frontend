@@ -34,10 +34,17 @@ export function useNetworkActions() {
     setLoading(true);
     const networks_discovered = await onWifi(rescan);
 
-    dispatch({
-      type: INFO_EVENTS.WLAN_SCAN_COMPLETED,
-      payload: networks_discovered,
-    });
+    if (rescan) {
+      dispatch({
+        type: INFO_EVENTS.WLAN_SCAN_COMPLETED,
+        payload: networks_discovered,
+      });
+    }else{
+       dispatch({
+        type: INFO_EVENTS.WLAN_LIST,
+        payload: networks_discovered,
+      });
+    }
     setLoading(false);
   };
 

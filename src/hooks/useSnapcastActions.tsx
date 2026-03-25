@@ -14,10 +14,17 @@ export function useSnapcastActions() {
     setLoading(true);
     const response = await getServers(rescan);
 
-    dispatch({
-      type: INFO_EVENTS.SNAPCAST_SCAN_COMPLETED,
-      payload: response,
-    });
+    if (rescan) {
+      dispatch({
+        type: INFO_EVENTS.SNAPCAST_SCAN_COMPLETED,
+        payload: response,
+      });
+    } else {
+      dispatch({
+        type: INFO_EVENTS.SNAPCAST_LIST,
+        payload: response,
+      });
+    }
 
     getServerStatus();
     setLoading(false);

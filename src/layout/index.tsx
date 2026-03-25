@@ -99,16 +99,6 @@ export default function Layout({ children }: { children: any }) {
           type: EVENTS.VOLUME_CHANGED,
           payload: { volume: _volume },
         });
-
-        dispatch({
-          type: EVENTS.MIXER_MUTE,
-          payload: { mute: _mute },
-        });
-
-        dispatch({
-          type: EVENTS.OPTIONS_CHANGED,
-          payload: { single: _getSingle, repeat: _getRepeat, shuffle: _getShuffle },
-        });
       } catch (err) {
         console.error("Error initiazing:", err);
       }

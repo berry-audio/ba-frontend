@@ -32,7 +32,6 @@ export const dialogReducer = (
     case DIALOG_EVENTS.DIALOG_EDIT_NETWORK:
     case DIALOG_EVENTS.DIALOG_REBOOT:
     case DIALOG_EVENTS.DIALOG_POWER_OPTIONS:
-    case DIALOG_EVENTS.DIALOG_ERROR:
       return {
         dialog: type,
         payload,

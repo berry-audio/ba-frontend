@@ -14,10 +14,17 @@ export function useBluetoothActions() {
     setLoading(true);
     const response = await getDevices(rescan);
 
-    dispatch({
-      type: INFO_EVENTS.BLUETOOTH_SCAN_COMPLETED,
-      payload: response,
-    });
+    if (rescan) {
+      dispatch({
+        type: INFO_EVENTS.BLUETOOTH_SCAN_COMPLETED,
+        payload: response,
+      });
+    } else {
+      dispatch({
+        type: INFO_EVENTS.BLUETOOTH_LIST,
+        payload: response,
+      });
+    }
     setLoading(false);
   };
 

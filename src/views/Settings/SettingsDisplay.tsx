@@ -39,7 +39,6 @@ const SettingsDisplay = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     await setConfig(values);
-    console.log(values);
     dispatch({ type: DIALOG_EVENTS.DIALOG_REBOOT });
     setLoading(false);
   };
