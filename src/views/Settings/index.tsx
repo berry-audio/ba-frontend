@@ -6,6 +6,7 @@ import {
   GearIcon,
   HandHeartIcon,
   InfoIcon,
+  MemoryIcon,
   MonitorIcon,
   NetworkIcon,
   RadioButtonIcon,
@@ -34,11 +35,17 @@ const SettingsItems: SettingsItem[] = [
     icon: <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/general",
   },
-    {
+  {
     name: "Mixer",
     alias: "mixer",
     icon: <SpeakerHighIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/mixer",
+  },
+  {
+    name: "USB DAC",
+    alias: "usbdac",
+    icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/usbdac",
   },
   {
     name: "Library",

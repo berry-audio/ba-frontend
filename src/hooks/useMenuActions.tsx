@@ -29,6 +29,7 @@ import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import { MODEL } from "@/constants/refs";
 import { useLibraryInfo } from "./useLibraryInfo";
 import { useBluetoothService } from "@/services/bluetooth";
+import { useAddToFavourites } from "./useAddToFavourites";
 
 export interface MenuItem {
   name: string;
@@ -44,6 +45,7 @@ export const useMenuActions = () => {
   const { handleGoToArtist } = useGoToArtist();
   const { handleGoToAlbum } = useGoToAlbum();
   const { handleArtistInfo } = useLibraryInfo();
+  const { addToFavourites } = useAddToFavourites();
   const { libraryPathAdd, directoryShare, directoryUnshare, storageMount, storageUnMount, storageUnMountShared } = useStorageActions();
   const { playlistAddDialog, playlistRemoveTrack, playlistRenameDialog, playlistDeleteDialog } = usePlaylistActions();
   const { removeDevice, disconnectDevice, connectDevice } = useBluetoothService();
@@ -122,10 +124,8 @@ export const useMenuActions = () => {
           {
             name: "Favourite",
             icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => undefined,
-            disabled: true,
+            action: () => addToFavourites(item),
           },
-
           {
             name: "Add to Playlist",
             icon: <PlaylistIcon size={ICON_XS} weight={ICON_WEIGHT} />,
@@ -177,8 +177,7 @@ export const useMenuActions = () => {
           {
             name: "Favourite",
             icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => undefined,
-            disabled: true,
+            action: () => addToFavourites(item),
           },
 
           {
@@ -222,8 +221,7 @@ export const useMenuActions = () => {
           {
             name: "Favourite",
             icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => undefined,
-            disabled: true,
+            action: () => addToFavourites(item),
           },
 
           {
@@ -263,8 +261,7 @@ export const useMenuActions = () => {
           {
             name: "Favourite",
             icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => undefined,
-            disabled: true,
+            action: () => addToFavourites(item.track),
           },
           {
             name: "Add to Playlist",

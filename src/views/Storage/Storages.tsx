@@ -25,8 +25,17 @@ const Storages = () => {
   const handleEvent = (event: string, payload: any, setItems: React.Dispatch<React.SetStateAction<AnyItem[]>>) => {
     switch (event) {
       case EVENTS.STORAGE_MOUNTED:
+        setItems((prev) =>
+          prev.some((item) => (item as Storage).dev === payload.storage.dev)
+            ? prev.map((item) => ((item as Storage).dev === payload.storage.dev ? { ...item, ...payload.storage } : item))
+            : [...prev, payload.storage],
+        );
+        break;
       case EVENTS.STORAGE_UNMOUNTED:
         setItems((prev) => prev.map((item) => ((item as Storage).dev === payload.storage.dev ? { ...item, ...payload.storage } : item)));
+        break;
+      case EVENTS.STORAGE_REMOVED:
+        setItems((prev) => prev.filter((item) => (item as Storage).dev !== payload.storage.dev));
         break;
     }
   };

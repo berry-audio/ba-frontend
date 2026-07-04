@@ -1,7 +1,6 @@
 import { QueueIcon } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { OVERLAY_EVENTS } from "@/store/constants";
+import { DRAWER_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import ButtonIcon from "@/components/Button/ButtonIcon";
@@ -13,11 +12,9 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  */
 const ButtonQueue = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onClickHandler = () => {
-    dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE });
-    navigate("/tracklist");
+    dispatch({ type: DRAWER_EVENTS.DRAWER_TRACKLIST });
   };
 
   return (

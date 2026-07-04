@@ -28,9 +28,9 @@ import SettingsMixer from "./views/Settings/SettingsMixer";
 import PlaylistView from "./views/Playlist/PlaylistView";
 import StorageDirectory from "./views/Storage/StorageDirectory";
 import Local from "./views/Local/Local";
-import LocalView from "./views/Local/LocalView";
 import Tuner from "./views/Tuner";
 import Dsp from "./views/Dsp";
+import SettingsUsbdac from "./views/Settings/SettingsUsbdac";
 
 const App = () => {
   return (
@@ -53,6 +53,7 @@ const App = () => {
               <Route path="/" element={<Start />} />
               <Route path="/bluetooth" element={<BluetoothView />} />
               <Route path="/spotify" element={<Start />} />
+              <Route path="/usbdac" element={<Start />} />
               <Route path="/shairportsync" element={<Start />} />
               <Route path="/linein" element={<Start />} />
               <Route path="/multiroom" element={<Multiroom />} />
@@ -60,7 +61,7 @@ const App = () => {
               <Route path="/playlist/" element={<Playlists />} />
               <Route path="/playlist/:id" element={<PlaylistView />} />
               <Route path="/local/" element={<Local />} />
-              <Route path="/local/:view?/:id?" element={<LocalView />} />
+              <Route path="/local/:view?/" element={<Local />} />
               <Route path="/radio" element={<Radio />} />
               <Route path="/tuner" element={<Tuner />} />
               <Route path="/storage/" element={<Storages />} />
@@ -70,6 +71,7 @@ const App = () => {
               <Route path="/settings/system/" element={<SettingsSystem />} />
               <Route path="/settings/general/" element={<SettingsGeneral />} />
               <Route path="/settings/mixer/" element={<SettingsMixer />} />
+              <Route path="/settings/usbdac/" element={<SettingsUsbdac />} />
               <Route path="/settings/local/" element={<SettingsLocal />} />
               <Route path="/settings/network/" element={<SettingsNetwork />} />
               <Route path="/settings/storage/" element={<SettingsStorage />} />

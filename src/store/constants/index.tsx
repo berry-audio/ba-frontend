@@ -10,6 +10,9 @@ export enum PLAYER_EVENTS {
 }
 
 export enum INTERNAL_EVENTS {
+  // Favourite
+  ADD_TO_FAVOURITE = "event/favourite/add",
+
   // Tracklist
   TRACKLIST_ADD_TO_QUEUE = "event/tracklist/add",
   TRACKLIST_LIST = "event/tracklist/list",
@@ -76,4 +79,10 @@ export enum OVERLAY_EVENTS {
   OVERLAY_VOLUME = "overlay/volume",
   OVERLAY_STANDBY = "overlay/standby",
   OVERLAY_CLOSE = "overlay/close",
+}
+
+export enum DRAWER_EVENTS {
+  DRAWER_LOCAL = "drawer/local/detail",
+  DRAWER_TRACKLIST = "drawer/tracklist",
+  DRAWER_CLOSE = "drawer/close",
 }

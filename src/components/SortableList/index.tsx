@@ -67,7 +67,7 @@ export default function SortableList({
                   >
                     <ItemWrapper>
                       <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
-                      <ListItem item={item} selected={item.tlid === selectedTlid} />
+                      <ListItem item={item} selected={item.tlid === selectedTlid} favourite/>
                     </ItemWrapper>
                   </div>
                 )}

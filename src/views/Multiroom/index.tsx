@@ -78,16 +78,16 @@ const Multiroom = () => {
       <div className={`w-full`}>
         <div className="flex justify-between items-center border-b border-background py-3 px-4">
           <div className="flex items-center">
-            <div className="text-lg font-medium">
+            <div>
               <div className="w-full flex mt-1 ">
                 <div className={`overflow-hidden rounded-sm mr-3 min-w-13 w-13 h-13  ${item?.connected ? "text-primary" : ""}`}>
                   <Placeholder item={{ __model__: MODEL.ROOM } as Room} variant={item?.connected ? "primary" : ""} />
                 </div>
                 <div>
-                  <div className="flex items-center text-xl font-medium">
+                  <div className="flex items-center ">
                     {item?.name} <RenderStatus />
                   </div>
-                  <div className="flex items-center text-muted -mt-0.5">
+                  <div className="flex items-center text-muted text-md">
                     {item?.ip == "127.0.0.1" && "This room - "} {item?.status}{" "}
                   </div>
                 </div>
@@ -170,8 +170,8 @@ const Multiroom = () => {
         <div className="flex items-center">
           <SpeakerHifiIcon size={ICON_SM} weight={ICON_WEIGHT} className={`mr-3 ${item?.connected ? "text-primary" : ""}`} />
           <div className="font-medium flex-1">
-            <div className="text-lg"> {item?.host?.name}</div>
-            <div className="mb-1 text-secondary text-left -mt-1">Last seen {timeAgo(item?.lastSeen?.sec)}</div>
+            <div> {item?.host?.name}</div>
+            <div className="mb-1 text-secondary text-md text-left">Last seen {timeAgo(item?.lastSeen?.sec)}</div>
           </div>
         </div>
         <div className="flex">

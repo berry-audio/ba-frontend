@@ -1,9 +1,3 @@
-import Page from "@/components/Page";
-import Spinner from "@/components/Spinner";
-import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
-import SortableList from "@/components/SortableList";
-import NoItems from "@/components/Item/NoItems";
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePlaylistActions } from "@/hooks/usePlaylistActions";
@@ -12,6 +6,12 @@ import { MusicNoteIcon } from "@phosphor-icons/react";
 import { Playlist, TlTrack } from "@/types";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { EVENTS } from "@/constants/events";
+
+import Page from "@/components/Page";
+import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
+import SortableList from "@/components/SortableList";
+import NoItems from "@/components/Item/NoItems";
+import ListItemSkeleton from "@/components/Item/ListItemSkeleton";
 
 const PlaylistView = () => {
   const navigate = useNavigate();
@@ -42,9 +42,11 @@ const PlaylistView = () => {
   return (
     <Page title={playlist?.name} backButtonOnClick={() => navigate("/playlist")} backButton>
       {loading ? (
-        <LayoutHeightWrapper>
-          <Spinner />
-        </LayoutHeightWrapper>
+        Array.from({ length: 6 }).map((_, i) => (
+          <div className="ml-3" key={i}>
+            <ListItemSkeleton />
+          </div>
+        ))
       ) : playlistTracks?.length ? (
         <SortableList
           tracks={playlistTracks}

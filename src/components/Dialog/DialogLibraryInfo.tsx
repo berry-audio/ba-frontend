@@ -9,7 +9,7 @@ const DialogLibraryInfo = ({ item }: { item: Artist }) => {
 
   return (
     <Modal title={item.name} onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })} isOpen={true} buttonShow={false}>
-      <span className="text-secondary">{item.bio ? item.bio : "No information available"}</span>
+      <span className="text-secondary">{item.biography ? item.biography : "No information available"}</span>
     </Modal>
   );
 };

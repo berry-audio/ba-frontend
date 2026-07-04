@@ -8,6 +8,7 @@ import {
   FadersIcon,
   GearIcon,
   GlobeHemisphereWestIcon,
+  MemoryIcon,
   PlaylistIcon,
   RadioButtonIcon,
   RadioIcon,
@@ -32,86 +33,95 @@ import Spinner from "@/components/Spinner";
 type SourceItem = {
   name: string;
   icon: ReactElement;
-  alias: string;
+  path: string;
   url?: string;
   disabled?: boolean;
   render?: boolean;
   type?: string;
 };
-const sources: SourceItem[] = [
-  {
-    name: "Playlists",
-    icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "playlist",
-  },
-  {
-    name: "DSP",
-    icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "dsp",
-  },
-  {
-    name: "Library",
-    icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "local",
-  },
-  {
-    name: "FM Tuner",
-    icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "tuner",
-  },
-  {
-    name: "Line In",
-    icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "linein",
-  },
-  {
-    name: "Storage",
-    icon: <UsbIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "storage",
-  },
-  {
-    name: "Radio",
-    icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "radio",
-  },
-  {
-    name: "Bluetooth",
-    icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "bluetooth",
-  },
-  {
-    name: "Spotify",
-    icon: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "spotify",
-  },
-  {
-    name: "Airplay",
-    icon: <AirplayIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "shairportsync",
-  },
-  {
-    name: "Multiroom",
-    icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "multiroom",
-  },
-  {
-    name: "Settings",
-    icon: <GearIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-    alias: "settings",
-  },
-];
 
 const Start = () => {
   const navigate = useNavigate();
 
   const { setSource } = useSourceService();
   const { source } = useSelector((state: any) => state.player);
+  const { config } = useSelector((state: any) => state.config);
+
   const [loadingItem, setLoadingItem] = useState<string | undefined>(undefined);
 
+  const sources: SourceItem[] = [
+    {
+      name: "Playlists",
+      icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "playlist",
+    },
+    {
+      name: "DSP",
+      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "dsp",
+    },
+    {
+      name: "USB DAC",
+      icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "usbdac",
+      disabled: config.system.hardware !== "PI_ZERO_2W",
+    },
+    {
+      name: "Library",
+      icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "local/album",
+    },
+    {
+      name: "FM Tuner",
+      icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "tuner",
+    },
+    {
+      name: "Line In",
+      icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "linein",
+    },
+    {
+      name: "Storage",
+      icon: <UsbIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "storage",
+    },
+    {
+      name: "Radio",
+      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "radio",
+    },
+    {
+      name: "Bluetooth",
+      icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "bluetooth",
+    },
+    {
+      name: "Spotify",
+      icon: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "spotify",
+    },
+    {
+      name: "Airplay",
+      icon: <AirplayIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "shairportsync",
+    },
+    {
+      name: "Multiroom",
+      icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "multiroom",
+    },
+    {
+      name: "Settings",
+      icon: <GearIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "settings",
+    },
+  ];
+
   const onClickHandler = async (item: SourceItem) => {
-    setLoadingItem(item.alias);
-    ["spotify", "shairportsync", "linein", "tuner"].includes(item.alias) && (await setSource(item.alias));
-    navigate(`/${item.alias}`);
+    setLoadingItem(item.path);
+    ["spotify", "shairportsync", "linein", "usbdac", "tuner"].includes(item.path) && (await setSource(item.path));
+    navigate(`/${item.path}`);
     setLoadingItem(undefined);
   };
 
@@ -125,7 +135,7 @@ const Start = () => {
       }
     >
       <LayoutHeightWrapper>
-        <div className="px-4 flex items-center h-full">
+        <div className="px-4 flex items-center">
           <div className="w-full">
             <Swiper
               modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
@@ -162,15 +172,15 @@ const Start = () => {
               {sources.map((item) => (
                 <SwiperSlide>
                   <button
-                    key={item.alias}
+                    key={item.path}
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
-                    className={`hover:bg-button-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.alias ? "text-primary" : ""}`}
+                    className={`hover:bg-button-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
+                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "text-primary" : ""}`}
                   >
-                    {loadingItem === item.alias && (
+                    {loadingItem === item.path && (
                       <div className="absolute bg-button-hover w-full h-full rounded-lg">
-                        <Spinner mode="light"/>
+                        <Spinner mode="light" />
                       </div>
                     )}
 
@@ -186,6 +196,10 @@ const Start = () => {
             <div className="custom-pagination flex gap-2 items-center justify-center mt-4"></div>
           </div>
         </div>
+
+        <h1 className="text-left text-lg font-semibold mt-4">Recently Played</h1>
+
+        <h1 className="text-left text-lg font-semibold mt-4">Favourites</h1>
       </LayoutHeightWrapper>
     </Page>
   );

@@ -67,7 +67,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
         </ButtonIcon>
 
         {isDropdownOpen && (
-          <div className="absolute overflow-auto max-h-60 right-0 mt-2 w-48 bg-popover shadow-lg rounded-md z-10">{items.map(renderButton)}</div>
+          <div className="absolute overflow-auto max-h-60 right-0 mt-2 w-48 bg-popover shadow-lg rounded-md z-10 ">{items.map(renderButton)}</div>
         )}
       </div>
 

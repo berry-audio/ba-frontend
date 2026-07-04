@@ -51,7 +51,7 @@ const SettingsMultiroom = () => {
                 name="multiroom.server"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Enable Server</FormLabel>
+                    <FormLabel className="text-base block">Enable Server</FormLabel>
                     <FormControl>
                       <Switch {...field} />
                     </FormControl>
@@ -67,7 +67,7 @@ const SettingsMultiroom = () => {
                 name="multiroom.codec"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Codec</FormLabel>
+                    <FormLabel className="text-base block">Codec</FormLabel>
                     <FormControl>
                       <SelectCodec placeholder="Select Codec" {...field} />
                     </FormControl>
@@ -83,7 +83,7 @@ const SettingsMultiroom = () => {
                 name="multiroom.chunk"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Chunk (ms)</FormLabel>
+                    <FormLabel className="text-base block">Chunk (ms)</FormLabel>
                     <FormControl>
                       <InputNumber {...field} />
                     </FormControl>
@@ -99,7 +99,7 @@ const SettingsMultiroom = () => {
                 name="multiroom.buffer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Buffer</FormLabel>
+                    <FormLabel className="text-base block">Buffer</FormLabel>
                     <FormControl>
                       <InputNumber {...field} />
                     </FormControl>

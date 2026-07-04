@@ -11,8 +11,8 @@ import ButtonBluetoothScan from "@/components/Button/ButtonBluetoothScan";
 import ButtonBluetoothToggle from "@/components/Button/ButtonBluetoothToggle";
 import NoItems from "@/components/Item/NoItems";
 import ListItem from "@/components/Item/ListItem";
-import Spinner from "@/components/Spinner";
 import Page from "@/components/Page";
+import ListItemSkeleton from "@/components/Item/ListItemSkeleton";
 
 const BluetoothView = () => {
   const { devices } = useSelector((state: any) => state.bluetooth);
@@ -39,27 +39,25 @@ const BluetoothView = () => {
       }
     >
       {loading ? (
-        <LayoutHeightWrapper>
-          <Spinner />
-        </LayoutHeightWrapper>
+        Array.from({ length: 3 }).map((_, i) => (
+          <div className="ml-3" key={i}>
+            <ListItemSkeleton />
+          </div>
+        ))
+      ) : devices?.length ? (
+        devices.map((item: Bluetooth, index: number) => (
+          <ItemWrapper key={index}>
+            <ListItem item={item} />
+          </ItemWrapper>
+        ))
       ) : (
-        <>
-          {devices?.length ? (
-            devices.map((item: Bluetooth, index: number) => (
-              <ItemWrapper key={index}>
-                <ListItem item={item} />
-              </ItemWrapper>
-            ))
-          ) : (
-            <LayoutHeightWrapper>
-              <NoItems
-                title="No Devices Found"
-                desc={"Scan to search for available devices"}
-                icon={<BluetoothIcon weight={ICON_WEIGHT} size={ICON_SM} />}
-              />
-            </LayoutHeightWrapper>
-          )}
-        </>
+        <LayoutHeightWrapper>
+          <NoItems
+            title="No Devices Found"
+            desc={"Scan to search for available devices"}
+            icon={<BluetoothIcon weight={ICON_WEIGHT} size={ICON_SM} />}
+          />
+        </LayoutHeightWrapper>
       )}
     </Page>
   );

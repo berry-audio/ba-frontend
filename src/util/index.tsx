@@ -361,10 +361,9 @@ export const getSubtitle = (item: AnyItem): string | undefined => {
         .join(" · ");
     case MODEL.STORAGE:
       return item.usage
-        ? item.status == "mounted"
           ? `${formatBytes(item.usage?.free as number)} available of ${formatBytes(item.usage?.total as number)}`
           : "Unmounted"
-        : undefined;
+       ;
     default:
       return undefined;
   }

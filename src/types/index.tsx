@@ -1,6 +1,6 @@
 import { SelectProps } from "antd";
 import { PLAYBACK_STATE, REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
-import { MODEL } from "@/constants/refs";
+import { MODEL, REF } from "@/constants/refs";
 
 export interface Artist {
   __model__: MODEL.ARTIST;
@@ -10,7 +10,8 @@ export interface Artist {
   sortname: string | null;
   genre: string | null;
   country: string | null;
-  bio: string | null;
+  year: string | null;
+  biography: string | null;
   musicbrainz_id: string | null;
 }
 
@@ -338,6 +339,14 @@ export interface AlsaDevice {
   description: string | null;
 }
 
+export interface AlsaCard {
+  id: number;
+  name: string;
+  device: string | null;
+  card: string;
+  dtoverlay: string | null;
+}
+
 export interface AlsaVolumeDevice {
   name: string;
   card: string;
@@ -457,6 +466,18 @@ export interface Config {
   playlist: Record<string, never>;
   infrared: Record<string, never>;
   command: Record<string, never>;
+}
+
+export interface Tab {
+  id: string;
+  label: string;
+  isActive?: boolean;
+  onClick?: () => void;
+}
+ 
+export interface TitleTabsProps {
+  activeTab: string;
+  onTabChange?: (tabId: REF) => void;
 }
 
 export type AnyItem = Track | Tuner | TlTrack | Album | Artist | Category | File | Directory | Storage | Playlist | Bluetooth | Room;

@@ -10,7 +10,7 @@ const SettingsSupport = () => {
     <Page backButton title="Support">
       <div className="px-5">
         <div>
-          <h2 className="mt-3 mb-3 text-xl">
+          <h2 className="mt-3 mb-3">
             {theme === "dark" ? <img src="/assets/berryaudio_logo_light.png" /> : <img src="/assets/berryaudio_logo_dark.png" />}
           </h2>
         </div>

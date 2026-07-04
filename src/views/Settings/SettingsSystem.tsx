@@ -94,7 +94,7 @@ const SettingsSystem = () => {
 
   const ListHardwareItem = ({ title, desc }: { title: string; desc: string }) => {
     return (
-      <div className="flex mt-2 text-secondary">
+      <div className="flex mt-2 text-secondary text-md">
         <div className="w-25 flex">{title}:</div>
         <div className="flex-1 flex flex-col">{desc}</div>
       </div>
@@ -104,9 +104,9 @@ const SettingsSystem = () => {
   const ListUsageItem = ({ title, desc, percent }: { title: React.ReactNode; desc: string; percent: number }) => {
     return (
       <div>
-        <div className="font-medium flex items-center">{title}</div>
+        <div className="flex items-center">{title}</div>
         <div className="w-full">
-          <div className="mb-1 text-secondary">{desc}</div>
+          <div className="mb-1 text-secondary text-md mt-1">{desc}</div>
           <div className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
             <div className="bg-primary h-1 rounded-full" style={{ width: `${percent}%` }}></div>
           </div>
@@ -158,7 +158,7 @@ const SettingsSystem = () => {
           </div>
 
           <div className="mt-6">
-            <div className="text-lg font-medium mb-2">Hardware</div>
+            <div className="text-lg mb-2">Hardware</div>
             <ListHardwareItem title="Model" desc={systemInfo?.model} />
             <ListHardwareItem title="OS" desc={systemInfo?.os} />
             <ListHardwareItem title="OS Version" desc={systemInfo?.os_version} />

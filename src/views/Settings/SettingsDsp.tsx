@@ -44,8 +44,8 @@ const SettingsDsp = () => {
                 name="dsp.default_gain"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Default Gain (dB)</FormLabel>
-                    <div className="pb-4 text-secondary">
+                    <FormLabel className="block text-base">Default Gain (dB)</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
                       Default gain applied to all sources. <br></br>Use this to control clipping globally.
                     </div>
                     <FormControl>
@@ -63,8 +63,8 @@ const SettingsDsp = () => {
                 name="dsp.resample_rate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Resample Rate (Hz)</FormLabel>
-                    <div className="pb-4 text-secondary">
+                    <FormLabel className="text-base block">Resample Rate (Hz)</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
                       ‘No Resampling’ adjusts DSP sample rate dynamically as needed for Bit perfect audio. Multiroom client may often disconnect to
                       adjust sample rate. <br></br>(Recommended) Fixed resample rate - make sure your sound card supports the required sample rate
                       before enabling.

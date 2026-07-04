@@ -38,7 +38,7 @@ const OverlayNowPlaying = () => {
 
   const image = getImage(current_track);
   const isTuner = ["tuner"].includes(source.uri);
-  const isRenderer = ["bluetooth", "spotify", "shairportsync", "multiroom"].includes(source.uri);
+  const isRenderer = ["bluetooth", "spotify", "shairportsync", "usbdac", "multiroom"].includes(source.uri);
   const hasArtist = current_track?.track.artists?.length > 0;
   const hasAlbum = current_track?.track?.albums?.length > 0;
 
@@ -107,7 +107,7 @@ const OverlayNowPlaying = () => {
                 }`}
               />
               <div className="shadow-[1px_14px_21px_-6px_rgba(0,0,0,0.2)] absolute top-0 rounded-lg overflow-hidden h-full aspect-square">
-                <CoverArt item={current_track?.track} loading={current_track ? false : true} disable />
+                <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@ const OverlayNowPlaying = () => {
                 }`}
               />
               <div className="shadow-[1px_14px_21px_-6px_rgba(0,0,0,0.2)] absolute top-0 rounded-lg overflow-hidden h-full aspect-square">
-                <CoverArt item={current_track?.track} loading={current_track ? false : true} disable />
+                <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
               </div>
             </div>
 

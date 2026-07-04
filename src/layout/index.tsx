@@ -7,6 +7,7 @@ import { useTracklistService } from "@/services/tracklist";
 import { useMixerService } from "@/services/mixer";
 import { useSystemService } from "@/services/system";
 import { useNetworkService } from "@/services/network";
+import { INTERNAL_EVENTS } from "@/store/constants";
 import { EVENTS } from "@/constants/events";
 import { Menu } from "../components/Menu";
 
@@ -18,7 +19,8 @@ import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
 import OverlayVolume from "@/components/Overlay/OverlayVolume";
-import { INTERNAL_EVENTS } from "@/store/constants";
+import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
+import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
 
 export default function Layout({ children }: { children: any }) {
   const dispatch = useDispatch();
@@ -121,6 +123,8 @@ export default function Layout({ children }: { children: any }) {
       <div className="flex-1 overflow-hidden">{children}</div>
       <Player />
       <Dialog />
+      <DrawerLocalDetail />
+      <DrawerTracklist />
       <OverlaySearch />
       <OverlayNowPlaying />
       <OverlayStandby />

@@ -8,7 +8,7 @@ export function useTracklistActions() {
   const dispatch = useDispatch();
   const { removeTrack, getTracklist } = useTracklistService();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const tracklistRemove = async (item: TlTrack) => {
     setLoading(true);

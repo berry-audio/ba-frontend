@@ -2,14 +2,14 @@
 @import "tw-animate-css";
 @import "@fontsource/inter/400.css";
 
-
-@custom-variant dark (&:where(.dark, .dark *)); 
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-4xl: calc(var(--radius) + 16px);
+  --radius-full: calc(var(--radius) + 50px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -28,7 +28,14 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 19px;
+  --font-size-base: 16px;
 }
+
 :root {
   --radius: 0.625rem;
   --background: rgb(245, 245, 245);
@@ -45,7 +52,7 @@
   --input: oklch(0.922 0 0);
   --input-foreground: oklch(10.668% 0.00001 271.152);
   --ring: oklch(0.708 0 0);
-  --primary: #f24f34;
+  --primary: #db462b;
   --primary-foreground: #ffffff;
   --secondary: #737373;
   --secondary-foreground: oklch(0.205 0 0);
@@ -53,6 +60,7 @@
   --accent-foreground: #ffffff;
   --button-hover: rgba(189, 189, 189, 0.3);
 }
+
 .dark {
   --background: #1f1f1f;
   --foreground: oklch(0.985 0 0);
@@ -72,27 +80,50 @@
   --ring: oklch(0.556 0 0);
   --button-hover: rgba(0, 0, 0, 0.3);
 }
+
 @layer utilities {
+  .text-base {
+    font-size: var(--font-size-base);
+  }
+
+  .text-md {
+    font-size: var(--font-size-md);
+  }
+
+  .text-lg {
+    font-size: var(--font-size-lg);
+  }
+
+  .text-sm {
+    font-size: var(--font-size-sm);
+  }
+
   .bg-button-hover {
     background-color: var(--button-hover);
   }
+
   .hover\:bg-button-hover:hover {
     background-color: var(--button-hover);
   }
+
   .loader-foreground {
     border-color: var(--foreground);
     border-top-color: transparent;
   }
+
   .bg-input {
     background-color: var(--popover);
   }
+
   .bg-input:hover {
     color: var(--input-foreground);
   }
+
   .bg-popover {
     background-color: var(--popover);
     color: var(--popover-foreground) !important;
   }
+
   .bg-popover:hover {
     color: var(--primary-foreground) !important;
   }
@@ -100,84 +131,107 @@
   .bg-accent {
     background-color: var(--accent);
   }
+
   .text-accent-foreground {
     color: var(--accent-foreground);
   }
+
   .bg-primary {
     background-color: var(--primary);
   }
+
   .bg-selected {
     background-color: var(--selected);
   }
+
   .text-primary-foreground {
     color: var(--primary-foreground);
   }
+
   .text-primary {
     color: var(--primary);
   }
+
   .text-secondary-foreground {
     color: var(--secondary);
   }
+
   .text-muted {
     color: var(--muted);
   }
+
   .bg-input-foreground {
     background-color: var(--input-foreground);
   }
 }
+
 @layer base {
+
   html,
   body,
   #root {
     overflow: hidden;
     height: 100%;
   }
+
   body {
     background-color: var(--background);
     color: var(--foreground) !important;
     height: 100%;
     margin: 0;
     padding: 0;
-    overscroll-behavior: contain; /* Prevent rubber-band effect */
+    overscroll-behavior: contain;
+    /* Prevent rubber-band effect */
     font-family: "Inter", sans-serif;
+    font-size: var(--font-size-base);
   }
 }
+
 /* Screen Helpers */
 .h-screen-fix {
   height: calc(var(--vh, 1vh) * 100);
 }
+
 @media all and (max-height: 600px) {
   .h-600-img {
     width: 270px !important;
   }
+
   .h-600-hide {
     display: none;
   }
 }
+
 @media all and (max-height: 400px) {
   .h-600-img {
     width: 180px !important;
   }
 }
+
 @media all and (min-height: 601px) {
   .h-600-show {
     display: none;
   }
 }
+
 .swiper-pagination-bullet-active {
   background-color: var(--primary) !important;
 }
+
 /* Progress Bar  */
 [data-slot="slider-thumb"],
 [data-slot="slider-thumb"]:hover {
   @apply cursor-pointer shadow-none border-0 bg-foreground;
 }
+
 [data-slot="slider-track"] {
   @apply bg-neutral-300;
 }
+
 .dark [data-slot="slider-track"] {
   @apply bg-black/50;
 }
+
 .seek-slider [data-slot="slider-range"],
 .seek-slider [data-slot="slider-range"]:hover {
   @apply bg-white;
@@ -208,6 +262,7 @@
 .show {
   display: block;
 }
+
 .hide {
   display: none;
 }
@@ -253,11 +308,11 @@
 }
 
 [data-sonner-toaster][data-y-position="bottom"] {
-  bottom: 100px !important; 
+  bottom: 100px !important;
 }
 
 @media (max-width: 768px) {
   [data-sonner-toaster][data-y-position="bottom"] {
-    bottom: 90px !important; 
+    bottom: 90px !important;
   }
 }

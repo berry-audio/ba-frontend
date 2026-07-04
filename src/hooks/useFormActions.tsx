@@ -32,5 +32,5 @@ export function useFormActions(form: UseFormReturn<any>) {
     setLoading(false);
   });
 
-  return { onSubmitHandler, loading };
+  return { onSubmitHandler, config, loading };
 }

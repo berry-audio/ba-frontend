@@ -10,10 +10,7 @@ const initialOverlayState: OverlayState = {
   payload: null,
 };
 
-export const overlayReducer = (
-  state = initialOverlayState,
-  action: any
-): OverlayState => {
+export const overlayReducer = (state = initialOverlayState, action: any): OverlayState => {
   const { type, payload } = action;
 
   switch (type) {
@@ -26,6 +23,7 @@ export const overlayReducer = (
         payload: null,
       };
 
+    //TODO
     case OVERLAY_EVENTS.OVERLAY_LIBRARY:
       return {
         overlay: OVERLAY_EVENTS.OVERLAY_LIBRARY,

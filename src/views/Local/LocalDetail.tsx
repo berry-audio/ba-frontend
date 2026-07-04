@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useMenuActions } from "@/hooks/useMenuActions";
 import { useLocalService } from "@/services/local";
 import { Album, AnyItem, Artist, Track } from "@/types";
 import { MODEL, REF } from "@/constants/refs";
+import { DRAWER_EVENTS } from "@/store/constants";
 
 import Page from "@/components/Page";
-import TruncateText from "@/components/TruncateText";
 import ButtonPlayAll from "@/components/Button/ButtonPlayAll";
 import ButtonAddToQueue from "@/components/Button/ButtonAddToQueue";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
-import Spinner from "@/components/Spinner";
 import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 import ListItem from "@/components/Item/ListItem";
 import CoverArt from "@/components/CoverArt";
 import ActionMenu from "@/components/Actions";
 import ScrollingText from "@/components/ScrollingText";
+import LocalDetailSkeleton from "./LocalDetailSkeleton";
 
-const LocalDetail = () => {
-  const { view, id } = useParams<{ view: REF; id: string }>();
 
+const LocalDetail = ({ view, id }: { view: REF; id: string }) => {
+  const dispatch = useDispatch();
   if (!view && !id) return;
 
   const { getDirectory } = useLocalService();
@@ -40,14 +40,21 @@ const LocalDetail = () => {
     fetch();
   }, [view, id]);
 
+  const onClickBackHandler = () => {
+    dispatch({
+      type: DRAWER_EVENTS.DRAWER_CLOSE,
+      payload: null,
+    });
+  };
+
   return (
-    <Page title="" backButton>
+    <Page title="" backButton backButtonOnClick={onClickBackHandler}>
       {loading ? (
         <LayoutHeightWrapper>
-          <Spinner />
+          <LocalDetailSkeleton />
         </LayoutHeightWrapper>
       ) : (
-        <LayoutHeightWrapper>
+        <LayoutHeightWrapper className="h-[calc(100dvh-100px)]!">
           {item && (
             <div className="text-center">
               <div className="flex justify-center mb-3">
@@ -61,16 +68,15 @@ const LocalDetail = () => {
                   <ScrollingText text={(item as Album | Artist).name} />
                 </h2>
 
-                {item.__model__ === MODEL.ARTIST && (item as Artist).country && <div className="mb-1">{(item as Artist).country}</div>}
-                {(item as Album | Artist).genre && <div className="mb-1">{(item as Album | Artist).genre}</div>}
-                {item.__model__ === MODEL.ALBUM && (item as Album).date && <div className="mb-1">Released {(item as Album).date}</div>}
-                {item.__model__ === MODEL.ARTIST && (
-                  <div className="text-sm text-secondary mt-1 mb-3">
-                    <TruncateText limit={120}>{(item as Artist).bio ?? "No Information"}</TruncateText>
+                {item.__model__ === MODEL.ARTIST && (item as Artist).country && (
+                  <div className="mb-1">
+                    {(item as Artist).country}, {(item as Artist).year && `Born in ${(item as Artist).year}`}
                   </div>
                 )}
+                {(item as Album | Artist).genre && <div className="mb-1">{(item as Album | Artist).genre}</div>}
+                {item.__model__ === MODEL.ALBUM && (item as Album).date && <div className="mb-1">Released {(item as Album).date}</div>}
 
-                <div className="flex items-center justify-center my-3">
+                <div className="flex items-center justify-center my-5 text-md">
                   <div className="mr-2 -ml-3">
                     <ButtonPlayAll item={item} />
                   </div>
@@ -85,10 +91,10 @@ const LocalDetail = () => {
             </div>
           )}
 
-          <div className="w-full">
+          <div className="w-full mt-5">
             {tracks.map((item: Track, index: number) => (
               <ItemWrapper key={item.uri ?? index}>
-                <ListItem item={item} />
+                <ListItem item={item} favourite />
               </ItemWrapper>
             ))}
           </div>

@@ -47,7 +47,7 @@ const SettingsTuner = () => {
                 name="tuner.input_device"
                 render={() => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Tuner</FormLabel>
+                    <FormLabel className="text-base block">Tuner</FormLabel>
                     <FormControl>
                       <Input placeholder="Si470x" value="Si4703" disabled/>
                     </FormControl>
@@ -63,8 +63,8 @@ const SettingsTuner = () => {
                 name="tuner.input_device"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Input device</FormLabel>
-                    <div className="pb-4 text-secondary">Tuner audio will be captured from the following device. Works on souncards with ADC</div>
+                    <FormLabel className="text-base block">Input device</FormLabel>
+                    <div className="pb-4 text-secondary text-md">Tuner audio will be captured from the following device. Works on souncards with ADC</div>
                     <FormControl>
                       <SelectAlsaDevices placeholder="Select Device" {...field} cmd="arecord" />
                     </FormControl>
@@ -80,8 +80,8 @@ const SettingsTuner = () => {
                 name="tuner.sample_rate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Sample Rate (Hz)</FormLabel>
-                    <div className="pb-4 text-secondary">Capture sample rate. Check your ADC specifications for supported sample rates.</div>
+                    <FormLabel className="text-base block">Sample Rate (Hz)</FormLabel>
+                    <div className="pb-4 text-secondary text-md">Capture sample rate. Check your ADC specifications for supported sample rates.</div>
                     <FormControl>
                       <SelectSampleRate placeholder="Select sample rate" {...field} />
                     </FormControl>
@@ -97,7 +97,7 @@ const SettingsTuner = () => {
                 name="tuner.gain"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Default Gain (dB)</FormLabel>
+                    <FormLabel className="text-base block">Default Gain (dB)</FormLabel>
                     <FormControl>
                       <InputNumber {...field} max={20} min={-20} />
                     </FormControl>

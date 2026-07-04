@@ -1,26 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormActions } from "@/hooks/useFormActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputNumber } from "@/components/Form/InputNumber";
-import { AlsaDevice } from "@/types";
+import { AlsaCard } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { z } from "zod";
 
 import Page from "@/components/Page";
 import ButtonSave from "@/components/Button/ButtonSave";
-import SelectAlsaDevices from "@/components/Form/SelectAlsaDevices";
 import SelectAlsaVolumeDevice from "@/components/Form/SelectAlsaVolumeDevice";
+import SelectAlsaCard from "@/components/Form/SelectAlsaCard";
 
 export const formSchema = z.object({
   mixer: z.object({
-    hw_device: z
-      .string()
-      .nullable()
-      .refine((val) => val !== null && val.length > 0, {
-        message: "Audio output device is required",
-      }),
+    hw_device_id: z.number().nullable(),
+    hw_device: z.string().nullable(),
     volume_default: z.number(),
     volume_device: z.string(),
     dtoverlay: z.string().nullable(),
@@ -28,13 +24,16 @@ export const formSchema = z.object({
 });
 
 const SettingsMixer = () => {
-  const [selectedCard, setSelectedCard] = useState<AlsaDevice["card"]>();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const { onSubmitHandler, loading } = useFormActions(form);
+  const { onSubmitHandler, config, loading } = useFormActions(form);
+  const [selectedCard, setSelectedCard] = useState<string>();
+
+  useEffect(() => {
+    setSelectedCard(config.mixer?.hw_device);
+  }, [config]);
 
   return (
     <Page
@@ -54,20 +53,23 @@ const SettingsMixer = () => {
             <div className="mb-6">
               <FormField
                 control={form.control}
-                name="mixer.hw_device"
+                name="mixer.hw_device_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Soundcard</FormLabel>
-                    <div className="pb-4 text-secondary">This is your default DAC. All audio will be played through this device.</div>
+                    <FormLabel className="text-base block">Audio Device</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
+                      All audio will be played through the selected device. If your device isn't listed, add its dtoverlay and restart — it will then
+                      appear in the list. Note: Restart required after changing this setting.
+                    </div>
                     <FormControl>
-                      <SelectAlsaDevices
+                      <SelectAlsaCard
                         placeholder="Select Device"
                         {...field}
-                        onSelectedCard={(device: AlsaDevice) => {
-                          setSelectedCard(device.card);
-                          form.setValue("mixer.dtoverlay", device.dtoverlay ?? "", { shouldDirty: true });
+                        onSelectedCard={(alsaCard: AlsaCard) => {
+                          alsaCard.device && setSelectedCard(alsaCard.device);
+                          form.setValue("mixer.dtoverlay", alsaCard.dtoverlay ?? "", { shouldDirty: true });
+                          form.setValue("mixer.hw_device", alsaCard.device ?? "", { shouldDirty: true });
                         }}
-                        cmd="aplay"
                       />
                     </FormControl>
                     <FormMessage />
@@ -82,10 +84,9 @@ const SettingsMixer = () => {
                 name="mixer.dtoverlay"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">DT Overlay</FormLabel>
-                    <div className="pb-4 text-secondary">
-                      Automatically loaded from our dictionary. If not, you can manually configure it here. Please refer to your DAC manufacturer’s
-                      documentation for more details.
+                    <FormLabel className="text-base block">DT Overlay</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
+                      While this is automatically set if you need to set it manually. please refer to your DAC manufacturer’s documentation for this
                     </div>
                     <FormControl>
                       <Input placeholder="" {...field} value={field.value ?? ""} />
@@ -102,10 +103,13 @@ const SettingsMixer = () => {
                 name="mixer.volume_device"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Volume Device</FormLabel>
-                    <div className="pb-4 text-secondary">Select the hardware that controls the volume. Some DACs dont offer hardware volume use software instead.</div>
+                    <FormLabel className="text-base block">Volume Device</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
+                      Select the hardware that controls the volume. Some DACs dont offer hardware volume use software instead. Note: Restart required
+                      after changing mixer settings for volume options to update.
+                    </div>
                     <FormControl>
-                      <SelectAlsaVolumeDevice placeholder="Select Volume" card={selectedCard} {...field} />
+                      <SelectAlsaVolumeDevice placeholder="Select Volume" device={selectedCard} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -119,7 +123,7 @@ const SettingsMixer = () => {
                 name="mixer.volume_default"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Default Volume</FormLabel>
+                    <FormLabel className="text-base block">Default Volume</FormLabel>
                     <FormControl>
                       <InputNumber {...field} max={100} />
                     </FormControl>

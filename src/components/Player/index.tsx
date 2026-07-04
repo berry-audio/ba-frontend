@@ -61,14 +61,14 @@ const Player = () => {
               <button onClick={openNowPlayingOverlay} className="flex items-center cursor-pointer w-full  text-left">
                 <div className="flex items-center grow">
                   <div className="overflow-hidden flex-none rounded-sm mr-3 w-12.5  min-w-12.5">
-                    <CoverArt item={current_track?.track} loading={current_track ? false : true} disable />
+                    <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
                   </div>
                   {source.uri && (
                     <div className="overflow-hidden max-w-80">
-                      <h2 className="text-xl tracking-tight ">
+                      <h2 className="tracking-tight ">
                         {title ? <ScrollingText text={title} /> : source.name}
                       </h2>
-                      <div className="text-secondary overflow-hidden">
+                      <div className="text-secondary overflow-hidden text-md">
                         {subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}
                       </div>
                     </div>
@@ -106,14 +106,14 @@ const Player = () => {
               <button onClick={openNowPlayingOverlay} className="w-full cursor-pointer text-left">
                 <div className="flex items-center">
                   <div className={`overflow-hidden rounded-sm mr-3 min-w-10 w-10`}>
-                    <CoverArt item={current_track?.track} loading={current_track ? false : true} disable />
+                    <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
                   </div>
                   {source.uri && (
                     <div className="text-left overflow-hidden">
-                      <h2 className={`text-lg font-medium tracking-tight text-white`}>
+                      <h2 className={`tracking-tight text-white`}>
                         {title ? <ScrollingText text={title} /> : source.name}
                       </h2>
-                      <div className=" text-secondary -mt-0.5 lg:-mt-1 text-sm">
+                      <div className=" text-secondary mt-0 lg:-mt-1 text-sm">
                         {subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}
                       </div>
                     </div>

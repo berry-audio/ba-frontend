@@ -36,7 +36,7 @@ const SettingsDisplay = () => {
       }
     >
       <Form {...form}>
-        <form onSubmit={onSubmitHandler} className="space-y-6 max-w-md">
+        <form onSubmit={onSubmitHandler} className="space-y-6 max-w-md text-base">
           <div className="lg:px-0 px-6 py-3 lg:w-90">
           
             <div className="mb-6">
@@ -45,7 +45,7 @@ const SettingsDisplay = () => {
                 name="display.output_display"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Display</FormLabel>
+                    <FormLabel className="block text-base">Display</FormLabel>
                     <FormControl>
                       <SelectDisplayDevices placeholder="Select Display" {...field} />
                     </FormControl>
@@ -60,7 +60,7 @@ const SettingsDisplay = () => {
                 name="display.visualizer_layout"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Default Visualizer</FormLabel>
+                    <FormLabel className="text-base block">Default Visualizer</FormLabel>
                     <FormControl>
                       <SelectVisualizer placeholder="Select Visualiser" {...field} />
                     </FormControl>

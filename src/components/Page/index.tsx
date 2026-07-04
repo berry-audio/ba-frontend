@@ -6,7 +6,7 @@ import { CaretLeftIcon } from "@phosphor-icons/react";
 import ButtonIcon from "../Button/ButtonIcon";
 
 interface Page {
-  title?: string;
+  title?: string | React.ReactNode;
   backButton?: boolean;
   backButtonOnClick?: () => void;
   centerComponent?: React.ReactNode;
@@ -33,7 +33,7 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
 
   return (
     <div className="h-full overflow-auto">
-      <div className="flex justify-between h-12 ">
+      <div className="flex justify-between h-12 items-center ">
         <div className="pl-4 flex items-center flex-1 min-w-0">
           {backButton && (
             <ButtonIcon onClick={backButtonOnClick ? backButtonOnClick : () => navigate(-1)}>
@@ -42,11 +42,11 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
           )}
           {title && <h2 className={`text-2xl ${backButton && "ml-2"} font-light overflow-hidden text-ellipsis whitespace-nowrap`}>{title}</h2>}
         </div>
-        {rightComponent && <div className="flex justify-end items-center  flex-shrink-0">{rightComponent}</div>}
+        {rightComponent && <div className="flex justify-end items-center shrink-0">{rightComponent}</div>}
       </div>
 
       <div className="flex justify-center">
-        <div className={`${!wfull && "lg:max-w-[800px]"} w-full`}>{children}</div>
+        <div className={`${!wfull && "lg:max-w-200"} w-full`}>{children}</div>
       </div>
     </div>
   );

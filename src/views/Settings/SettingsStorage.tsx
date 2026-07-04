@@ -55,9 +55,9 @@ const SettingsStorage= () => {
         <form onSubmit={onSubmitHandler} className="space-y-6 max-w-md">
           <div className="lg:px-0 px-6 py-3 lg:w-90">
             <div>
-              <h2 className="mt-3 mb-3 text-xl">Authentication</h2>
+              <h2 className="mt-3 mb-3 text-lg">Authentication</h2>
             </div>
-            <div className="pt-2 pb-4 text-secondary">
+            <div className="pt-2 pb-4 text-secondary text-md">
               To access shared folders on BerryAudio OS, users will be required to use the credentials below. Leave blank for no authentication.
             </div>
 
@@ -67,7 +67,7 @@ const SettingsStorage= () => {
                 name="storage.username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Username</FormLabel>
+                    <FormLabel className="text-base block">Username</FormLabel>
                     <FormControl>
                       <Input placeholder="Username" {...field} {...field} value={field.value ?? ""} />
                     </FormControl>
@@ -83,7 +83,7 @@ const SettingsStorage= () => {
                 name="storage.password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Password</FormLabel>
+                    <FormLabel className="text-base block">Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Password" {...field} {...field} value={field.value ?? ""} />
                     </FormControl>

@@ -24,13 +24,13 @@ function SelectComboBox({ items, placeholder, value, onChange }: ComboboxBox) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full md:w-[350px] justify-between h-12 border-0 bg-popover">
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full md:w-87.5 justify-between h-12 border-0 bg-popover">
           {value ? items.find((item) => item.value === value)?.label : placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="p-0 w-[350px]">
+      <PopoverContent className="p-0 w-87.5">
         <Command>
           <CommandInput placeholder="Search..." />
           <CommandList>
@@ -38,8 +38,8 @@ function SelectComboBox({ items, placeholder, value, onChange }: ComboboxBox) {
             <CommandGroup>
               {items?.map((item) => (
                 <CommandItem
-                  key={item.value}
-                  value={String(item.value)}
+                  key={item.label}
+                  value={item.label}
                   onSelect={() => {
                     setOpen(false);
                     onChange(item.value);

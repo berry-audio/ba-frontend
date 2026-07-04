@@ -8,6 +8,11 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
   const { payload } = action;
 
   switch (action.type) {
+    //Favourite 
+    case INTERNAL_EVENTS.ADD_TO_FAVOURITE:
+      toast.custom((id) => <ToastContent id={id} title={`Added to Favourites`} variant="success" />);
+      break;
+
     // Tracklist Notifications
     case EVENTS.TRACKLIST_TRACK_ADDED: {
       const count = payload.tl_tracks.length;

@@ -49,8 +49,8 @@ const SettingsGeneral = () => {
                 name="system.hostname"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Hostname</FormLabel>
-                    <div className="pb-4 text-secondary">
+                    <FormLabel className="block text-base">Hostname</FormLabel>
+                    <div className="pb-4 text-secondary text-md">
                       Used by Berryaudio OS Player as the device name for Spotify, AirPlay, Bluetooth, and browser access.{" "}
                     </div>
                     <FormControl>
@@ -68,7 +68,7 @@ const SettingsGeneral = () => {
                 name="system.timezone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md block font-medium">Timezone</FormLabel>
+                    <FormLabel className="text-base block">Timezone</FormLabel>
                     <FormControl>
                       <SelectTimezone placeholder="Select Timezone" {...field} />
                     </FormControl>

@@ -68,10 +68,8 @@ const SettingsNetwork = () => {
           <div className="flex mr-2 items-center">
             <WifiSignalIcon signal={network.signal} />
           </div>
-          <div className="text-lg font-medium">
-            <div className="w-full">
-              <div className={`${network.connected ? "text-primary" : ""} flex `}>{network.ssid == "" ? "unknown" : network.ssid}</div>
-            </div>
+          <div className="w-full">
+            <div className={`${network.connected ? "text-primary" : ""} flex `}>{network.ssid == "" ? "unknown" : network.ssid}</div>
           </div>
         </div>
         <div className="flex items-center">
@@ -99,9 +97,9 @@ const SettingsNetwork = () => {
     return (
       <div className="w-full">
         <div className="flex justify-between">
-          <div className="font-medium">
+          <div className="text-base ">
             <div className="w-full flex">
-              <div className="flex text-xl items-center">
+              <div className="flex items-center">
                 {getNetworkDeviceName(device?.device)} {device?.device}
               </div>
             </div>
@@ -130,9 +128,9 @@ const SettingsNetwork = () => {
     return (
       <div className="w-full py-3 px-4">
         <div className="flex justify-between">
-          <div className="font-medium">
+          <div>
             <div className="w-full flex">
-              <div className="flex text-xl items-center">
+              <div className="flex text-base tems-center">
                 {getNetworkDeviceName(ifname)} {ifname}
               </div>
             </div>
@@ -194,7 +192,7 @@ const SettingsNetwork = () => {
           </div>
 
           <div className="p-4">
-            <h2 className="mt-3 text-xl">Available Networks</h2>
+            <h2 className="mt-3 text-lg">Available Networks</h2>
           </div>
           {networks?.length ? (
             networks.map((network: WifiNetwork, index: number) => (

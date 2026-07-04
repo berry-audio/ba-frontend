@@ -7,7 +7,7 @@ interface SelectAlsaDevicesProps {
   value?: string | null;
   onChange: (value: string | null) => void;
   placeholder?: string;
-  card?: string;
+  device?: string;
 }
 
 function SelectAlsaVolumeDevice(props: SelectAlsaDevicesProps) {
@@ -16,11 +16,11 @@ function SelectAlsaVolumeDevice(props: SelectAlsaDevicesProps) {
 
   useEffect(() => {
     const fetchVolumeDevices = async () => {
-      const response = await getAlsaVolumeDevices(props?.card);
+      const response = await getAlsaVolumeDevices(props?.device);
       setDevices(response);
     };
     fetchVolumeDevices();
-  }, [props.card]);
+  }, [props.device]);
 
   const items = devices.map((device) => ({
     label: device.name,
@@ -29,7 +29,7 @@ function SelectAlsaVolumeDevice(props: SelectAlsaDevicesProps) {
   }));
 
   const hasCurrentValue = devices.some((device) => device.name === props.value);
-  const value = hasCurrentValue ? props.value : null;
+  const value = hasCurrentValue ? props?.value : null;
 
   return <SelectComboBox items={items} {...props} value={value} />;
 }

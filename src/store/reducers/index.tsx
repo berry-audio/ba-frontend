@@ -11,12 +11,14 @@ import { networkReducer } from "./networkReducer";
 import { tracklistReducer } from "./tracklistReducer";
 import { configReducer } from "./configReducer";
 import { multiroomReducer } from "./multiroomReducer";
+import { drawerReducer } from "./drawerReducer";
 
 export const rootReducer = combineReducers({
   socket: socketReducer,
   event: eventReducer,
   dialog: dialogReducer,
   overlay: overlayReducer,
+  drawer: drawerReducer,
   player: playerReducer,
   system: systemReducer,
   scan: scanReducer,
