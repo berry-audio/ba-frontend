@@ -25,7 +25,7 @@ const PlayPauseButton = () => {
 
   return (
     <ButtonIcon
-      className="w-16 h-16 dark:bg-black bg-neutral-900 hover:bg-black! dark:hover:bg-neutral-800! text-white"
+      className="w-16 h-16  bg-neutral-700 hover:bg-black! dark:bg-black dark:hover:bg-neutral-700! text-white"
       onClick={onClickPlayPause}
       disabled={!source?.controls?.includes("play")}
     >

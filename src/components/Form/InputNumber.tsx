@@ -19,7 +19,7 @@ export function InputNumber({ value, min = 1, max = 10000, onChange }: InputNumb
   return (
     <div className="flex flex-col space-y-2 w-40">
       <div className="flex">
-        <Button type="button" onClick={() => updateValue(value - step)} className="rounded-r-none bg-popover h-full px-3 ">
+        <Button type="button" onClick={() => updateValue(value - step)} className="rounded-r-none h-full px-3 ">
           −
         </Button>
         <Input
@@ -31,7 +31,7 @@ export function InputNumber({ value, min = 1, max = 10000, onChange }: InputNumb
           }}
           className="text-center rounded-none"
         />
-        <Button type="button" onClick={() => updateValue(value + step)} className="rounded-l-none bg-popover h-full px-3">
+        <Button type="button" onClick={() => updateValue(value + step)} className="rounded-l-none h-full px-3">
           +
         </Button>
       </div>

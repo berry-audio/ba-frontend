@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSearchService } from "@/services/search";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/Form/Input";
-import { Album, AnyItem, Artist, Category } from "@/types";
+import { AnyItem, Artist, Album, Category } from "@/types";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DRAWER_EVENTS, OVERLAY_EVENTS } from "@/store/constants";
-import { MODEL } from "@/constants/refs";
+import { MODEL, REF } from "@/constants/refs";
 
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
+import ListItemSkeleton from "../Item/ListItemSkeleton";
+import VirtualScroll from "../VirtualScroll";
 import NoItems from "@/components/Item/NoItems";
 import Overlay from "@/components/Overlay";
 import Page from "@/components/Page";
-import ItemWrapper from "@/components/Wrapper/ItemWrapper";
-import ListItem from "../Item/ListItem";
-import ListItemSkeleton from "../Item/ListItemSkeleton";
-
-type SearchResults = Record<string, AnyItem[]>;
+import Tabs from "../ui/tabs";
 
 interface RootState {
   overlay: {
@@ -27,18 +24,43 @@ interface RootState {
 
 const OverlaySearch = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { overlay } = useSelector((state: RootState) => state.overlay);
   const { getSearch } = useSearchService();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [results, setResults] = useState<SearchResults>({});
+  const [results, setResults] = useState<any>({});
+  const [filteredResults, setFilteredResults] = useState<AnyItem[]>([]);
+
   const [query, setQuery] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<REF>(REF.ALL);
+  const [directory, setDirectory] = useState<Record<string, { title: string }>>({
+    [REF.ALL]: {
+      title: "All",
+    },
+  });
+
+  const directoryItems = {
+    [REF.ALL]: {
+      title: "All",
+    },
+    [REF.ALBUM]: {
+      title: "Albums",
+    },
+    [REF.ARTIST]: {
+      title: "Artists",
+    },
+    [REF.TRACK]: {
+      title: "Tracks",
+    },
+    [REF.RADIO]: {
+      title: "Radio",
+    },
+  } as const;
 
   useEffect(() => {
     if (!query.trim()) {
-      setResults({});
+      setResults([]);
       setIsLoading(false);
       return;
     }
@@ -51,10 +73,18 @@ const OverlaySearch = () => {
         const response = await getSearch(query.trim());
         if (isActive) {
           setResults(response || {});
+          setFilteredResults(Object.values(response || {}).flat() as []);
+
+          const availableTabs = {
+            [REF.ALL]: directoryItems[REF.ALL],
+            ...Object.fromEntries(Object.entries(directoryItems).filter(([key]) => key !== REF.ALL && key in response)),
+          };
+          setDirectory(availableTabs);
         }
       } catch (error) {
         if (isActive) {
           setResults({});
+          setFilteredResults([]);
         }
       } finally {
         if (isActive) {
@@ -68,14 +98,6 @@ const OverlaySearch = () => {
       clearTimeout(timeoutId);
     };
   }, [query]);
-
-  const title: Record<string, string> = {
-    album: "Albums",
-    artist: "Artists",
-    track: "Tracks",
-    genre: "Genre",
-    radio: "Radio",
-  };
 
   const hasResults = Object.values(results).some((arr) => Array.isArray(arr) && arr.length > 0);
 
@@ -94,9 +116,21 @@ const OverlaySearch = () => {
     setIsLoading(true);
   };
 
+  const onTabChange = (tab: REF) => {
+    setActiveTab(tab);
+
+    const filteredResults = Object.entries(results)
+      .filter(([table]) => tab === REF.ALL || table === tab)
+      .flatMap(([, items]) => items) as AnyItem[];
+
+    setFilteredResults(filteredResults);
+  };
+
   const onClear = () => {
     setQuery("");
     setResults({});
+    setFilteredResults([]);
+    setActiveTab(REF.ALL)
     setIsLoading(false);
   };
 
@@ -106,6 +140,11 @@ const OverlaySearch = () => {
         <div className="px-4 mb-4">
           <Input type="text" placeholder="Search Albums, Artists, Tracks, Radio..." value={query} onChange={onChangeField} onClickClear={onClear} />
         </div>
+        {hasResults && (
+          <div className="px-4 mb-4">
+            <Tabs activeTab={activeTab} onTabChange={onTabChange} items={directory} />
+          </div>
+        )}
 
         <div>
           {isLoading && Array.from({ length: 6 }).map((_, i) => <ListItemSkeleton key={i} />)}
@@ -117,24 +156,7 @@ const OverlaySearch = () => {
           )}
 
           {!isLoading && hasResults && (
-            <LayoutHeightWrapper>
-              {Object.entries(results).map(
-                ([table, items]: [string, AnyItem[]]) =>
-                  items.length > 0 && (
-                    <div key={table} className="mt-4">
-                      <h2 className="pl-5 font-bold text-lg">{title[table] || table}</h2>
-
-                      <ul className="list-disc">
-                        {items.map((item: AnyItem) => (
-                          <ItemWrapper key={(item as Artist | Album | Category).uri}>
-                            <ListItem item={item} onClick={() => onClickItem(item)} />
-                          </ItemWrapper>
-                        ))}
-                      </ul>
-                    </div>
-                  ),
-              )}
-            </LayoutHeightWrapper>
+            <VirtualScroll items={filteredResults} onClickItem={onClickItem} className="lg:h-[calc(100dvh-260px)]! h-[calc(100dvh-220px)]!" />
           )}
         </div>
       </Page>

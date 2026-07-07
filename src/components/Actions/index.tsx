@@ -43,8 +43,8 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
       <button
         key={idx}
         onClick={() => handleAction(idx, item.action as any)}
-        className={`flex w-full items-center gap-2 px-4 py-3 md:py-2 text-left cursor-pointer hover:bg-primary hover:text-primary-foreground bg-popover ${
-          item.disabled ? "text-muted! hover:bg-popover disabled:opacity-50" : ""
+        className={`flex w-full items-center gap-2 px-4 py-3 md:py-2 text-left cursor-pointer hover:bg-primary hover:text-primary-foreground bg-foreground ${
+          item.disabled ? "text-disabled! hover:bg-background-hover disabled:opacity-50" : ""
         }`}
         disabled={item.disabled}
       >
@@ -67,7 +67,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
         </ButtonIcon>
 
         {isDropdownOpen && (
-          <div className="absolute overflow-auto max-h-60 right-0 mt-2 w-48 bg-popover shadow-lg rounded-md z-10 ">{items.map(renderButton)}</div>
+          <div className="absolute overflow-auto max-h-60 right-0 mt-2 w-48 bg-foreground shadow-lg rounded-md z-10 ">{items.map(renderButton)}</div>
         )}
       </div>
 
@@ -84,7 +84,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
             isDrawerOpen ? "translate-y-0" : "translate-y-full"
           }`}
         >
-          <div className="bg-popover">{items.map(renderButton)}</div>
+          <div className="bg-foreground">{items.map(renderButton)}</div>
         </div>
       </div>
     </div>

@@ -87,7 +87,7 @@ const Multiroom = () => {
                   <div className="flex items-center ">
                     {item?.name} <RenderStatus />
                   </div>
-                  <div className="flex items-center text-muted text-md">
+                  <div className="flex items-center text-disabled text-md">
                     {item?.ip == "127.0.0.1" && "This room - "} {item?.status}{" "}
                   </div>
                 </div>
@@ -178,7 +178,7 @@ const Multiroom = () => {
           <div className="mr-2">
             <ButtonIcon onClick={() => onClickToggleMuteHandler()}>
               {muted ? (
-                <SpeakerSlashIcon size={ICON_SM} weight={ICON_WEIGHT} className="text-muted" />
+                <SpeakerSlashIcon size={ICON_SM} weight={ICON_WEIGHT} className="text-disabled" />
               ) : (
                 <SpeakerHighIcon size={ICON_SM} weight={ICON_WEIGHT} />
               )}

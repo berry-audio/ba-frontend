@@ -476,6 +476,7 @@ export interface Tab {
 }
  
 export interface TitleTabsProps {
+  items: Record<string, { title: string; icon?: React.ReactNode }>;
   activeTab: string;
   onTabChange?: (tabId: REF) => void;
 }

@@ -84,7 +84,7 @@ const ListItem = ({ no, item, selected = false, onClick, selectable = false, fav
                     </div>
                   )}
                   {usage && (
-                    <div className="w-full bg-popover rounded-full h-1 mt-3 mb-1">
+                    <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
                       {usage.used && usage.total && (
                         <div
                           className={`${mounted ? "bg-primary" : ""} h-1 rounded-full`}

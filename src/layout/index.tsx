@@ -118,7 +118,7 @@ export default function Layout({ children }: { children: any }) {
   }, [connected]);
 
   return connected ? (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full relative bg-gradient-light bg-gradient-dark">
       <Menu />
       <div className="flex-1 overflow-hidden">{children}</div>
       <Player />

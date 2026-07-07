@@ -41,14 +41,14 @@ const Overlay = ({
     <div
       className={clsx(
         overlay
-          ? "bg-background w-full h-[100vh] absolute flex justify-center items-center text-center top-0 left-0 right-0"
-          : `bg-background w-full ${
+          ? "bg-gradient-light bg-gradient-dark w-full h-full absolute flex justify-center items-center text-center top-0 left-0 right-0"
+          : `bg-gradient-light bg-gradient-dark w-full ${
               full
-                ? "top-[0px] bottom-0"
-                : `top-[48px] ${
+                ? "top-0 bottom-0"
+                : `top-12 ${
                     hideplayer
-                      ? "bottom-[0px]"
-                      : "lg:bottom-[82px] bottom-[70px]"
+                      ? "bottom-0"
+                      : "lg:bottom-20.5 bottom-17.5"
                   }`
             } absolute overflow-hidden transform-gpu duration-800 ease-in-out left-0`,
         show

@@ -40,12 +40,12 @@ const SettingsLocal = () => {
         <div className="lg:px-0 px-6 py-3">
           {paths &&
             paths.map((uri: string) => (
-              <div key={uri} className="pl-4 pr-2 py-2 rounded-sm mt-1 flex items-center justify-between bg-popover hover:bg-primary">
+              <div key={uri} className="pl-4 pr-2 py-2 rounded-sm mt-1 flex items-center justify-between bg-foreground hover:bg-hover ">
                 <div className="flex items-center overflow-hidden">
                   <FolderIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" />
                   <TruncateText>{uri}</TruncateText>
                 </div>
-                <ButtonIcon className="text-right ml-5" onClick={() => libraryPathRemove(uri)}>
+                <ButtonIcon className="text-right ml-5 " onClick={() => libraryPathRemove(uri)}>
                   <TrashSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />
                 </ButtonIcon>
               </div>

@@ -9,25 +9,15 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-4xl: calc(var(--radius) + 16px);
-  --radius-full: calc(var(--radius) + 50px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --radius-full: calc(var(--radius) + 40px);
+
   --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--text-color);
+
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-ring: var(--primary);
 
   --font-size-xs: 11px;
   --font-size-sm: 13px;
@@ -38,47 +28,38 @@
 
 :root {
   --radius: 0.625rem;
-  --background: rgb(245, 245, 245);
-  --foreground: oklch(0.145 0 0);
-  --selected: #ababab2e;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --muted: rgba(0, 0, 0, 0.5);
-  --muted-foreground: oklch(0.556 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --input-foreground: oklch(10.668% 0.00001 271.152);
-  --ring: oklch(0.708 0 0);
   --primary: #db462b;
-  --primary-foreground: #ffffff;
-  --secondary: #737373;
-  --secondary-foreground: oklch(0.205 0 0);
-  --accent: #f24f34;
-  --accent-foreground: #ffffff;
-  --button-hover: rgba(189, 189, 189, 0.3);
+  --primary-text-hover: #ffffff;
+
+  --background: #eeeeee;
+  --background-foreground: var(--color-white);
+  --background-cover: var(--color-neutral-200);
+  --background-dialog: var(--color-neutral-100);
+
+  --background-hover: rgb(233, 233, 233);
+  --background-selected: rgba(189, 189, 189, 0.153);
+
+  --text-color: oklch(0.145 0 0);
+  --text-color-secondary: #737373;
+  --text-color-disabled: rgba(0, 0, 0, 0.5);
 }
 
 .dark {
-  --background: #1f1f1f;
-  --foreground: oklch(0.985 0 0);
-  --selected: #0000003f;
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: var(--color-neutral-950);
-  --popover-foreground: oklch(0.985 0 0);
-  --secondary: #737373;
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: #737373;
-  --muted-foreground: oklch(0.708 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --input-foreground: oklch(100% 0.00011 271.152);
-  --ring: oklch(0.556 0 0);
-  --button-hover: rgba(0, 0, 0, 0.3);
+  --radius: 0.625rem;
+  --primary: #db462b;
+  --primary-text-hover: #ffffff;
+
+  --background: #111111;
+  --background-foreground: #090909;;
+  --background-cover: var(--color-neutral-800);
+  --background-dialog: var(--color-neutral-900);
+
+  --background-hover: #323232;
+  --background-selected: rgba(189, 189, 189, 0.153);
+
+  --text-color: #ffffff;
+  --text-color-secondary: var(--color-neutral-400);
+  --text-color-disabled: rgba(0, 0, 0, 0.5);
 }
 
 @layer utilities {
@@ -98,75 +79,63 @@
     font-size: var(--font-size-sm);
   }
 
-  .bg-button-hover {
-    background-color: var(--button-hover);
+  .text-secondary {
+    color: var(--text-color-secondary);
   }
 
-  .hover\:bg-button-hover:hover {
-    background-color: var(--button-hover);
+  .text-disabled {
+    color: var(--text-color-disabled);
   }
 
-  .loader-foreground {
-    border-color: var(--foreground);
-    border-top-color: transparent;
+  .hover\:bg-hover:hover,
+  .bg-hover {
+    background-color: var(--background-hover);
+  }
+
+  .bg-gradient-light {
+    @apply bg-linear-to-t from-[#f5f5f5]  to-[#f7f7f7];
+  }
+
+  .dark .bg-gradient-dark {
+    @apply bg-linear-to-t from-[#1F1F1F]  to-[#111111];
+  }
+
+  .bg-cover {
+    background-color: var(--background-cover);
+  }
+
+  .bg-dialog {
+    background-color: var(--background-dialog);
   }
 
   .bg-input {
-    background-color: var(--popover);
+    background-color: var(--background-foreground);
   }
 
-  .bg-input:hover {
-    color: var(--input-foreground);
+  .bg-loader {
+    border-color: var(--text-color);
+    border-top-color: transparent;
   }
 
-  .bg-popover {
-    background-color: var(--popover);
-    color: var(--popover-foreground) !important;
-  }
-
-  .bg-popover:hover {
-    color: var(--primary-foreground) !important;
-  }
-
-  .bg-accent {
-    background-color: var(--accent);
-  }
-
-  .text-accent-foreground {
-    color: var(--accent-foreground);
+  .bg-foreground {
+    background-color: var(--background-foreground);
   }
 
   .bg-primary {
     background-color: var(--primary);
+    color: var(--primary-text-hover);
+  }
+
+  .hover\:bg-primary:hover {
+    color: var(--primary-text-hover);
   }
 
   .bg-selected {
-    background-color: var(--selected);
-  }
-
-  .text-primary-foreground {
-    color: var(--primary-foreground);
-  }
-
-  .text-primary {
-    color: var(--primary);
-  }
-
-  .text-secondary-foreground {
-    color: var(--secondary);
-  }
-
-  .text-muted {
-    color: var(--muted);
-  }
-
-  .bg-input-foreground {
-    background-color: var(--input-foreground);
+    background-color: var(--background-selected);
   }
 }
 
 @layer base {
-
   html,
   body,
   #root {
@@ -176,7 +145,7 @@
 
   body {
     background-color: var(--background);
-    color: var(--foreground) !important;
+    color: var(--text-color) !important;
     height: 100%;
     margin: 0;
     padding: 0;

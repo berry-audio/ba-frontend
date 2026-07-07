@@ -67,7 +67,7 @@ const GridItem = ({ item, shadow = false, onClick, style, onMeasure, favourite =
 
   return (
     <div
-      className="cursor-pointer relative p-2 lg:p-3 pb-6 hover:bg-button-hover rounded-md transition-all duration-200"
+      className="cursor-pointer relative p-2 lg:p-3 pb-6 hover:bg-hover rounded-md transition-all duration-200"
       onClick={onClickItem}
       ref={divRef}
       style={style}

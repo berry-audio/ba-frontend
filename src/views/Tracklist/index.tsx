@@ -53,7 +53,7 @@ const Tracklist = () => {
       <div className="mt-4">
       {loading &&
         Array.from({ length: 6 }).map((_, i) => (
-          <div className="ml-3">
+          <div className="ml-3" key={i}>
             <ListItemSkeleton key={i} />
           </div>
         ))}

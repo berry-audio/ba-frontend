@@ -1,4 +1,5 @@
 export enum REF {
+  ALL = "all",
   ALBUM = "album",
   ARTIST = "artist",
   TRACK = "track",

@@ -61,10 +61,9 @@ const Start = () => {
       path: "dsp",
     },
     {
-      name: "USB DAC",
-      icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "usbdac",
-      disabled: config.system.hardware !== "PI_ZERO_2W",
+      name: "Storage",
+      icon: <UsbIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "storage",
     },
     {
       name: "Library",
@@ -72,25 +71,27 @@ const Start = () => {
       path: "local/album",
     },
     {
+      name: "Radio",
+      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "radio",
+    },
+    {
       name: "FM Tuner",
       icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "tuner",
+    },
+    {
+      name: "USB DAC",
+      icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "usbdac",
+      disabled: config.system.hardware !== "PI_ZERO_2W",
     },
     {
       name: "Line In",
       icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "linein",
     },
-    {
-      name: "Storage",
-      icon: <UsbIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "storage",
-    },
-    {
-      name: "Radio",
-      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "radio",
-    },
+
     {
       name: "Bluetooth",
       icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_LG} />,
@@ -175,11 +176,11 @@ const Start = () => {
                     key={item.path}
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
-                    className={`hover:bg-button-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
+                    className={`hover:bg-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
                 cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "text-primary" : ""}`}
                   >
                     {loadingItem === item.path && (
-                      <div className="absolute bg-button-hover w-full h-full rounded-lg">
+                      <div className="absolute bg-foreground/30 w-full h-full rounded-lg">
                         <Spinner mode="light" />
                       </div>
                     )}

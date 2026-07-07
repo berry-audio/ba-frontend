@@ -16,7 +16,7 @@ const ButtonVolume = () => {
         <SpeakerSlashIcon
           size={ICON_SM}
           weight={ICON_WEIGHT}
-          className="mr-1 opacity-30"
+          className="mr-1 text-disabled"
         />
       ) : (
         <SpeakerHighIcon size={ICON_SM} weight={ICON_WEIGHT} className="mr-1" />

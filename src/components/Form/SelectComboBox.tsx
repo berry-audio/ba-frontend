@@ -24,7 +24,7 @@ function SelectComboBox({ items, placeholder, value, onChange }: ComboboxBox) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full md:w-87.5 justify-between h-12 border-0 bg-popover">
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full md:w-87.5 justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]">
           {value ? items.find((item) => item.value === value)?.label : placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

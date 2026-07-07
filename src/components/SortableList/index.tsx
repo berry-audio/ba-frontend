@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef, memo } from "react";
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { DotsSixVerticalIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { TlTrack } from "@/types";
@@ -15,20 +16,67 @@ const reorder = (list: TlTrack[], startIndex: number, endIndex: number) => {
   return result;
 };
 
+const Row = memo(function Row({ item, index, top, selectedTlid }: { item: TlTrack; index: number; top: number; selectedTlid?: number | string }) {
+  return (
+    <Draggable key={item.tlid} draggableId={`${item.tlid}`} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={{
+            position: "absolute",
+            top,
+            width: "100%",
+            ...provided.draggableProps.style,
+          }}
+          className={`overflow-hidden md:overflow-visible ${snapshot.isDragging ? "bg-hover rounded-md" : ""}`}
+        >
+          <ItemWrapper>
+            <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
+            <ListItem item={item} selected={item.tlid === selectedTlid} favourite />
+          </ItemWrapper>
+        </div>
+      )}
+    </Draggable>
+  );
+});
+
 export default function SortableList({
   tracks,
   onMoveCallback,
   onEvent,
+  itemSize = 72,
 }: {
   tracks: TlTrack[];
   onMoveCallback?: (start: number, end: number, to_position: number) => void;
   onEvent?: (event: string, payload: any, setItems: React.Dispatch<React.SetStateAction<TlTrack[]>>) => void;
+  height?: number;
+  itemSize?: number;
 }) {
   const action = useSelector((state: any) => state.event);
   const { current_track } = useSelector((state: any) => state.player);
-
   const [items, setItems] = useState<TlTrack[]>(tracks);
-  const [selectedTlid, setSelectedTlid] = useState<number | null>(current_track?.tlid);
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  const selectedTlid = current_track?.tlid;
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const node = parentRef.current;
+    if (!node) return;
+
+    const updateHeight = () => {
+      const top = node.getBoundingClientRect().top;
+      const available = window.innerHeight - top;
+      setContainerHeight(available - 40);
+    };
+
+    updateHeight();
+
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   useEffect(() => {
     setItems(tracks);
@@ -38,42 +86,69 @@ export default function SortableList({
     if (action.event && onEvent) {
       onEvent(action.event, action.payload, setItems);
     }
-  }, [action]);
+  }, [action, onEvent]);
 
-  useEffect(() => {
-    setSelectedTlid(current_track?.tlid);
-  }, [current_track?.tlid]);
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) return;
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    onMoveCallback?.(result.source.index, result.source.index + 1, result.destination.index);
-    const newItems: any = reorder(items, result.source.index, result.destination.index);
-    setItems(newItems);
-  };
+      const newItems = reorder(items, result.source.index, result.destination.index);
+      setItems(newItems);
+      onMoveCallback?.(result.source.index, result.source.index + 1, result.destination.index);
+    },
+    [items, onMoveCallback],
+  );
+
+  const rowVirtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => itemSize,
+    overscan: 6,
+  });
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
+      <Droppable
+        droppableId="droppable"
+        mode="virtual"
+        
+        renderClone={(provided, snapshot, rubric) => {
+          const item = items[rubric.source.index];
+          return (
+            <div
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={{ ...provided.draggableProps.style, height: itemSize }}
+              className={`overflow-hidden md:overflow-visible ${snapshot.isDragging ? "bg-hover rounded-md" : ""}`}
+            >
+              <ItemWrapper>
+                <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
+                <ListItem item={item} selected={item?.tlid === selectedTlid} favourite />
+              </ItemWrapper>
+            </div>
+          );
+        }}
+      >
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {items.map((item, index) => (
-              <Draggable key={`item-${item.tlid}-${index}`} draggableId={`item-${item.tlid}-${index}`} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={`overflow-hidden md:overflow-visible ${snapshot.isDragging ? "bg-popover rounded-md" : ""}`}
-                  >
-                    <ItemWrapper>
-                      <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
-                      <ListItem item={item} selected={item.tlid === selectedTlid} favourite/>
-                    </ItemWrapper>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
+          <div
+            ref={(node) => {
+              parentRef.current = node;
+              provided.innerRef(node);
+            }}
+            className="overflow-y-auto"
+            style={{ height: containerHeight }}
+          >
+            <div style={{ height: rowVirtualizer.getTotalSize(), position: "relative", width: "100%" }}>
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+                <Row
+                  key={items[virtualRow.index].tlid}
+                  item={items[virtualRow.index]}
+                  index={virtualRow.index}
+                  top={virtualRow.start}
+                  selectedTlid={selectedTlid}
+                />
+              ))}
+            </div>
           </div>
         )}
       </Droppable>

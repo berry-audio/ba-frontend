@@ -96,7 +96,7 @@ const Placeholder = ({
   return (
     <div
       style={{ width, height }}
-      className={`dark:bg-neutral-900 bg-white text-neutral-900 dark:text-white  flex items-center justify-center aspect-square w-full overflow-hidden ${
+      className={`bg-cover flex items-center justify-center aspect-square w-full overflow-hidden ${
         variant === "primary" ? "text-primary" : ""
       }`}
     >

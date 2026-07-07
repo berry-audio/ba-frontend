@@ -1,6 +1,6 @@
 import { QueueIcon } from "@phosphor-icons/react";
 import { useDispatch } from "react-redux";
-import { DRAWER_EVENTS } from "@/store/constants";
+import { DRAWER_EVENTS, OVERLAY_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import ButtonIcon from "@/components/Button/ButtonIcon";
@@ -14,6 +14,7 @@ const ButtonQueue = () => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
+    dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE });
     dispatch({ type: DRAWER_EVENTS.DRAWER_TRACKLIST });
   };
 
