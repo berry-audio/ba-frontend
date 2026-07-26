@@ -87,7 +87,7 @@ const Multiroom = () => {
                   <div className="flex items-center ">
                     {item?.name} <RenderStatus />
                   </div>
-                  <div className="flex items-center text-disabled text-md">
+                  <div className="flex items-center text-secondary text-md">
                     {item?.ip == "127.0.0.1" && "This room - "} {item?.status}{" "}
                   </div>
                 </div>

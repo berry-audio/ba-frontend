@@ -73,6 +73,7 @@ const StorageDirectory = () => {
           onClickCallback={onClickItem}
           onEvent={handleEvent}
           emptyComponent={<NoItems title="Empty Folder" desc="No files here" icon={<FolderOpenIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
+          favourite
         />
       )}
       {layout === "grid" && path && (
@@ -82,6 +83,7 @@ const StorageDirectory = () => {
           onClickCallback={onClickItem}
           onEvent={handleEvent}
           emptyComponent={<NoItems title="Empty Folder" desc="No files here" icon={<FolderOpenIcon weight={ICON_WEIGHT} size={ICON_SM} />} />}
+          favourite
         />
       )}
     </Page>

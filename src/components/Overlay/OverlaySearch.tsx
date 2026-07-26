@@ -103,11 +103,11 @@ const OverlaySearch = () => {
 
   const onClickItem = (item: AnyItem) => {
     if (item.__model__ === MODEL.TRACK) return;
-    const [view, id] = (item as Artist | Album | Category).uri.split(":");
+    const [ext, view, id] = (item as Artist | Album | Category).uri.split(":");
     dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE });
     dispatch({
       type: DRAWER_EVENTS.DRAWER_LOCAL,
-      payload: { view, id },
+      payload: { ext, view, id },
     });
   };
 

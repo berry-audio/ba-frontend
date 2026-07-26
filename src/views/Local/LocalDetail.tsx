@@ -18,7 +18,7 @@ import ScrollingText from "@/components/ScrollingText";
 import LocalDetailSkeleton from "./LocalDetailSkeleton";
 
 
-const LocalDetail = ({ view, id }: { view: REF; id: string }) => {
+const LocalDetail = ({ ext, view, id }: { ext: string, view: REF; id: string }) => {
   const dispatch = useDispatch();
   if (!view && !id) return;
 
@@ -31,7 +31,7 @@ const LocalDetail = ({ view, id }: { view: REF; id: string }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const [tracks, detail] = await Promise.all([getDirectory(`${view}:${id}:tracks`), getDirectory(`${view}:${id}`)]);
+      const [tracks, detail] = await Promise.all([getDirectory(`${ext}:${view}:${id}:tracks`), getDirectory(`${ext}:${view}:${id}`)]);
       setTracks(tracks);
       setItem(detail[0]);
       setLoading(false);
@@ -94,7 +94,7 @@ const LocalDetail = ({ view, id }: { view: REF; id: string }) => {
           <div className="w-full mt-5">
             {tracks.map((item: Track, index: number) => (
               <ItemWrapper key={item.uri ?? index}>
-                <ListItem item={item} favourite />
+                <ListItem item={item} showFavourite />
               </ItemWrapper>
             ))}
           </div>

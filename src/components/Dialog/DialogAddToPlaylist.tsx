@@ -73,7 +73,7 @@ const DialogAddToPlaylist = ({ item }: { item: AnyItem }) => {
       {loading ? (
         <Spinner />
       ) : (
-        <div ref={outerRef} className="h-[50vh] overflow-auto">
+        <div ref={outerRef} className="max-h-[50vh] overflow-auto">
           <div ref={innerRef}>
             {playlists.length === 0 ? (
               <NoItems title="No playlists" icon={<PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />} />

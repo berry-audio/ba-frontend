@@ -7,8 +7,8 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefault) =>
     getDefault({
-      immutableCheck: { warnAfter: 128 },
-      serializableCheck: { warnAfter: 128 },
+      immutableCheck: { warnAfter: 256 },
+      serializableCheck: { warnAfter: 256 },
     }).concat(socketMiddleware, toastMiddleware),
 });
 

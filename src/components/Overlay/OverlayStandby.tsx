@@ -8,7 +8,7 @@ const OverlayStandby = () => {
   const { power_state } = useSelector((state: any) => state.system);
 
   return (
-    <Overlay zindex={100} show={power_state === "standby"} overlay className="bg-black text-white">
+    <Overlay zindex={100} show={power_state === "standby"} overlay>
       <div className="top-5 right-5 absolute">
         <ButtonWake />
       </div>

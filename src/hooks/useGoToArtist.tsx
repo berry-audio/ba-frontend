@@ -7,11 +7,11 @@ export function useGoToArtist() {
 
   const handleGoToArtist = (item: AnyItem) => {
     if (!(item as Track)?.artists?.length) return;
-    const [view, id] = (item as Track)?.artists[0].uri.split(":");
+    const [ext, view, id] = (item as Track)?.artists[0].uri.split(":");
     dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE });
     dispatch({
       type: DRAWER_EVENTS.DRAWER_LOCAL,
-      payload: { view, id },
+      payload: { ext, view, id },
     });
   };
 

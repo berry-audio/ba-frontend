@@ -51,7 +51,7 @@ const Player = () => {
 
   return (
     <>
-      <div className="seek-slider seek-slider-mini relative z-10 bg-selected">
+      <div className="seek-slider seek-slider-mini relative z-10">
         <PositionSlider className="h-1" />
       </div>
       <div className="relative z-0">

@@ -17,7 +17,7 @@ const DrawerLocalDetail = () => {
 
   return (
     <Drawer open={drawer === DRAWER_EVENTS.DRAWER_LOCAL} onClick={onClickHandler}>
-      <LocalDetail view={payload?.view} id={payload?.id} />
+      <LocalDetail ext={payload?.ext} view={payload?.view} id={payload?.id} />
     </Drawer>
   );
 };

@@ -126,7 +126,7 @@ const List = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
               }
               return (
                 <ItemWrapper key={index}>
-                  <ListItem item={item} onClick={() => onClickCallback?.(item)} favourite={favourite} />
+                  <ListItem item={item} onClick={() => onClickCallback?.(item)} showFavourite={favourite} />
                 </ItemWrapper>
               );
             })}

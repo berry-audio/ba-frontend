@@ -2,7 +2,7 @@ export enum ACTIONS {
     PLAY_NOW = "play_now",
     PLAY_NEXT = "play_next",
     ADD_TO_SHELF = "add_to_shelf",
-    ADD_TO_FAVOURITES = "add_to_favourites",
+    FAVOURITE_ADDEDS = "FAVOURITE_ADDEDs",
     EDIT = 'edit',
     DELETE = 'delete',
     REMOVE = 'remove',

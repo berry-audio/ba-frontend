@@ -7,6 +7,8 @@ import { Toaster } from "sonner";
 
 import Layout from "./layout";
 import Spinner from "./components/Spinner";
+import Collection from "./views/Collection";
+import Test from "./views/Test";
 
 const Start = lazy(() => import("./views/Start"));
 const BluetoothView = lazy(() => import("./views/Bluetooth"));
@@ -62,6 +64,7 @@ const App = () => {
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Start />} />
+                <Route path="/test" element={<Test />} />
                 <Route path="/bluetooth" element={<BluetoothView />} />
                 <Route path="/spotify" element={<Start />} />
                 <Route path="/usbdac" element={<Start />} />
@@ -73,6 +76,7 @@ const App = () => {
                 <Route path="/playlist/:id" element={<PlaylistView />} />
                 <Route path="/local/" element={<Local />} />
                 <Route path="/local/:view?/" element={<Local />} />
+                <Route path="/collection/:view?/" element={<Collection />} />
                 <Route path="/radio" element={<Radio />} />
                 <Route path="/tuner" element={<Tuner />} />
                 <Route path="/storage/" element={<Storages />} />

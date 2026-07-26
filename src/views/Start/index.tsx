@@ -6,16 +6,17 @@ import {
   AirplayIcon,
   BluetoothIcon,
   FadersIcon,
+  FolderIcon,
   GearIcon,
   GlobeHemisphereWestIcon,
-  MemoryIcon,
   PlaylistIcon,
   RadioButtonIcon,
   RadioIcon,
   SpeakerHifiIcon,
   SpotifyLogoIcon,
-  UsbIcon,
+  StackIcon,
   VinylRecordIcon,
+  WaveSineIcon,
 } from "@phosphor-icons/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
@@ -29,6 +30,8 @@ import ButtonStandby from "@/components/Button/ButtonStandby";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
+import Collection from "@/components/Collection";
+import { REF } from "@/constants/refs";
 
 type SourceItem = {
   name: string;
@@ -56,13 +59,14 @@ const Start = () => {
       path: "playlist",
     },
     {
-      name: "DSP",
-      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "dsp",
+      name: "Collection",
+      icon: <StackIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "collection/recent",
     },
+
     {
       name: "Storage",
-      icon: <UsbIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <FolderIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "storage",
     },
     {
@@ -82,7 +86,7 @@ const Start = () => {
     },
     {
       name: "USB DAC",
-      icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "usbdac",
       disabled: config.system.hardware !== "PI_ZERO_2W",
     },
@@ -91,7 +95,6 @@ const Start = () => {
       icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "linein",
     },
-
     {
       name: "Bluetooth",
       icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_LG} />,
@@ -113,6 +116,11 @@ const Start = () => {
       path: "multiroom",
     },
     {
+      name: "DSP",
+      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      path: "dsp",
+    },
+    {
       name: "Settings",
       icon: <GearIcon weight={ICON_WEIGHT} size={ICON_LG} />,
       path: "settings",
@@ -124,11 +132,11 @@ const Start = () => {
     ["spotify", "shairportsync", "linein", "usbdac", "tuner"].includes(item.path) && (await setSource(item.path));
     navigate(`/${item.path}`);
     setLoadingItem(undefined);
-  };
+  }
 
   return (
     <Page
-      title="Source"
+      title=""
       rightComponent={
         <div className="flex h-12.5 items-center mr-4">
           <ButtonStandby />
@@ -138,10 +146,11 @@ const Start = () => {
       <LayoutHeightWrapper>
         <div className="px-4 flex items-center">
           <div className="w-full">
+            <h1 className="text-left text-xl font-semibold mb-2">Source</h1>
             <Swiper
               modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
-              spaceBetween={10}
-              slidesPerView={4}
+              spaceBetween={5}
+              slidesPerView={3.5}
               freeMode={true}
               resistance={false}
               touchReleaseOnEdges={true}
@@ -154,16 +163,16 @@ const Start = () => {
               }}
               breakpoints={{
                 640: {
-                  slidesPerView: 5,
+                  slidesPerView: 4.5,
                 },
                 768: {
-                  slidesPerView: 6,
+                  slidesPerView: 5.5,
                 },
                 1024: {
-                  slidesPerView: 6,
+                  slidesPerView: 5.5,
                 },
                 1280: {
-                  slidesPerView: 6,
+                  slidesPerView: 5.5,
                 },
               }}
               keyboard={{
@@ -193,14 +202,18 @@ const Start = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-
-            <div className="custom-pagination flex gap-2 items-center justify-center mt-4"></div>
           </div>
         </div>
 
-        <h1 className="text-left text-lg font-semibold mt-4">Recently Played</h1>
-
-        <h1 className="text-left text-lg font-semibold mt-4">Favourites</h1>
+        <div className="m-5">
+          <Collection type={REF.RECENT} limit={10} />
+        </div>
+        <div className="m-5">
+          <Collection type={REF.TOP100} limit={10} />
+        </div>
+        <div className="m-5 mb-7">
+          <Collection type={REF.FAVOURITE} limit={10} />
+        </div>
       </LayoutHeightWrapper>
     </Page>
   );

@@ -13,6 +13,7 @@ export interface Artist {
   year: string | null;
   biography: string | null;
   musicbrainz_id: string | null;
+  favourite: boolean;
 }
 
 export interface Album {
@@ -25,6 +26,7 @@ export interface Album {
   genre: string | null;
   date: string | null;
   musicbrainz_id: string | null;
+  favourite: boolean;
 }
 
 export interface Category {
@@ -63,6 +65,7 @@ export interface Track {
   channels: number;
   bit_depth: any;
   size: number | null;
+  favourite: boolean;
 }
 
 export interface Tuner {
@@ -74,6 +77,7 @@ export interface Tuner {
   channels?: number;
   sample_rate: number;
   bit_depth: string;
+  favourite: boolean;
 }
 
 export interface TlTrack {
@@ -474,7 +478,7 @@ export interface Tab {
   isActive?: boolean;
   onClick?: () => void;
 }
- 
+
 export interface TitleTabsProps {
   items: Record<string, { title: string; icon?: React.ReactNode }>;
   activeTab: string;

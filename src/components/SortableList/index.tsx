@@ -34,7 +34,7 @@ const Row = memo(function Row({ item, index, top, selectedTlid }: { item: TlTrac
         >
           <ItemWrapper>
             <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
-            <ListItem item={item} selected={item.tlid === selectedTlid} favourite />
+            <ListItem item={item} selected={item.tlid === selectedTlid} showFavourite />
           </ItemWrapper>
         </div>
       )}
@@ -123,7 +123,7 @@ export default function SortableList({
             >
               <ItemWrapper>
                 <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="-mr-3 ml-1" />
-                <ListItem item={item} selected={item?.tlid === selectedTlid} favourite />
+                <ListItem item={item} selected={item?.tlid === selectedTlid} showFavourite />
               </ItemWrapper>
             </div>
           );

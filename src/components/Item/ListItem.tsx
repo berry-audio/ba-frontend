@@ -2,10 +2,11 @@ import { CheckCircleIcon, CircleIcon, MusicNotesIcon, HeartIcon } from "@phospho
 import { formatNo, getDuration, getSubtitle, getTitle } from "@/util";
 import { AnyItem, Storage } from "@/types";
 import { usePlayNow } from "@/hooks/usePlayNow";
-import { useAddToFavourites } from "@/hooks/useAddToFavourites";
+import { useFavourites } from "@/hooks/useFavourites";
 import { useState } from "react";
 import { useMenuActions } from "@/hooks/useMenuActions";
-import { ICON_SM } from "@/constants";
+import { ICON_SM, ICON_XS } from "@/constants";
+import { MODEL } from "@/constants/refs";
 
 import TruncateText from "../TruncateText";
 import ListImageWrapper from "../Wrapper/ListImageWrapper";
@@ -20,10 +21,10 @@ interface ListItem {
   selected?: boolean;
   onClick?: () => void;
   selectable?: boolean;
-  favourite?: boolean;
+  showFavourite?: boolean;
 }
 
-const ListItem = ({ no, item, selected = false, onClick, selectable = false, favourite = false }: ListItem) => {
+const ListItem = ({ no, item, selected = false, onClick, selectable = false, showFavourite = false }: ListItem) => {
   const title = getTitle(item);
   const subtitle = getSubtitle(item);
   const duration = getDuration(item);
@@ -32,10 +33,11 @@ const ListItem = ({ no, item, selected = false, onClick, selectable = false, fav
 
   const { handlePlayNow } = usePlayNow();
   const { itemsMenu } = useMenuActions();
-  const { addToFavourites, loading: loadingFavourite } = useAddToFavourites();
+  const { toggleFavourite, isFavourite, mergeFavourite, loading: loadingFavourite } = useFavourites();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingCover, setLoadingCover] = useState<boolean>(false);
+  const [favourite, setFavourite] = useState<boolean>(isFavourite(item))
 
   const onClickItem = async () => {
     setLoading(true);
@@ -96,30 +98,34 @@ const ListItem = ({ no, item, selected = false, onClick, selectable = false, fav
                     </div>
                   )}
                 </div>
-                {favourite && (
+                   {duration && <div className="mr-4 text-secondary text-sm ">{duration}</div>}
+                {showFavourite && [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && (
                   <button
-                    onClick={async (e: React.MouseEvent<HTMLElement>) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
-                      await addToFavourites(item);
+                      setFavourite(await toggleFavourite(item))
                     }}
-                    className={`cursor-pointer rounded-md flex items-center justify-center z-3 hover:text-primary opacity-0 group-hover:opacity-100`}
+                    className={`cursor-pointer rounded-md flex items-center justify-center z-3 ${
+                      favourite ? "text-primary opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
+                    }`}
                   >
-                    {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_SM} weight={"fill"} />}
+                    {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight={favourite ? "fill" : "regular"} />}
                   </button>
                 )}
-
-                {duration && <div className="ml-4 text-secondary text-sm ">{duration}</div>}
+               
               </div>
             </div>
           </div>
         </div>
       </div>
       {selectable ? (
-        <div className="pr-4">{selected ? <CheckCircleIcon weight="fill" size={ICON_SM} /> : <CircleIcon size={25} className="opacity-50" />}</div>
+        <div className="pr-4">
+          {selected ? <CheckCircleIcon weight="fill" size={ICON_SM} className="text-primary" /> : <CircleIcon size={25} className="opacity-50" />}
+        </div>
       ) : (
         itemsMenu(item).length > 0 && (
           <div className="pr-2" onClick={(e) => e.stopPropagation()}>
-            <ActionMenu items={itemsMenu(item)} />
+            <ActionMenu items={itemsMenu(mergeFavourite(item, favourite))} />
           </div>
         )
       )}

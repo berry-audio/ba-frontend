@@ -3,6 +3,7 @@ import {
   BluetoothSlashIcon,
   EjectSimpleIcon,
   HardDriveIcon,
+  HeartIcon,
   InfoIcon,
   NetworkIcon,
   NetworkSlashIcon,
@@ -11,7 +12,6 @@ import {
   PlaylistIcon,
   QueueIcon,
   StackPlusIcon,
-  StarIcon,
   TrashIcon,
   TrashSimpleIcon,
   UserIcon,
@@ -29,7 +29,7 @@ import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import { MODEL } from "@/constants/refs";
 import { useLibraryInfo } from "./useLibraryInfo";
 import { useBluetoothService } from "@/services/bluetooth";
-import { useAddToFavourites } from "./useAddToFavourites";
+import { useFavourites } from "./useFavourites";
 
 export interface MenuItem {
   name: string;
@@ -45,13 +45,13 @@ export const useMenuActions = () => {
   const { handleGoToArtist } = useGoToArtist();
   const { handleGoToAlbum } = useGoToAlbum();
   const { handleArtistInfo } = useLibraryInfo();
-  const { addToFavourites } = useAddToFavourites();
+  const { toggleFavourite } = useFavourites();
   const { libraryPathAdd, directoryShare, directoryUnshare, storageMount, storageUnMount, storageUnMountShared } = useStorageActions();
   const { playlistAddDialog, playlistRemoveTrack, playlistRenameDialog, playlistDeleteDialog } = usePlaylistActions();
   const { removeDevice, disconnectDevice, connectDevice } = useBluetoothService();
   const { tracklistRemove } = useTracklistActions();
 
-  const itemsMenu = (item: AnyItem): MenuItem[] => {
+  const itemsMenu = (item: AnyItem, onClickCallback?: (action: string, response: any) => void): MenuItem[] => {
     switch (item.__model__) {
       case MODEL.STORAGE:
         return [
@@ -123,8 +123,8 @@ export const useMenuActions = () => {
           },
           {
             name: "Favourite",
-            icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => addToFavourites(item),
+            icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+            action: () => toggleFavourite(item),
           },
           {
             name: "Add to Playlist",
@@ -176,8 +176,8 @@ export const useMenuActions = () => {
           },
           {
             name: "Favourite",
-            icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => addToFavourites(item),
+            icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+            action: () => toggleFavourite(item),
           },
 
           {
@@ -219,11 +219,13 @@ export const useMenuActions = () => {
             : []),
 
           {
-            name: "Favourite",
-            icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => addToFavourites(item),
+            name: item?.favourite ? "Unfavourite" : "Favourite",
+            icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+            action: () => {
+              const response = toggleFavourite(item);
+              onClickCallback && onClickCallback("favourite", response);
+            },
           },
-
           {
             name: "Add to Playlist",
             icon: <PlaylistIcon size={ICON_XS} weight={ICON_WEIGHT} />,
@@ -260,8 +262,8 @@ export const useMenuActions = () => {
             : []),
           {
             name: "Favourite",
-            icon: <StarIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => addToFavourites(item.track),
+            icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+            action: () => toggleFavourite(item.track),
           },
           {
             name: "Add to Playlist",

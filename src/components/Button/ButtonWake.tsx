@@ -9,7 +9,7 @@ const ButtonWake = () => {
 
   return (
       <ButtonIcon onClick={async () => await setStandby()}>
-        <PowerIcon weight={ICON_WEIGHT} size={ICON_SM} className="text-white" />
+        <PowerIcon weight={ICON_WEIGHT} size={ICON_SM} />
       </ButtonIcon>
   );
 };

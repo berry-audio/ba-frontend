@@ -86,7 +86,7 @@ const SettingsMixer = () => {
                   <FormItem>
                     <FormLabel className="text-base block">DT Overlay</FormLabel>
                     <div className="pb-4 text-secondary text-md">
-                      While this is automatically set if you need to set it manually. please refer to your DAC manufacturer’s documentation for this
+                      While this is automatically set if you need to set it manually. please refer to your DAC manufacturer’s documentation
                     </div>
                     <FormControl>
                       <Input placeholder="" {...field} value={field.value ?? ""} />

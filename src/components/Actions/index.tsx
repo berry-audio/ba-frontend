@@ -2,6 +2,7 @@ import Spinner from "../Spinner";
 import ButtonIcon from "../Button/ButtonIcon";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { ICON_SM } from "@/constants";
 import { MenuItem } from "@/hooks/useMenuActions";
@@ -12,15 +13,36 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownMenuRef = useRef<HTMLDivElement>(null);
+
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+
+  const toggleDropdown = () => {
+    if (!isDropdownOpen && dropdownRef.current) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 8,
+        left: rect.right - 192,
+      });
+    }
+    setDropdownOpen((o) => !o);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+
+      if (dropdownRef.current && !dropdownRef.current.contains(target) && dropdownMenuRef.current && !dropdownMenuRef.current.contains(target)) {
         setDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleAction = async (index: number, action: () => void | Promise<void>) => {
@@ -60,15 +82,26 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
         <ButtonIcon
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
-            setDropdownOpen((o) => !o);
+            toggleDropdown();
           }}
         >
           <DotsThreeIcon size={ICON_SM} />
         </ButtonIcon>
 
-        {isDropdownOpen && (
-          <div className="absolute overflow-auto max-h-60 right-0 mt-2 w-48 bg-foreground shadow-lg rounded-md z-10 ">{items.map(renderButton)}</div>
-        )}
+        {isDropdownOpen &&
+          createPortal(
+            <div
+              ref={dropdownMenuRef}
+              className="fixed z-50 overflow-auto max-h-60 w-48 bg-foreground shadow-lg rounded-md"
+              style={{
+                top: dropdownPosition.top,
+                left: dropdownPosition.left,
+              }}
+            >
+              {items.map(renderButton)}
+            </div>,
+            document.body,
+          )}
       </div>
 
       {/* Mobile */}
@@ -77,15 +110,20 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
           <DotsThreeIcon size={24} />
         </ButtonIcon>
 
-        {isDrawerOpen && <div className="fixed inset-0 z-10 -top-12" onClick={() => setDrawerOpen(false)} />}
+        {createPortal(
+          <>
+            {isDrawerOpen && <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setDrawerOpen(false)} />}
 
-        <div
-          className={`fixed  z-100 overflow-auto max-h-60 -bottom-px left-0 right-0  rounded-t-sm shadow-lg transform transition-transform duration-200  ${
-            isDrawerOpen ? "translate-y-0" : "translate-y-full"
-          }`}
-        >
-          <div className="bg-foreground">{items.map(renderButton)}</div>
-        </div>
+            <div
+              className={`fixed bottom-0 left-0 right-0 z-50 transform transition-transform duration-200 ${
+                isDrawerOpen ? "translate-y-0" : "translate-y-full"
+              }`}
+            >
+              <div className="bg-foreground rounded-t-xl max-h-60 overflow-auto">{items.map(renderButton)}</div>
+            </div>
+          </>,
+          document.body,
+        )}
       </div>
     </div>
   );

@@ -19,10 +19,12 @@ const SettingsSupport = () => {
             <p>The joy of experiencing High Resolution music should not come at a cost.</p>
             <p>
               In the world of paid cloud subscriptions and closed product ecosystems. I build open-source, privacy-first self hosted tools that keep
-              you in control of your own data. Your support helps maintain this project and fund new features for you and the community.
+              you in control of your own data. Your support helps maintain this project and fund new features for you and the audiophile community.
             </p>
             <p>If you enjoy this project, please do consider buying me a coffee. Every contribution counts :) </p>
-            <br></br>
+            <i>- Varun Gujjar</i>
+             <br></br>
+             <br></br>
           </div>
           <Button type="primary" className="bg-black text-white" onClick={() => window.open("https://buymeacoffee.com/varungujjar", "_blank")}>
             ☕ buymeacoffee.com/varungujjar

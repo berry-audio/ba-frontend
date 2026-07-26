@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { FolderSimpleIcon, MusicNotesIcon, UserIcon, VinylRecordIcon } from "@phosphor-icons/react";
-import { useLocalService } from "@/services/local";
+import { useCollectionService } from "@/services/collection";
+import { FolderSimpleIcon } from "@phosphor-icons/react";
 import { Album, AnyItem, Artist, ViewMode } from "@/types";
 import { MODEL, REF } from "@/constants/refs";
 import { DRAWER_EVENTS } from "@/store/constants";
@@ -11,35 +11,36 @@ import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import Page from "@/components/Page";
 import Grid from "../../components/InfiniteScroll/Grid";
 import List from "../../components/InfiniteScroll/List";
-import ButtonLayoutToggle from "@/components/Button/ButtonLayoutToggle";
 import Tabs from "@/components/ui/tabs";
+import ButtonLayoutToggle from "@/components/Button/ButtonLayoutToggle";
 
-const Local = () => {
+const Collection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { view } = useParams<{ view: REF; id: string }>();
-  const { getDirectory } = useLocalService();
+  const { view } = useParams<{ view: REF }>();
+  const { getDirectory } = useCollectionService();
 
   const [layout, setLayout] = useState<ViewMode>("grid");
   const [activeTab, setActiveTab] = useState<REF>(view as REF);
 
+  useEffect(() => {
+    if (!view) return;
+    setActiveTab(view);
+  }, [view]);
+
   const directory = {
-    [REF.ALBUM]: {
-      title: "Albums",
-      icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_XS} />,
-    },
-    [REF.ARTIST]: {
-      title: "Artists",
-      icon: <UserIcon weight={ICON_WEIGHT} size={ICON_XS} />,
-    },
-    [REF.GENRE]: {
-      title: "Genre",
+    [REF.RECENT]: {
+      title: "Recently Played",
       icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_XS} />,
     },
-    [REF.TRACK]: {
-      title: "Tracks",
-      icon: <MusicNotesIcon weight={ICON_WEIGHT} size={ICON_XS} />,
+    [REF.TOP100]: {
+      title: "Top 100",
+      icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_XS} />,
+    },
+    [REF.FAVOURITE]: {
+      title: "Favourites",
+      icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_XS} />,
     },
   } as const;
 
@@ -55,13 +56,8 @@ const Local = () => {
 
   const onTabChange = (tab: REF) => {
     setActiveTab(tab);
-    navigate(`/local/${tab}`);
+    navigate(`/collection/${tab}`);
   };
-
-  useEffect(() => {
-      if (!view) return;
-      setActiveTab(view);
-    }, [view]);
 
   if (!view) return null;
 
@@ -76,10 +72,10 @@ const Local = () => {
       }
       backButton
     >
-      {layout === "list" && <List uri={`local:${view}`} getDirectory={getDirectory} onClickCallback={onClickItem} alphabets favourite />}
-      {layout === "grid" && <Grid uri={`local:${view}`} getDirectory={getDirectory} onClickCallback={onClickItem} alphabets favourite />}
+      {layout === "list" && <List uri={`collection:${view}`} getDirectory={getDirectory} onClickCallback={onClickItem} alphabets favourite />}
+      {layout === "grid" && <Grid uri={`collection:${view}`} getDirectory={getDirectory} onClickCallback={onClickItem} alphabets favourite />}
     </Page>
   );
 };
 
-export default Local;
+export default Collection;

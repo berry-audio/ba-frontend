@@ -6,7 +6,6 @@ import {
   GearIcon,
   HandHeartIcon,
   InfoIcon,
-  MemoryIcon,
   MonitorIcon,
   NetworkIcon,
   RadioButtonIcon,
@@ -14,6 +13,7 @@ import {
   SpeakerHifiIcon,
   SpeakerHighIcon,
   StackIcon,
+  WaveSineIcon,
 } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
@@ -44,7 +44,7 @@ const SettingsItems: SettingsItem[] = [
   {
     name: "USB DAC",
     alias: "usbdac",
-    icon: <MemoryIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/usbdac",
   },
   {

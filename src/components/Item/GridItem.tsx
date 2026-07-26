@@ -4,37 +4,42 @@ import { AnyItem, Track } from "@/types";
 import { getSubtitle } from "@/util";
 import { usePlayNow } from "@/hooks/usePlayNow";
 import { useMenuActions } from "@/hooks/useMenuActions";
-import CoverArt from "../CoverArt"; // ← add your actual import path
-import TruncateText from "../TruncateText"; // ← add your actual import path
+import { useFavourites } from "@/hooks/useFavourites";
+import { MODEL } from "@/constants/refs";
+
+import CoverArt from "../CoverArt";
+import TruncateText from "../TruncateText";
 import ActionMenu from "../Actions";
-import { useAddToFavourites } from "@/hooks/useAddToFavourites";
 
 interface GridItemProps {
   item: AnyItem;
   shadow?: boolean;
   onClickCoverArt?: () => void;
-  onClick?: () => void;
+  onClick?: (item: AnyItem) => void;
   cover_only?: boolean;
   style?: CSSProperties;
   onMeasure?: (height: number) => void;
-  favourite?: boolean;
+  showFavourite?: boolean;
 }
 
-const GridItem = ({ item, shadow = false, onClick, style, onMeasure, favourite = false }: GridItemProps) => {
+const GridItem = ({ item, shadow = false, onClick, style, onMeasure, showFavourite = false }: GridItemProps) => {
   const title = (item as Track).name;
   const subtitle = getSubtitle(item);
   const divRef = useRef<HTMLDivElement>(null);
 
   const { handlePlayNow } = usePlayNow();
-  const { addToFavourites, loading: loadingFavourite } = useAddToFavourites();
+  const { toggleFavourite, isFavourite, mergeFavourite, loading: loadingFavourite } = useFavourites();
   const { itemsMenu } = useMenuActions();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingCover, setLoadingCover] = useState<boolean>(false);
+  const [favourite, setFavourite] = useState<boolean>(isFavourite(item))
+
 
   const onClickItem = async () => {
     setLoading(true);
     try {
-      await Promise.resolve(onClick?.());
+      await Promise.resolve(onClick?.(item));
     } finally {
       setLoading(false);
     }
@@ -76,19 +81,22 @@ const GridItem = ({ item, shadow = false, onClick, style, onMeasure, favourite =
         <div>
           <CoverArt
             item={item}
+            size="lg"
             shadow={shadow}
             loadingPlay={loading || loadingCover}
             loadingFavourite={loadingFavourite}
+            favourited={favourite}
             onClickPlay={(e: React.MouseEvent<HTMLElement>) => {
               e.stopPropagation();
               onClickCoverArt();
             }}
-            {...(favourite && {
-              onClickFavourite: async (e: React.MouseEvent<HTMLElement>) => {
-                e.stopPropagation();
-                await addToFavourites(item);
-              },
-            })}
+            {...(showFavourite &&
+              [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && {
+                onClickFavourite: async (e: React.MouseEvent<HTMLElement>) => {
+                  e.stopPropagation();
+                  setFavourite(await toggleFavourite(item))
+                },
+              })}
           />
         </div>
         <div className="flex justify-between mt-2">
@@ -106,7 +114,7 @@ const GridItem = ({ item, shadow = false, onClick, style, onMeasure, favourite =
           </div>
           {itemsMenu(item).length > 0 && (
             <div className="-mr-2" onClick={(e) => e.stopPropagation()}>
-              <ActionMenu items={itemsMenu(item)} />
+              <ActionMenu items={itemsMenu(mergeFavourite(item, favourite))} />
             </div>
           )}
         </div>

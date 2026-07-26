@@ -106,6 +106,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
 
   const onClickAlphabet = async (alphabet: string) => {
     setIsLoading(true);
+    
     try {
       setSelectedAlpha(alphabet);
       selectedAlphaRef.current = alphabet;
@@ -180,7 +181,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
                       onClick={() => onClickCallback?.(item)}
                       style={{ width: `${100 / columns}%` }}
                       onMeasure={(value) => !itemSize && setItemSize(Math.round(value))}
-                      favourite={favourite}
+                      showFavourite={favourite}
                     />
                   ))}
                 </div>

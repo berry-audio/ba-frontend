@@ -11,6 +11,9 @@ export enum REF {
   TUNER = "tuner",
   PLAYLIST = "playlist",
   ROOM = "room",
+  RECENT = "recent",
+  TOP100 = "top100",
+  FAVOURITE = "favourite",
 }
 
 export enum MODEL {
