@@ -63,7 +63,7 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <h1 className="text-left text-xl font-semibold">
+        <h1 className="text-left text-2xl">
           <Header />
         </h1>
 
@@ -104,7 +104,7 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
           }}
           breakpoints={{
             640: {
-              slidesPerView: 2.5,
+              slidesPerView: 3.5,
             },
             768: {
               slidesPerView: 3.5,

@@ -40,7 +40,7 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
               <CaretLeftIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           )}
-          {title && <h2 className={`text-2xl ${backButton && "ml-2"} font-light overflow-hidden text-ellipsis whitespace-nowrap`}>{title}</h2>}
+          {title && <h1 className={`text-2xl ${backButton && "ml-2"} font-light overflow-hidden text-ellipsis whitespace-nowrap`}>{title}</h1>}
         </div>
         {rightComponent && <div className="flex justify-end items-center shrink-0">{rightComponent}</div>}
       </div>

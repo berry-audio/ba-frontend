@@ -379,3 +379,38 @@ export const getDuration = (item: AnyItem): string | undefined => {
       return undefined;
   }
 };
+
+
+export const getUri = (item: AnyItem): string | undefined => {
+  if (!item) return;
+  switch (item.__model__) {
+    case MODEL.ALBUM:
+    case MODEL.TRACK:
+    case MODEL.TUNER:
+    case MODEL.FILE:
+    case MODEL.ARTIST:
+    case MODEL.PLAYLIST:
+    case MODEL.DIRECTORY:
+    case MODEL.CATEGORY:
+    case MODEL.STORAGE:
+      return item.uri;
+    case MODEL.TLTRACK:
+      return item.track.uri;
+    default:
+      return undefined;
+  }
+};
+
+
+  export const getFavourite = (item: AnyItem) => {
+    switch (item.__model__) {
+      case MODEL.ARTIST:
+      case MODEL.ALBUM:
+      case MODEL.TRACK:
+        return item.favourite;
+      case MODEL.TLTRACK:
+        return item.track.favourite;
+      default:
+        return false;
+    }
+  };

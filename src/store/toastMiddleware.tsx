@@ -9,10 +9,10 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
 
   switch (action.type) {
     //Favourite
-    case INTERNAL_EVENTS.FAVOURITE_ADDED:
+    case EVENTS.FAVOURITE_ADDED:
       toast.custom((id) =><ToastContent id={id} title={`Added to Favourites`} variant="success" />);
       break;
-    case INTERNAL_EVENTS.FAVOURITE_REMOVE:
+    case EVENTS.FAVOURITE_REMOVED:
       toast.custom((id) => <ToastContent id={id} title={`Removed to Favourites`} variant="warning" />);
       break;
 

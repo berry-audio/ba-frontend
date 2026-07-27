@@ -51,7 +51,7 @@ export const useMenuActions = () => {
   const { removeDevice, disconnectDevice, connectDevice } = useBluetoothService();
   const { tracklistRemove } = useTracklistActions();
 
-  const itemsMenu = (item: AnyItem, onClickCallback?: (action: string, response: any) => void): MenuItem[] => {
+  const itemsMenu = (item: AnyItem): MenuItem[] => {
     switch (item.__model__) {
       case MODEL.STORAGE:
         return [
@@ -122,7 +122,7 @@ export const useMenuActions = () => {
             action: () => handleGoToArtist(item),
           },
           {
-            name: "Favourite",
+            name: item?.favourite ? "Unfavourite" : "Favourite",
             icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
             action: () => toggleFavourite(item),
           },
@@ -175,7 +175,7 @@ export const useMenuActions = () => {
             action: () => handleGoToAlbum(item),
           },
           {
-            name: "Favourite",
+            name: item?.favourite ? "Unfavourite" : "Favourite",
             icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
             action: () => toggleFavourite(item),
           },
@@ -221,10 +221,7 @@ export const useMenuActions = () => {
           {
             name: item?.favourite ? "Unfavourite" : "Favourite",
             icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => {
-              const response = toggleFavourite(item);
-              onClickCallback && onClickCallback("favourite", response);
-            },
+            action: () => toggleFavourite(item),
           },
           {
             name: "Add to Playlist",
@@ -260,10 +257,10 @@ export const useMenuActions = () => {
                 },
               ]
             : []),
-          {
-            name: "Favourite",
+           {
+            name: item?.track.favourite ? "Unfavourite" : "Favourite",
             icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-            action: () => toggleFavourite(item.track),
+            action: () => toggleFavourite(item),
           },
           {
             name: "Add to Playlist",

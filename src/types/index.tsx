@@ -229,6 +229,7 @@ export interface File {
   name: string;
   size: number;
   ext: string;
+  favourite: boolean;
 }
 
 export interface NetworkState {

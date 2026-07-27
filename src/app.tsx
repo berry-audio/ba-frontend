@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 import Layout from "./layout";
 import Spinner from "./components/Spinner";
 import Collection from "./views/Collection";
-import Test from "./views/Test";
+// import Test from "./views/Test";
 
 const Start = lazy(() => import("./views/Start"));
 const BluetoothView = lazy(() => import("./views/Bluetooth"));
@@ -40,7 +40,7 @@ const SettingsSupport = lazy(() => import("./views/Settings/SettingsSupport"));
 
 const PageLoader = () => (
   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-    <Spinner/>
+    <Spinner />
   </div>
 );
 
@@ -64,7 +64,6 @@ const App = () => {
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Start />} />
-                <Route path="/test" element={<Test />} />
                 <Route path="/bluetooth" element={<BluetoothView />} />
                 <Route path="/spotify" element={<Start />} />
                 <Route path="/usbdac" element={<Start />} />
@@ -74,8 +73,9 @@ const App = () => {
                 <Route path="/tracklist" element={<Tracklist />} />
                 <Route path="/playlist/" element={<Playlists />} />
                 <Route path="/playlist/:id" element={<PlaylistView />} />
-                <Route path="/local/" element={<Local />} />
+                <Route path="/local/" element={<Navigate to="/local/album" replace />} />
                 <Route path="/local/:view?/" element={<Local />} />
+                <Route path="/collection/" element={<Navigate to="/collection/recent" replace />} />
                 <Route path="/collection/:view?/" element={<Collection />} />
                 <Route path="/radio" element={<Radio />} />
                 <Route path="/tuner" element={<Tuner />} />

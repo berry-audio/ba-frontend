@@ -112,16 +112,16 @@ const OverlayNowPlaying = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-5">
             {isTuner && (
-              <ButtonIcon className="w-12 h-12 md:ml-20" onClick={onClickSeekDown}>
+              <ButtonIcon className="md:ml-20" onClick={onClickSeekDown}>
                 <CaretLeftIcon size={ICON_SM} weight={ICON_WEIGHT} />
               </ButtonIcon>
             )}
 
             <div className="w-full">
-              <div className="flex items-center justify-center mt-5">
-                <h2 className="lg:text-4xl lg:mb-1 text-3xl font-semibold  max-w-[70%]">
+              <div className="flex items-center justify-center">
+                <h2 className="lg:text-4xl lg:mb-1 text-3xl font-semibold  max-w-[90%]">
                   {current_track?.track.name ? <ScrollingText text={current_track?.track.name} /> : source.name}
                 </h2>
               </div>
@@ -142,7 +142,7 @@ const OverlayNowPlaying = () => {
             </div>
 
             {isTuner && (
-              <ButtonIcon className="w-12 h-12 md:mr-20" onClick={onClickSeekUp}>
+              <ButtonIcon className="md:mr-20" onClick={onClickSeekUp}>
                 <CaretRightIcon size={ICON_SM} weight={ICON_WEIGHT} />
               </ButtonIcon>
             )}

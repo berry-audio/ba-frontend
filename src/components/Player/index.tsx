@@ -17,6 +17,7 @@ import PlayPauseButton from "./PlayPauseButton";
 import ButtonQueue from "../Button/ButtonQueue";
 import SourceDevice from "../Source/SourceDevice";
 import CoverArt from "../CoverArt";
+import ButtonWebRtc from "../Button/ButtonWebRtc";
 
 const Player = () => {
   const dispatch = useDispatch();
@@ -65,12 +66,8 @@ const Player = () => {
                   </div>
                   {source.uri && (
                     <div className="overflow-hidden max-w-80">
-                      <h2 className="tracking-tight ">
-                        {title ? <ScrollingText text={title} /> : source.name}
-                      </h2>
-                      <div className="text-secondary overflow-hidden text-md">
-                        {subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}
-                      </div>
+                      <h2 className="tracking-tight ">{title ? <ScrollingText text={title} /> : source.name}</h2>
+                      <div className="text-secondary overflow-hidden text-md">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
                     </div>
                   )}
                 </div>
@@ -88,6 +85,9 @@ const Player = () => {
 
           <div className="w-3/8 text-right">
             <div className="flex justify-end text-right items-center">
+              <div className="mr-5">
+                <ButtonWebRtc />
+              </div>
               <div className="flex items-center gap-3 w-50 max-w-xs mr-5">
                 <VolumeSlider classname="volume-slider " />
               </div>
@@ -110,12 +110,8 @@ const Player = () => {
                   </div>
                   {source.uri && (
                     <div className="text-left overflow-hidden">
-                      <h2 className={`tracking-tight text-white`}>
-                        {title ? <ScrollingText text={title} /> : source.name}
-                      </h2>
-                      <div className=" text-secondary mt-0 lg:-mt-1 text-sm">
-                        {subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}
-                      </div>
+                      <h2 className={`tracking-tight text-white`}>{title ? <ScrollingText text={title} /> : source.name}</h2>
+                      <div className=" text-secondary mt-0 lg:-mt-1 text-sm">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
                     </div>
                   )}
                 </div>
@@ -124,7 +120,7 @@ const Player = () => {
           </div>
 
           <div className="flex items-center w-2/6 justify-end z-20 relative text-white">
-            <div className="mr-2"></div>
+            <div className="mr-2"><ButtonWebRtc /></div>
             <PlayPauseButton />
           </div>
         </div>

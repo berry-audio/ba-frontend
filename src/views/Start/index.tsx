@@ -20,7 +20,7 @@ import {
 } from "@phosphor-icons/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
-import { ICON_LG, ICON_WEIGHT } from "@/constants";
+import { ICON_MD, ICON_WEIGHT } from "@/constants";
 
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/free-mode.css";
@@ -55,74 +55,74 @@ const Start = () => {
   const sources: SourceItem[] = [
     {
       name: "Playlists",
-      icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "playlist",
     },
     {
       name: "Collection",
-      icon: <StackIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "collection/recent",
+      icon: <StackIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+      path: "collection",
     },
 
     {
       name: "Storage",
-      icon: <FolderIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <FolderIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "storage",
     },
     {
       name: "Library",
-      icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_LG} />,
-      path: "local/album",
+      icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+      path: "local",
     },
     {
       name: "Radio",
-      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "radio",
     },
     {
       name: "FM Tuner",
-      icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "tuner",
     },
     {
       name: "USB DAC",
-      icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "usbdac",
       disabled: config.system.hardware !== "PI_ZERO_2W",
     },
     {
       name: "Line In",
-      icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "linein",
     },
     {
       name: "Bluetooth",
-      icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "bluetooth",
     },
     {
       name: "Spotify",
-      icon: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "spotify",
     },
     {
       name: "Airplay",
-      icon: <AirplayIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <AirplayIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "shairportsync",
     },
     {
       name: "Multiroom",
-      icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "multiroom",
     },
     {
       name: "DSP",
-      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "dsp",
     },
     {
       name: "Settings",
-      icon: <GearIcon weight={ICON_WEIGHT} size={ICON_LG} />,
+      icon: <GearIcon weight={ICON_WEIGHT} size={ICON_MD} />,
       path: "settings",
     },
   ];
@@ -146,7 +146,7 @@ const Start = () => {
       <LayoutHeightWrapper>
         <div className="px-4 flex items-center">
           <div className="w-full">
-            <h1 className="text-left text-xl font-semibold mb-2">Source</h1>
+            <h1 className="text-left text-2xl mb-2">Source</h1>
             <Swiper
               modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
               spaceBetween={5}
@@ -163,16 +163,16 @@ const Start = () => {
               }}
               breakpoints={{
                 640: {
-                  slidesPerView: 4.5,
+                  slidesPerView: 5.5,
                 },
                 768: {
-                  slidesPerView: 5.5,
+                  slidesPerView: 6.5,
                 },
                 1024: {
-                  slidesPerView: 5.5,
+                  slidesPerView: 6.5,
                 },
                 1280: {
-                  slidesPerView: 5.5,
+                  slidesPerView: 6.5,
                 },
               }}
               keyboard={{
@@ -186,7 +186,7 @@ const Start = () => {
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
                     className={`hover:bg-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "text-primary" : ""}`}
+                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "text-white bg-primary" : ""}`}
                   >
                     {loadingItem === item.path && (
                       <div className="absolute bg-foreground/30 w-full h-full rounded-lg">

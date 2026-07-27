@@ -12,7 +12,7 @@ export enum PLAYER_EVENTS {
 export enum INTERNAL_EVENTS {
   // Favourite
   FAVOURITE_ADDED = "event/favourite/add",
-  FAVOURITE_REMOVE = "event/favourite/remove",
+  FAVOURITE_REMOVED = "event/favourite/remove",
 
   // Tracklist
   TRACKLIST_ADD_TO_QUEUE = "event/tracklist/add",
