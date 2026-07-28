@@ -102,6 +102,11 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
     case INTERNAL_EVENTS.WLAN_SCAN_COMPLETED:
       toast.custom((id) => <ToastContent id={id} title="Wifi Scan Completed" variant="success" />);
       break;
+    
+     // Tuner Notifications
+    case EVENTS.TUNER_PRESET_SAVED:
+      toast.custom((id) => <ToastContent id={id} title="Preset saved" variant="success" />);
+      break;
 
     // Bluetooth Notifications
     case INTERNAL_EVENTS.BLUETOOTH_SCAN_COMPLETED:

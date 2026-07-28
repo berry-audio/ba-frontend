@@ -21,6 +21,7 @@ import Dialog from "@/components/Dialog";
 import OverlayVolume from "@/components/Overlay/OverlayVolume";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
 import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
+import { useTunerService } from "@/services/tuner";
 
 export default function Layout({ children }: { children: any }) {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export default function Layout({ children }: { children: any }) {
   const { getState, getCurrentTlTrack } = usePlaybackService();
   const { getMixerVolume, getMixerMute } = useMixerService();
   const { getSystemTime, getPowerState } = useSystemService();
+  const { getChannel } = useTunerService();
   const { getDevices } = useNetworkService();
   const { getSource } = useSourceService();
   const { getConfig } = useConfigService();
@@ -43,6 +45,7 @@ export default function Layout({ children }: { children: any }) {
           _getPowerState,
           _getState,
           _getAudioSource,
+          _getChannel,
           _tl_track,
           _value,
           _getRepeat,
@@ -56,6 +59,7 @@ export default function Layout({ children }: { children: any }) {
           getPowerState(),
           getState(),
           getSource(),
+          getChannel(),
           getCurrentTlTrack(),
           getSystemTime(),
           getRepeat(),
@@ -88,6 +92,11 @@ export default function Layout({ children }: { children: any }) {
         dispatch({
           type: INTERNAL_EVENTS.SOURCE_STATE,
           payload: { source: _getAudioSource },
+        });
+
+        dispatch({
+          type: EVENTS.TUNER_CHANNEL_UPDATED,
+          payload: { channel: _getChannel },
         });
 
         dispatch({

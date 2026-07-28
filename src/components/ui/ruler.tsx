@@ -11,6 +11,8 @@ const RULER_COLORS = {
   tickSelectedDark: "#f24f34",
   tickDimLight: "#999",
   tickDimDark: "#000000",
+  tickNeedleLight:"#000000",
+  tickNeedleDark:"#ffffff",
 
   // DOM elements — Tailwind class strings
   fill: "bg-orange-600",
@@ -19,7 +21,7 @@ const RULER_COLORS = {
 } as const;
 
 interface TunerRulerProps {
-  frequency?: number;
+  position?: number;
   onChange?: (freq: number) => void;
   onRelease?: (freq: number) => void;
 }
@@ -47,7 +49,7 @@ function drawTicks(canvas: HTMLCanvasElement, freq: number, isDark: boolean): vo
   const colorSel = isDark ? RULER_COLORS.tickSelectedDark : RULER_COLORS.tickSelectedLight;
   const colorDim = isDark ? RULER_COLORS.tickDimDark : RULER_COLORS.tickDimLight;
   const fillX = ((freq - MIN) / (MAX - MIN)) * W;
-//   const GAP = 3;
+  //   const GAP = 3;
 
   //   ctx.strokeStyle = colorSel;
   //   ctx.lineWidth = 1.5;
@@ -82,7 +84,7 @@ function drawTicks(canvas: HTMLCanvasElement, freq: number, isDark: boolean): vo
   const majorH = H * 0.6;
   const majorY = (H - majorH) / 2;
 
-  ctx.strokeStyle = "#ffffff";
+  ctx.strokeStyle = isDark ? RULER_COLORS.tickNeedleDark : RULER_COLORS.tickNeedleLight;
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(fillX, majorY);
@@ -90,8 +92,8 @@ function drawTicks(canvas: HTMLCanvasElement, freq: number, isDark: boolean): vo
   ctx.stroke();
 }
 
-export default function Ruler({ frequency = 1035, onChange, onRelease }: TunerRulerProps) {
-  const [freq, setFreq] = useState<number>(frequency);
+export default function Ruler({ position = MIN, onChange, onRelease }: TunerRulerProps) {
+  const [freq, setFreq] = useState<number>(position);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const dragging = useRef<boolean>(false);
@@ -112,8 +114,8 @@ export default function Ruler({ frequency = 1035, onChange, onRelease }: TunerRu
   }, [freq]);
 
   useEffect(() => {
-    setFreq(frequency);
-  }, [frequency]);
+    setFreq(position);
+  }, [position]);
 
   const getFreqFromEvent = useCallback((clientX: number): number => {
     if (!trackRef.current) return MIN;

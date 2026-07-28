@@ -4,10 +4,14 @@ export const useTunerService = () => {
   const { request } = useSocketRequest();
 
   return {
+    getTuners: () => request("tuner.devices"),
     getDirectory: (uri?: string, limit?: number, offset?: number) => request("tuner.directory", { uri, limit, offset }),
     getChannel: () => request("tuner.get_channel"),
     setChannel: (channel: number) => request("tuner.set_channel", { channel }),
     seekUp: (auto?: boolean) => request("tuner.seek_up", { auto }),
     seekDown: (auto?: boolean) => request("tuner.seek_down", { auto }),
+    presetAdd: (channel:number, name?:string) => request("tuner.preset_add", { channel, name }),
+    presetEdit: (channel:number, name?:string) => request("tuner.preset_edit", { channel, name }),
+    presetRemove: (channel:number, name?:string) => request("tuner.preset_remove", { channel, name }),
   };
 };

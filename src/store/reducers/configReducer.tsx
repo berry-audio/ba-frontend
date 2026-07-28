@@ -37,6 +37,7 @@ const initialState: State = {
       gain: 0,
     },
     tuner: {
+      hw_device:"",
       input_device: "",
       sample_rate: 0,
       bit_depth: "",

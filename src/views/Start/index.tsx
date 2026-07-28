@@ -126,13 +126,18 @@ const Start = () => {
       path: "settings",
     },
   ];
-
   const onClickHandler = async (item: SourceItem) => {
     setLoadingItem(item.path);
-    ["spotify", "shairportsync", "linein", "usbdac", "tuner"].includes(item.path) && (await setSource(item.path));
+    if (["spotify", "shairportsync", "linein", "usbdac", "tuner"].includes(item.path)) {
+      const response = await setSource(item.path);
+      if (!response) {
+        setLoadingItem(undefined);
+        return;
+      }
+    }
     navigate(`/${item.path}`);
     setLoadingItem(undefined);
-  }
+  };
 
   return (
     <Page
@@ -185,8 +190,8 @@ const Start = () => {
                     key={item.path}
                     disabled={item.disabled}
                     onClick={() => onClickHandler(item)}
-                    className={`hover:bg-hover touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "text-white bg-primary" : ""}`}
+                    className={`touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
+                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "bg-primary hover:bg-foreground dark:hover:text-black" : "hover:bg-hover"}`}
                   >
                     {loadingItem === item.path && (
                       <div className="absolute bg-foreground/30 w-full h-full rounded-lg">

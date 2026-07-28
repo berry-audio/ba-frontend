@@ -9,10 +9,11 @@ import Page from "@/components/Page";
 import ButtonSave from "@/components/Button/ButtonSave";
 import SelectSampleRate from "@/components/Form/SelectSampleRate";
 import SelectAlsaDevices from "@/components/Form/SelectAlsaDevices";
-import { Input } from "@/components/ui/input";
+import SelectTuner from "@/components/Form/SelectTuner";
 
 export const formSchema = z.object({
   tuner: z.object({
+    hw_device:z.string().nullable(),
     input_device: z.string().nullable(),
     sample_rate: z.number().min(1, "Sample rate is required"),
     gain: z.number(),
@@ -44,12 +45,12 @@ const SettingsTuner = () => {
             <div className="mb-6">
               <FormField
                 control={form.control}
-                name="tuner.input_device"
-                render={() => (
+                name="tuner.hw_device"
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base block">Tuner</FormLabel>
                     <FormControl>
-                      <Input placeholder="Si470x" value="Si4703" disabled/>
+                      <SelectTuner placeholder="Select Tuner" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -64,7 +65,9 @@ const SettingsTuner = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base block">Input device</FormLabel>
-                    <div className="pb-4 text-secondary text-md">Tuner audio will be captured from the following device. Works on souncards with ADC</div>
+                    <div className="pb-4 text-secondary text-md">
+                      Tuner audio will be captured from the following device. Works on souncards with ADC
+                    </div>
                     <FormControl>
                       <SelectAlsaDevices placeholder="Select Device" {...field} cmd="arecord" />
                     </FormControl>

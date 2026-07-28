@@ -72,7 +72,7 @@ export interface Tuner {
   __model__: MODEL.TUNER;
   uri: string;
   name: string;
-  frequency: number;
+  channel: number;
   audio_codec: string;
   channels?: number;
   sample_rate: number;
@@ -367,6 +367,18 @@ export interface AlsaVolumeDevice {
   muted: boolean;
 }
 
+export interface TunerDevice {
+  name: string;
+  device: string | null;
+  type: "i2c" | "usb" | null;
+  address: string | null;
+  channel_min: number | null;
+  channel_max: number | null;
+  channel_step: number | null;
+  channel_auto: boolean;
+  description: string | null;
+}
+
 export interface SelectOption {
   label: string;
   value: string;
@@ -416,6 +428,7 @@ export interface LineInConfig {
 }
 
 export interface TunerConfig {
+  hw_device: string;
   input_device: string;
   sample_rate: number;
   bit_depth: string;

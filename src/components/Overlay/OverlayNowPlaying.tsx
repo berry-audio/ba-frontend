@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { CaretDownIcon, CaretLeftIcon, CaretRightIcon, UserIcon, VinylRecordIcon } from "@phosphor-icons/react";
+import React from "react";
+import { CaretDownIcon, UserIcon, VinylRecordIcon } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTunerService } from "@/services/tuner";
 import { getAlbums, getArtists, getImage } from "@/util";
@@ -25,29 +25,25 @@ import ButtonQueue from "../Button/ButtonQueue";
 import Ruler from "../ui/ruler";
 import StreamInfo from "../Player/StreamInfo";
 import CoverArt from "../CoverArt";
+import ButtonAddPreset from "../Button/ButtonAddPreset";
+import SeekUpButton from "../Player/SeekUpButton";
+import SeekDownButton from "../Player/SeelDownButton";
 
 const OverlayNowPlaying = () => {
   const dispatch = useDispatch();
-  const { setChannel, getChannel, seekUp, seekDown } = useTunerService();
+
+  const { setChannel } = useTunerService();
   const { overlay } = useSelector((state: any) => state.overlay);
   const { source } = useSelector((state: any) => state.player);
   const { config } = useSelector((state: any) => state.config);
+  const { channel } = useSelector((state: any) => state.tuner);
   const { current_track, playback_state } = useSelector((state: any) => state.player);
-
-  const [freq, setFreq] = useState<number>(0);
 
   const image = getImage(current_track);
   const isTuner = ["tuner"].includes(source.uri);
   const isRenderer = ["bluetooth", "spotify", "shairportsync", "usbdac", "multiroom"].includes(source.uri);
   const hasArtist = current_track?.track.artists?.length > 0;
   const hasAlbum = current_track?.track?.albums?.length > 0;
-
-  useEffect(() => {
-    if (isTuner) {
-      if (!current_track?.track) return;
-      getChannel().then(setFreq);
-    }
-  }, [current_track?.track]);
 
   const onChange = (value: number) => {
     const name = `FM ${(value / 10).toFixed(2)} Mhz`;
@@ -58,17 +54,7 @@ const OverlayNowPlaying = () => {
   };
 
   const onRelease = async (value: number) => {
-    const current_channel = await getChannel();
-    if (current_channel === value) return;
     setChannel(value);
-  };
-
-  const onClickSeekUp = async () => {
-    await seekUp();
-  };
-
-  const onClickSeekDown = async () => {
-    await seekDown();
   };
 
   const ButtonCollapse = () => {
@@ -113,17 +99,19 @@ const OverlayNowPlaying = () => {
           </div>
 
           <div className="flex items-center justify-between mt-5">
-            {isTuner && (
-              <ButtonIcon className="md:ml-20" onClick={onClickSeekDown}>
-                <CaretLeftIcon size={ICON_SM} weight={ICON_WEIGHT} />
-              </ButtonIcon>
-            )}
+            {isTuner && <SeekDownButton />}
 
             <div className="w-full">
               <div className="flex items-center justify-center">
                 <h2 className="lg:text-4xl lg:mb-1 text-3xl font-semibold  max-w-[90%]">
                   {current_track?.track.name ? <ScrollingText text={current_track?.track.name} /> : source.name}
                 </h2>
+
+                {isTuner && (
+                  <div className="ml-2">
+                    <ButtonAddPreset />
+                  </div>
+                )}
               </div>
 
               {hasArtist ? (
@@ -141,11 +129,7 @@ const OverlayNowPlaying = () => {
               )}
             </div>
 
-            {isTuner && (
-              <ButtonIcon className="md:mr-20" onClick={onClickSeekUp}>
-                <CaretRightIcon size={ICON_SM} weight={ICON_WEIGHT} />
-              </ButtonIcon>
-            )}
+            {isTuner && <SeekUpButton />}
           </div>
 
           {isTuner && (
@@ -174,7 +158,7 @@ const OverlayNowPlaying = () => {
             <div className="mt-6 max-w-800 w-100">
               {isTuner ? (
                 <div className="-mb-7 -mt-9">
-                  <Ruler frequency={freq} onChange={onChange} onRelease={onRelease} />
+                  <Ruler position={channel} onChange={onChange} onRelease={onRelease} />
                 </div>
               ) : (
                 <PositionSlider className={"rounded-full"} showElapsedNumber={true} />
@@ -223,17 +207,13 @@ const OverlayNowPlaying = () => {
                   {current_track?.track.name ? <ScrollingText text={current_track?.track.name} /> : source.name}
                 </h2>
 
-                <div className="flex ml-5 -mb-2">
+                <div className="flex items-center ml-5 -mb-1">
                   {isTuner && (
-                    <ButtonIcon className="w-12 h-12 mr-5 " onClick={onClickSeekDown}>
-                      <CaretLeftIcon size={ICON_SM} weight={ICON_WEIGHT} />
-                    </ButtonIcon>
-                  )}
-
-                  {isTuner && (
-                    <ButtonIcon className="w-12 h-12" onClick={onClickSeekUp}>
-                      <CaretRightIcon size={ICON_SM} weight={ICON_WEIGHT} />
-                    </ButtonIcon>
+                    <>
+                      <ButtonAddPreset />
+                      <SeekDownButton />
+                      <SeekUpButton />
+                    </>
                   )}
                 </div>
               </div>
@@ -284,7 +264,7 @@ const OverlayNowPlaying = () => {
             </div>
           </div>
 
-          {isTuner && <Ruler frequency={freq} onChange={onChange} onRelease={onRelease} />}
+          {isTuner && <Ruler position={channel} onChange={onChange} onRelease={onRelease} />}
 
           <div className="items-center justify-center mt-2 w-full">
             <div className="flex justify-between items-center sm:hidden ">

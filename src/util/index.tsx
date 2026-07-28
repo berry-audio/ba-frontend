@@ -340,11 +340,11 @@ export const getSubtitle = (item: AnyItem): string | undefined => {
         return item.track?.artists?.map((artist: Artist) => artist.name).join(",") || "";
       }
       if (item.track.__model__ === MODEL.TUNER) {
-        return `FM ${item.track.frequency / 10} MHz`;
+        return `FM ${item.track.channel / 10} MHz`;
       }
       return undefined;
     case MODEL.TUNER:
-      return `FM ${(item as Tuner).frequency / 10} MHz`;
+      return `FM ${(item as Tuner).channel / 10} MHz`;
     case MODEL.FILE:
       return formatBytes(item.size);
     case MODEL.ARTIST:

@@ -56,6 +56,8 @@ export enum EVENTS {
   MULTIROOM_REMOVED = "multiroom_removed",
   MULTIROOM_ADDED = "multiroom_added",
   MULTIROOM_NOTIFICATION = "multiroom_notification",
+  TUNER_CHANNEL_UPDATED = "channel_updated",
+  TUNER_PRESET_SAVED = "preset_saved",
   SHOW_TOAST = "show_toast",
   HIDE_TOAST = "hide_toast",
   ERROR = "error",
