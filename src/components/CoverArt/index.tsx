@@ -47,7 +47,7 @@ const CoverArt = ({
           <img
             src={src}
             alt={title}
-            className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101 hover:scale-105"
+            className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101"
             onError={() => setImgError(true)}
           />
         ) : (
