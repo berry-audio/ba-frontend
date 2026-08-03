@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../berryaudio/web/www",
+    // outDir: "../berryaudio/web/www",
     rollupOptions: {
       output: {
         entryFileNames: `assets/[name].js`,

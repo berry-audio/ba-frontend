@@ -44,6 +44,10 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
   const usage = (item as Storage)?.usage;
 
   useEffect(() => {
+    setItem(_item);
+  }, [_item]);
+
+  useEffect(() => {
     if (![EVENTS.FAVOURITE_ADDED, EVENTS.FAVOURITE_REMOVED].includes(action.event)) {
       return;
     }

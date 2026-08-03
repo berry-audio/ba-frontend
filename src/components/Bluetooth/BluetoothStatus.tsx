@@ -9,7 +9,7 @@ const BluetoothStatus = () => {
 
   return (
     <ButtonIcon onClick={undefined}>
-      {devices.map((device: Bluetooth) => device.connected && <BluetoothDeviceIcon type={device.icon} />)}
+      {devices?.map((device: Bluetooth) => device.connected && <BluetoothDeviceIcon key={device.address} type={device.icon} />)}
     </ButtonIcon>
   );
 };
