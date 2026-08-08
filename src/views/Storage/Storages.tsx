@@ -1,6 +1,7 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStorageService } from "@/services/storage";
-import { GearIcon, HardDriveIcon } from "@phosphor-icons/react";
+import { ArrowsClockwiseIcon, GearIcon, HardDriveIcon } from "@phosphor-icons/react";
 import { AnyItem, Storage } from "@/types";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { EVENTS } from "@/constants/events";
@@ -9,12 +10,13 @@ import { REF } from "@/constants/refs";
 import Page from "@/components/Page";
 import ButtonIcon from "@/components/Button/ButtonIcon";
 import ButtonAddSmb from "@/components/Button/ButtonAddSmb";
-import List from "@/components/InfiniteScroll/List";
+import List, { ListRef } from "@/components/InfiniteScroll/List";
 import NoItems from "@/components/Item/NoItems";
 
 const Storages = () => {
   const navigate = useNavigate();
-
+  const listRef = useRef<ListRef>(null);
+  
   const { getDirectory } = useStorageService();
 
   const onClickItem = async (item: AnyItem) => {
@@ -46,6 +48,11 @@ const Storages = () => {
       title={"Storage"}
       rightComponent={
         <div className="flex items-center">
+        <div className="mr-4">
+            <ButtonIcon onClick={() => listRef.current?.refresh()}>
+              <ArrowsClockwiseIcon weight={ICON_WEIGHT} size={ICON_SM} />
+            </ButtonIcon>
+          </div>
           <div className="mr-4">
             <ButtonAddSmb />
           </div>
@@ -58,6 +65,7 @@ const Storages = () => {
       }
     >
       <List
+        ref={listRef}
         uri={REF.STORAGE}
         getDirectory={getDirectory}
         onClickCallback={onClickItem}

@@ -15,7 +15,9 @@ export const formSchema = z.object({
   tuner: z.object({
     hw_device:z.string().nullable(),
     input_device: z.string().nullable(),
-    sample_rate: z.number().min(1, "Sample rate is required"),
+    sample_rate: z.number({
+      error: () => "Sample rate is required",
+    }),
     gain: z.number(),
   }),
 });
@@ -83,8 +85,8 @@ const SettingsTuner = () => {
                 name="tuner.sample_rate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base block">Sample Rate (Hz)</FormLabel>
-                    <div className="pb-4 text-secondary text-md">Capture sample rate. Check your ADC specifications for supported sample rates.</div>
+                    <FormLabel className="text-base block">Capture Sample Rate (Hz)</FormLabel>
+                    <div className="pb-4 text-secondary text-md">Check your ADC specifications for supported sample rates.</div>
                     <FormControl>
                       <SelectSampleRate placeholder="Select sample rate" {...field} />
                     </FormControl>
@@ -100,7 +102,7 @@ const SettingsTuner = () => {
                 name="tuner.gain"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base block">Default Gain (dB)</FormLabel>
+                    <FormLabel className="text-base block">Gain (dB)</FormLabel>
                     <FormControl>
                       <InputNumber {...field} max={20} min={-20} />
                     </FormControl>

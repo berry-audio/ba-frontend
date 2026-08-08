@@ -25,6 +25,7 @@ const SettingsMultiroom = () => {
   });
 
   const { onSubmitHandler, loading } = useFormActions(form);
+  const isEnabled = form.watch("multiroom.server");
 
   return (
     <Page
@@ -69,7 +70,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Codec</FormLabel>
                     <FormControl>
-                      <SelectCodec placeholder="Select Codec" {...field} />
+                      <SelectCodec placeholder="Select Codec" {...field} disabled={!isEnabled}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -85,7 +86,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Chunk (ms)</FormLabel>
                     <FormControl>
-                      <InputNumber {...field} />
+                      <InputNumber {...field} disabled={!isEnabled}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,7 +102,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Buffer</FormLabel>
                     <FormControl>
-                      <InputNumber {...field} />
+                      <InputNumber {...field} disabled={!isEnabled}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

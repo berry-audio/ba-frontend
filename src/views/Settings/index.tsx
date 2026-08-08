@@ -16,10 +16,8 @@ import {
   WaveSineIcon,
 } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
-
 import Page from "@/components/Page";
 import ListMenu from "@/components/ListMenu";
-
 export interface SettingsItem {
   name: string;
   alias: string;
@@ -27,7 +25,6 @@ export interface SettingsItem {
   url: string;
   disabled?: boolean;
 }
-
 const SettingsItems: SettingsItem[] = [
   {
     name: "General",
@@ -42,41 +39,22 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/mixer",
   },
   {
+    name: "DSP",
+    alias: "dsp",
+    icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/dsp",
+  },
+  {
     name: "USB DAC",
     alias: "usbdac",
     icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/usbdac",
   },
   {
-    name: "Library",
-    alias: "local",
-    icon: <StackIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/local",
-  },
-
-  {
-    name: "Network",
-    alias: "network",
-    icon: <NetworkIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/network",
-  },
-  {
-    name: "Storage & Sharing",
-    alias: "sharing",
-    icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/storage",
-  },
-  {
     name: "Multiroom",
     alias: "multiroom",
     icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     url: "/settings/multiroom",
-  },
-  {
-    name: "Display",
-    alias: "display",
-    icon: <MonitorIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/display",
   },
   {
     name: "Line-in",
@@ -91,10 +69,28 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/tuner",
   },
   {
-    name: "DSP",
-    alias: "dsp",
-    icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_SM} />,
-    url: "/settings/dsp",
+    name: "Library",
+    alias: "local",
+    icon: <StackIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/local",
+  },
+  {
+    name: "Storage & Sharing",
+    alias: "sharing",
+    icon: <FolderSimpleIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/storage",
+  },
+  {
+    name: "Display",
+    alias: "display",
+    icon: <MonitorIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/display",
+  },
+  {
+    name: "Network",
+    alias: "network",
+    icon: <NetworkIcon weight={ICON_WEIGHT} size={ICON_SM} />,
+    url: "/settings/network",
   },
   {
     name: "System",
@@ -109,14 +105,11 @@ const SettingsItems: SettingsItem[] = [
     url: "/settings/support",
   },
 ];
-
 const Settings = () => {
   const navigate = useNavigate();
-
   const onClickHandler = async (source: any) => {
     if (source.url) navigate(source.url);
   };
-
   return (
     <Page backButton title="Settings">
       {SettingsItems.map((source: SettingsItem, index: number) => (
@@ -125,5 +118,4 @@ const Settings = () => {
     </Page>
   );
 };
-
 export default Settings;

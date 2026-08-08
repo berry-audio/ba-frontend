@@ -4,6 +4,7 @@ interface SelectTimezoneProps {
   value?: string;
   placeholder?: string;
   onChange: (value: string | null) => void;
+  disabled?: boolean;
 }
 
 const SelectCodec = ({ ...props }: SelectTimezoneProps) => {

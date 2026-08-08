@@ -85,11 +85,15 @@
   }
 
   .text-primary {
-      color: var(--primary);
+    color: var(--primary);
   }
 
   .text-secondary {
     color: var(--text-color-secondary);
+  }
+
+  .text-destructive {
+    color: var(--color-primary);
   }
 
   .text-disabled {

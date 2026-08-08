@@ -2,14 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormActions } from "@/hooks/useFormActions";
 import { useForm } from "react-hook-form";
 import { InputNumber } from "@/components/Form/InputNumber";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 import { z } from "zod";
 
 import Page from "@/components/Page";
@@ -18,7 +12,10 @@ import SelectSampleRate from "@/components/Form/SelectSampleRate";
 
 export const formSchema = z.object({
   usbdac: z.object({
-    sample_rate: z.number().min(1, "Sample rate is required"),
+    enable: z.boolean(),
+    sample_rate: z.number({
+      error: () => "Sample rate is required",
+    }),
     gain: z.number(),
   }),
 });
@@ -30,6 +27,7 @@ const SettingsUsbdac = () => {
 
   const { onSubmitHandler, config, loading } = useFormActions(form);
   const hardware = config.system.hardware;
+  const isEnabled = form.watch("usbdac.enable");
 
   return (
     <Page
@@ -50,22 +48,33 @@ const SettingsUsbdac = () => {
               <div className="mb-6">
                 <FormField
                   control={form.control}
+                  name="usbdac.enable"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base block">Enable USB DAC</FormLabel>
+                      <div className="pb-4 text-secondary text-md">Use your Raspberry Pi as a USB Soundcard.</div>
+                      <FormControl>
+                        <Switch {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="mb-6">
+                <FormField
+                  control={form.control}
                   name="usbdac.sample_rate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base block">
-                        Sample Rate (Hz)
-                      </FormLabel>
+                      <FormLabel className="text-base block">Capture Sample Rate (Hz)</FormLabel>
                       <div className="pb-4 text-secondary text-md">
-                        Capture sample rate. Check your DAC specifications for
-                        supported sample rates. Should not be higher than the
-                        DSP sample rate {config.dsp.resample_rate} Hz.
+                        Check your DAC specifications for supported sample rates. Should not be higher than the DSP sample rate{" "}
+                        {config.dsp.resample_rate} Hz.
                       </div>
                       <FormControl>
-                        <SelectSampleRate
-                          placeholder="Select sample rate"
-                          {...field}
-                        />
+                        <SelectSampleRate placeholder="Select sample rate" {...field} disabled={!isEnabled} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -79,11 +88,9 @@ const SettingsUsbdac = () => {
                   name="usbdac.gain"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base block">
-                        Default Gain (dB)
-                      </FormLabel>
+                      <FormLabel className="text-base block">Gain (dB)</FormLabel>
                       <FormControl>
-                        <InputNumber {...field} max={20} min={-20} />
+                        <InputNumber {...field} max={20} min={-20} disabled={!isEnabled} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -97,8 +104,7 @@ const SettingsUsbdac = () => {
         <>
           <h2 className="mt-3 text-xl">Information</h2>
           <div className="pb-4 text-secondary text-md">
-            Using this device as a USB DAC.<br></br>This feature is only available on
-            Raspberry Pi Zero 2W.
+            Using this device as a USB DAC.<br></br>This feature is only available on Raspberry Pi Zero 2W.
           </div>
         </>
       )}

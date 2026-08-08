@@ -15,16 +15,23 @@ export interface ComboboxBox {
   items: ComboboxItem[];
   placeholder?: string;
   value?: string | number | null;
-  onChange: (value: any) => void; 
+  onChange: (value: any) => void;
+  disabled?: boolean;
 }
 
-function SelectComboBox({ items, placeholder, value, onChange }: ComboboxBox) {
+function SelectComboBox({ items, placeholder, value, onChange, disabled = false }: ComboboxBox) {
   const [open, setOpen] = useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full md:w-87.5 justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]">
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full md:w-87.5 justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]"
+          disabled={disabled}
+        >
           {value ? items.find((item) => item.value === value)?.label : placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

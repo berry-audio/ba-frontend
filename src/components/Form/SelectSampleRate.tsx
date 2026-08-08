@@ -4,6 +4,7 @@ interface SelectSampleRateProps {
   value?: string | number | null;
   onChange: (value: string | number | null) => void;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const items: ComboboxItem[] = [
