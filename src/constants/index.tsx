@@ -1,11 +1,16 @@
 const dev = import.meta.env.DEV;
-const dev_host = import.meta.env.VITE_DEV_HOST;
-const host = dev ? dev_host : window.location.hostname;
+const devHost = import.meta.env.VITE_DEV_HOST;
 
-export const WEBSOCKET_URL = `ws://${host}/ws`;
-export const SERVER_URL = `http://${host}`;
-export const CAMILLA_DSP_URL = `http://${host}:8081`;
-export const WEBRTC_URL = `http://${host}:8082/stream`;
+const host = dev ? devHost : window.location.hostname;
+
+const httpProtocol = window.location.protocol;
+const wsProtocol = httpProtocol === "https:" ? "wss:" : "ws:";
+
+export const SERVER_URL = `${httpProtocol}//${host}`;
+export const WEBSOCKET_URL = `${wsProtocol}//${host}/ws`;
+
+export const CAMILLA_DSP_URL = `${httpProtocol}//${host}:8081`;
+export const WEBRTC_URL = `${httpProtocol}//${host}:8082/stream`;
 
 export const STROKE_WIDTH = 1.5;
 

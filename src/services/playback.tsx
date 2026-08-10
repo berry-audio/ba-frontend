@@ -11,7 +11,6 @@ export const usePlaybackService = () => {
     getState: () => request("playback.get_state"),
     play: (uri?: string, tlid?:number) => request("playback.play", { uri, tlid }),
     pause: () => request("playback.pause"),
-    resume: () => request("playback.resume"),
     stop: () => request("playback.stop"),
     next: () => request("playback.next"),
     prev: () => request("playback.previous"),
