@@ -21,6 +21,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
 import { ICON_MD, ICON_WEIGHT } from "@/constants";
+import { REF } from "@/constants/refs";
 
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/free-mode.css";
@@ -31,7 +32,6 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
 import Collection from "@/components/Collection";
-import { REF } from "@/constants/refs";
 
 type SourceItem = {
   name: string;

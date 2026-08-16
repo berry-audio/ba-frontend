@@ -8,7 +8,7 @@ const Tabs: React.FC<TitleTabsProps> = ({ items, activeTab, onTabChange }) => {
         <button
           key={key}
           onClick={() => onTabChange?.(key as REF)}
-          className={`px-3 py-2.5 rounded-full transition-colors whitespace-nowrap cursor-pointer flex items-center text-md ${
+          className={`px-4 py-2.5 rounded-full transition-colors whitespace-nowrap cursor-pointer flex items-center text-md  ${
             activeTab === key ? "bg-primary" : "hover:bg-hover"
           }`}
         >

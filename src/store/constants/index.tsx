@@ -51,6 +51,9 @@ export enum INTERNAL_EVENTS {
   CONFIG_STATE = "event/config/state",
   MIXER_STATE = "event/mixer/muted/state",
   SOURCE_STATE = "event/source/state",
+
+  //DSP
+  DSP_FILTER_SAVE = "dsp/filter/save",
 }
 
 export enum DIALOG_EVENTS {
@@ -87,3 +90,5 @@ export enum DRAWER_EVENTS {
   DRAWER_TRACKLIST = "drawer/tracklist",
   DRAWER_CLOSE = "drawer/close",
 }
+
+

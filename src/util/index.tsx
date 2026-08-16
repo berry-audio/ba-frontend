@@ -81,8 +81,10 @@ export const getChannels = (channels: number) => `${channels === 2 ? "Stereo" : 
 /**
  * Returns the track's sample rate in khz.
  */
-export const getSampleRate = (samplerate: number) => `${Math.floor((samplerate ?? 0) / 1000)}kHz`;
-
+export const getSampleRate = (samplerate: number) =>
+  samplerate >= 10000
+    ? `${samplerate / 1000}kHz`
+    : `${samplerate}Hz`;
 /**
  * Returns the track'saudio codec shortname.
  */
@@ -360,10 +362,7 @@ export const getSubtitle = (item: AnyItem): string | undefined => {
         .filter(Boolean)
         .join(" · ");
     case MODEL.STORAGE:
-      return item.usage
-          ? `${formatBytes(item.usage?.free as number)} available of ${formatBytes(item.usage?.total as number)}`
-          : "Unmounted"
-       ;
+      return item.usage ? `${formatBytes(item.usage?.free as number)} available of ${formatBytes(item.usage?.total as number)}` : "Unmounted";
     default:
       return undefined;
   }
@@ -379,7 +378,6 @@ export const getDuration = (item: AnyItem): string | undefined => {
       return undefined;
   }
 };
-
 
 export const getUri = (item: AnyItem): string | undefined => {
   if (!item) return;
@@ -401,16 +399,51 @@ export const getUri = (item: AnyItem): string | undefined => {
   }
 };
 
+export const getFavourite = (item: AnyItem) => {
+  switch (item.__model__) {
+    case MODEL.ARTIST:
+    case MODEL.ALBUM:
+    case MODEL.TRACK:
+      return item.favourite;
+    case MODEL.TLTRACK:
+      return item.track.favourite;
+    default:
+      return false;
+  }
+};
 
-  export const getFavourite = (item: AnyItem) => {
-    switch (item.__model__) {
-      case MODEL.ARTIST:
-      case MODEL.ALBUM:
-      case MODEL.TRACK:
-        return item.favourite;
-      case MODEL.TLTRACK:
-        return item.track.favourite;
-      default:
-        return false;
-    }
-  };
+/**
+ * Sends a JSON-RPC request and returns the result.
+ *
+ * @param method - The JSON-RPC method to call.
+ * @param id - The request ID.
+ * @param params - Parameters passed to the JSON-RPC method.
+ * @returns The result returned by the JSON-RPC server.
+ * @throws If the HTTP request fails or the response has no result.
+ */
+export async function fetchJsonRpc<T>(method: string, id: number, params = {}): Promise<T> {
+  const res = await fetch('http://berryaudio.local/rpc', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method,
+      params,
+      id,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+
+  if (!data.result) {
+    throw new Error("Missing result");
+  }
+
+  return data.result;
+}

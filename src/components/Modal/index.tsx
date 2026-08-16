@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className={`overflow-auto max-h-[50vh] ${!padding ? "px-5" : ""}`}>{children}</div>
+        <div className={`overflow-auto relative z-50 max-h-[50vh] ${!padding ? "px-5" : ""}`}>{children}</div>
 
         {/* Footer */}
         <div className="flex justify-end p-5">

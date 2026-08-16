@@ -7,20 +7,22 @@ import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
 export interface ComboboxItem {
   label: string;
-  value: string | number | null;
+  value: string | number | boolean | null;
   description?: string | null;
 }
 
 export interface ComboboxBox {
   items: ComboboxItem[];
   placeholder?: string;
-  value?: string | number | null;
+  value?: string | number | boolean | null;
   onChange: (value: any) => void;
   disabled?: boolean;
 }
 
 function SelectComboBox({ items, placeholder, value, onChange, disabled = false }: ComboboxBox) {
   const [open, setOpen] = useState(false);
+
+  const selected = value !== undefined && value !== null ? items.find((item) => item.value === value) : undefined;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -29,15 +31,15 @@ function SelectComboBox({ items, placeholder, value, onChange, disabled = false 
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full md:w-87.5 justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]"
+          className="w-full justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]"
           disabled={disabled}
         >
-          {value ? items.find((item) => item.value === value)?.label : placeholder}
+          {selected ? selected.label : placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="p-0 w-87.5">
+      <PopoverContent className="p-0 w-(--radix-popover-trigger-width)" align="start">
         <Command>
           <CommandInput placeholder="Search..." />
           <CommandList>
@@ -45,7 +47,7 @@ function SelectComboBox({ items, placeholder, value, onChange, disabled = false 
             <CommandGroup>
               {items?.map((item) => (
                 <CommandItem
-                  key={item.label}
+                  key={String(item.value)}
                   value={item.label}
                   onSelect={() => {
                     setOpen(false);

@@ -1,4 +1,3 @@
-import { SelectProps } from "antd";
 import { PLAYBACK_STATE, REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { MODEL, REF } from "@/constants/refs";
 
@@ -383,8 +382,6 @@ export interface SelectOption {
   label: string;
   value: string;
 }
-
-export interface CustomSelect<T = any> extends SelectProps<T> {}
 
 export type Nullable<T> = T | null;
 

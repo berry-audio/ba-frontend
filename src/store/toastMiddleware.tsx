@@ -162,6 +162,11 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
       toast.custom((id) => <ToastContent id={id} title={`Spotify user ${payload.name} disconnected`} variant="warning" />);
       break;
 
+    // DSP Notifications
+    case INTERNAL_EVENTS.DSP_FILTER_SAVE:
+      toast.custom((id) => <ToastContent id={id} title={`Filter ${payload.name} updated`} variant="success" />);
+      break;  
+
     // Airplay Notifications
     case EVENTS.SHAIRPORTSYNC_CONNECTED:
       toast.custom((id) => <ToastContent id={id} title={`Airplay device ${payload.name} connected`} variant="success" />);
