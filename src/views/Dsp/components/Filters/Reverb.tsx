@@ -4,39 +4,26 @@ import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InputNumber } from "@/components/Form/InputNumber";
 import { z } from "zod";
-
-import SelectComboBox from "@/components/Form/SelectComboBox";
-
-const OPTIONS_SCALE = [
-  { value: "linear", label: "Linear" },
-  { value: "dB", label: "dB" },
-];
-
-const OPTIONS_INVERTED = [
-  { value: true, label: "Yes" },
-  { value: false, label: "No" },
-];
-
-const OPTIONS_MUTE = [
-  { value: true, label: "Yes" },
-  { value: false, label: "No" },
-];
 
 const formSchema = z.object({
   type: z.string(),
   description: z.string(),
   parameters: z.object({
-    gain: z.number(),
-    inverted: z.boolean(),
-    mute: z.boolean(),
-    scale: z.string(),
+    reverberance: z.number(),
+    hf_damping: z.number(),
+    room_scale: z.number(),
+    stereo_depth: z.number(),
+    pre_delay_ms: z.number(),
+    wet_gain_db: z.number(),
+    wet: z.number(),
   }),
 });
 
 type GainFormValues = z.infer<typeof formSchema>;
 
-const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
+const Reverb = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
   const form = useForm<GainFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +31,9 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
       description: filter.description ?? "",
       parameters: {
         ...filter.parameters,
-        inverted: filter.parameters.inverted ?? false,
-        mute: filter.parameters.mute ?? false,
+        hf_damping: filter.parameters.hf_damping ?? 0,
+        pre_delay_ms: filter.parameters.pre_delay_ms ?? 0,
+        stereo_depth: filter.parameters.pre_delay_ms ?? 0,
       },
     },
   });
@@ -81,19 +69,18 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
         <div className="col-span-2 my-2">
           <FormField
             control={form.control}
-            name="parameters.gain"
+            name="parameters.reverberance"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Gain (dB)</FormLabel>
+                <FormLabel className="text-base block">Reverberance</FormLabel>
                 <FormControl>
                   <Slider
                     showTicks
                     showLabels
-                    tickInterval={25}
-                    unit={''}
+                    tickInterval={10}
                     value={[field.value]}
-                    max={100}
-                    min={-100}
+                    max={80}
+                    min={0}
                     step={1}
                     className="w-full rounded-full"
                     onValueChange={(value) => field.onChange(value[0])}
@@ -106,17 +93,47 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-2 my-2">
           <FormField
             control={form.control}
-            name="parameters.scale"
+            name="parameters.room_scale"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Scale</FormLabel>
+                <FormLabel className="text-base block">Room Size</FormLabel>
                 <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_SCALE}
+                  <Slider
+                    showTicks
+                    showLabels
+                    tickInterval={5}
+                    value={[field.value]}
+                    max={50}
+                    min={0}
+                    step={1}
+                    className="w-full rounded-full"
+                    onValueChange={(value) => field.onChange(value[0])}
+                    onValueCommit={onRelease}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="col-span-1">
+          <FormField
+            control={form.control}
+            name="parameters.wet"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-base">Wet</FormLabel>
+                <FormControl>
+                  <InputNumber
                     {...field}
+                    max={1.0}
+                    min={0}
+                    value={field.value ?? 0}
+                    step={0.01}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();
@@ -132,37 +149,17 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
         <div className="col-span-1">
           <FormField
             control={form.control}
-            name="parameters.inverted"
+            name="parameters.wet_gain_db"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Inverted</FormLabel>
+                <FormLabel className="block text-base">Gain (dB)</FormLabel>
                 <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_INVERTED}
+                  <InputNumber
                     {...field}
-                    onChange={(value) => {
-                      field.onChange(value);
-                      onRelease();
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="col-span-1">
-          <FormField
-            control={form.control}
-            name="parameters.mute"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-base block">Mute</FormLabel>
-                <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_MUTE}
-                    {...field}
+                    max={20}
+                    min={-20}
+                    value={field.value ?? 0}
+                    step={1}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();
@@ -179,4 +176,4 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
   );
 });
 
-export default Gain;
+export default Reverb;

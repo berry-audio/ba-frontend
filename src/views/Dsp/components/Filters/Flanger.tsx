@@ -4,39 +4,27 @@ import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InputNumber } from "@/components/Form/InputNumber";
 import { z } from "zod";
-
-import SelectComboBox from "@/components/Form/SelectComboBox";
-
-const OPTIONS_SCALE = [
-  { value: "linear", label: "Linear" },
-  { value: "dB", label: "dB" },
-];
-
-const OPTIONS_INVERTED = [
-  { value: true, label: "Yes" },
-  { value: false, label: "No" },
-];
-
-const OPTIONS_MUTE = [
-  { value: true, label: "Yes" },
-  { value: false, label: "No" },
-];
 
 const formSchema = z.object({
   type: z.string(),
   description: z.string(),
   parameters: z.object({
-    gain: z.number(),
-    inverted: z.boolean(),
-    mute: z.boolean(),
-    scale: z.string(),
+    delay_ms: z.number(),
+    depth_ms: z.number(),
+    regen: z.number(),
+    width: z.number(),
+    speed_hz: z.number(),
+    shape: z.string(),
+    phase_deg: z.number(),
+    wet: z.number(),
   }),
 });
 
 type GainFormValues = z.infer<typeof formSchema>;
 
-const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
+const Flanger = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
   const form = useForm<GainFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +32,10 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
       description: filter.description ?? "",
       parameters: {
         ...filter.parameters,
-        inverted: filter.parameters.inverted ?? false,
-        mute: filter.parameters.mute ?? false,
+        delay_ms: filter.parameters.delay_ms ?? 3,
+        depth_ms: filter.parameters.depth_ms ?? 3,
+        regen: filter.parameters.regen ?? 50,
+        shape: filter.parameters.shape ?? "triangle",
       },
     },
   });
@@ -78,22 +68,73 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
           />
         </div>
 
+        <div className="col-span-1">
+          <FormField
+            control={form.control}
+            name="parameters.delay_ms"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-base">Delay (Ms)</FormLabel>
+                <FormControl>
+                  <InputNumber
+                    {...field}
+                    max={30}
+                    min={0}
+                    value={field.value ?? 0}
+                    step={1}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onRelease();
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="col-span-1">
+          <FormField
+            control={form.control}
+            name="parameters.depth_ms"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-base">Depth (Ms)</FormLabel>
+                <FormControl>
+                  <InputNumber
+                    {...field}
+                    max={10}
+                    min={0}
+                    value={field.value ?? 0}
+                    step={1}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onRelease();
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className="col-span-2 my-2">
           <FormField
             control={form.control}
-            name="parameters.gain"
+            name="parameters.width"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Gain (dB)</FormLabel>
+                <FormLabel className="text-base block">Width</FormLabel>
                 <FormControl>
                   <Slider
                     showTicks
                     showLabels
-                    tickInterval={25}
-                    unit={''}
+                    tickInterval={10}
                     value={[field.value]}
                     max={100}
-                    min={-100}
+                    min={0}
                     step={1}
                     className="w-full rounded-full"
                     onValueChange={(value) => field.onChange(value[0])}
@@ -106,17 +147,47 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-2 my-2">
           <FormField
             control={form.control}
-            name="parameters.scale"
+            name="parameters.speed_hz"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Scale</FormLabel>
+                <FormLabel className="text-base block">Speed Hz</FormLabel>
                 <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_SCALE}
+                  <Slider
+                    showTicks
+                    showLabels
+                    tickInterval={2}
+                    value={[field.value]}
+                    max={10.0}
+                    min={0.0}
+                    step={0.1}
+                    className="w-full rounded-full"
+                    onValueChange={(value) => field.onChange(value[0])}
+                    onValueCommit={onRelease}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="col-span-1">
+          <FormField
+            control={form.control}
+            name="parameters.phase_deg"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-base">Phase Angle</FormLabel>
+                <FormControl>
+                  <InputNumber
                     {...field}
+                    max={360}
+                    min={0}
+                    value={field.value ?? 0}
+                    step={1}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();
@@ -132,37 +203,17 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
         <div className="col-span-1">
           <FormField
             control={form.control}
-            name="parameters.inverted"
+            name="parameters.wet"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base block">Inverted</FormLabel>
+                <FormLabel className="block text-base">Wet</FormLabel>
                 <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_INVERTED}
+                  <InputNumber
                     {...field}
-                    onChange={(value) => {
-                      field.onChange(value);
-                      onRelease();
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="col-span-1">
-          <FormField
-            control={form.control}
-            name="parameters.mute"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-base block">Mute</FormLabel>
-                <FormControl>
-                  <SelectComboBox
-                    items={OPTIONS_MUTE}
-                    {...field}
+                    max={1.0}
+                    min={0}
+                    value={field.value ?? 0}
+                    step={0.1}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();
@@ -179,4 +230,4 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
   );
 });
 
-export default Gain;
+export default Flanger;

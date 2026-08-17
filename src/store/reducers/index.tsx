@@ -10,6 +10,7 @@ import { scanReducer } from "./scanReducer";
 import { networkReducer } from "./networkReducer";
 import { tracklistReducer } from "./tracklistReducer";
 import { configReducer } from "./configReducer";
+import { dspReducer } from "./dspReducer";
 import { multiroomReducer } from "./multiroomReducer";
 import { drawerReducer } from "./drawerReducer";
 import { tunerReducer } from "./tuner";
@@ -29,4 +30,5 @@ export const rootReducer = combineReducers({
   tracklist: tracklistReducer,
   tuner: tunerReducer,
   config: configReducer,
+  dsp: dspReducer,
 });

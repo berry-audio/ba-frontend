@@ -7,9 +7,11 @@ import { useTracklistService } from "@/services/tracklist";
 import { useMixerService } from "@/services/mixer";
 import { useSystemService } from "@/services/system";
 import { useNetworkService } from "@/services/network";
+import { useTunerService } from "@/services/tuner";
+import { useDspService } from "@/services/dsp";
+import { Menu } from "../components/Menu";
 import { INTERNAL_EVENTS } from "@/store/constants";
 import { EVENTS } from "@/constants/events";
-import { Menu } from "../components/Menu";
 
 import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
@@ -21,7 +23,7 @@ import Dialog from "@/components/Dialog";
 import OverlayVolume from "@/components/Overlay/OverlayVolume";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
 import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
-import { useTunerService } from "@/services/tuner";
+
 
 export default function Layout({ children }: { children: any }) {
   const dispatch = useDispatch();
@@ -35,12 +37,14 @@ export default function Layout({ children }: { children: any }) {
   const { getDevices } = useNetworkService();
   const { getSource } = useSourceService();
   const { getConfig } = useConfigService();
+  const { getDspConfig } = useDspService();
 
   useEffect(() => {
     const initialize = async () => {
       try {
         const [
           _config,
+          _getDspState,
           _getNetworkDevices,
           _getPowerState,
           _getState,
@@ -55,6 +59,7 @@ export default function Layout({ children }: { children: any }) {
           _mute,
         ] = await Promise.all([
           getConfig(),
+          getDspConfig(),
           getDevices(),
           getPowerState(),
           getState(),
@@ -72,6 +77,11 @@ export default function Layout({ children }: { children: any }) {
         dispatch({
           type: INTERNAL_EVENTS.CONFIG_STATE,
           payload: { config: _config },
+        });
+
+        dispatch({
+          type: INTERNAL_EVENTS.DSP_CONFIG_STATE,
+          payload: { config: _getDspState },
         });
 
         dispatch({

@@ -49,7 +49,7 @@ const SettingsDsp = () => {
                       Default gain applied to all sources. <br></br>Use this to control clipping globally.
                     </div>
                     <FormControl>
-                      <InputNumber {...field} max={20} min={-20} value={field.value ?? 0} />
+                      <InputNumber {...field} max={20} min={-20} value={field.value ?? 0} step={1}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -90,7 +90,7 @@ const SettingsUsbdac = () => {
                     <FormItem>
                       <FormLabel className="text-base block">Gain (dB)</FormLabel>
                       <FormControl>
-                        <InputNumber {...field} max={20} min={-20} disabled={!isEnabled} />
+                        <InputNumber {...field} max={20} min={-20} disabled={!isEnabled} step={1}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

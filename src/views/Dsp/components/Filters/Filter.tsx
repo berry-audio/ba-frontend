@@ -9,6 +9,10 @@ import Modal from "@/components/Modal";
 import ButtonIcon from "@/components/Button/ButtonIcon";
 import useDspActions from "@/hooks/useDspActions";
 import Pitch from "./Pitch";
+import Reverb from "./Reverb";
+import Flanger from "./Flanger";
+import Biquad from "./Biquad";
+import BiquadCombo from "./BiquadCombo";
 
 export interface FilterProps {
   name: string;
@@ -48,12 +52,14 @@ const Filter = ({ name, filter }: FilterProps) => {
   const [editDialog, setEditDialog] = useState<boolean>(false);
   const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
 
+  const isGraphicEqualizer = filter.type === "BiquadCombo" && filter.parameters.type === "GraphicEqualizer";
+
   const formRef = useRef<UseFormReturn<any>>(null);
   const handleSave = () => formRef.current?.handleSubmit((values) => saveFilter(name, { ...values, description: values.description || null }))();
 
   return (
     <>
-      <div className="col-span-2 md:col-span-1">
+      <div className="col-span-2 md:col-span-1 ">
         <FilterHeader name={name} description={filter.type} onEdit={() => setEditDialog(true)} onDelete={() => setDeleteDialog(true)} />
         <Modal
           title={name}
@@ -62,9 +68,14 @@ const Filter = ({ name, filter }: FilterProps) => {
           buttonText="Save"
           buttonOnClick={handleSave}
           buttonLoading={loading}
+          size={isGraphicEqualizer ? "w-200" : "w-125"}
         >
           {filter.type === "Gain" && <Gain ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
           {filter.type === "Pitch" && <Pitch ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
+          {filter.type === "Reverb" && <Reverb ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
+          {filter.type === "Biquad" && <Biquad ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
+          {filter.type === "Flanger" && <Flanger ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
+          {filter.type === "BiquadCombo" && <BiquadCombo ref={formRef} filter={filter} onRelease={autoUpdate && handleSave} />}
 
           <div className="flex items-center mt-7">
             <Checkbox value={autoUpdate} onChange={setAutoUpdate} />
