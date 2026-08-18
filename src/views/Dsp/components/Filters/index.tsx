@@ -8,7 +8,7 @@ const Filters = () => {
   const filters = Object.entries(config?.filters ?? {});
 
   return (
-    <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
       {[...filters]
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([key, filter]) => (
