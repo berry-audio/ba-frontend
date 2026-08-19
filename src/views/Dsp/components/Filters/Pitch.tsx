@@ -11,7 +11,7 @@ import { z } from "zod";
 export type PitchFilterType = {
   type: FilterTypeNames.PITCH;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     semitones: number;
     tempo: number;
@@ -22,7 +22,7 @@ export type PitchFilterType = {
 export const defaultPitchValues: PitchFilterType = {
   type: FilterTypeNames.PITCH,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     semitones: 0,
     tempo: 0,
@@ -40,7 +40,7 @@ const Pitch = forwardRef<UseFormReturn<PitchFilterType>, { filter: any; onReleas
     name: z
       .string()
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       semitones: z.number(),
       tempo: z.number(),
@@ -102,6 +102,7 @@ const Pitch = forwardRef<UseFormReturn<PitchFilterType>, { filter: any; onReleas
                   <Input
                     placeholder="Description"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

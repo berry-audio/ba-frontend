@@ -19,7 +19,7 @@ const useDspActions = () => {
           ...currentConfig.filters,
           [values.name]: {
             type: values.type,
-            description: values.description || null,
+            description: values.description,
             parameters: {
               ...values.parameters,
             },

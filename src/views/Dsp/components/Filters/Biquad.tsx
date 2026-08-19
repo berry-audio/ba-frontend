@@ -33,7 +33,7 @@ const OPTIONS_SUBTYPE = [
 export type BiquadFilterType = {
   type: FilterTypeNames.BIQUAD;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     type: string;
     freq: number;
@@ -45,7 +45,7 @@ export type BiquadFilterType = {
 export const defaultBiquadValues: BiquadFilterType = {
   type: FilterTypeNames.BIQUAD,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     type: "Lowshelf",
     freq: 20,
@@ -60,13 +60,13 @@ const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRele
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.BIQUAD), // adjust to the actual enum value for this filter
+    type: z.literal(FilterTypeNames.BIQUAD),
     name: z
       .string()
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
-      type: z.string(), // nested biquad type (lowpass/highpass/etc) - left as-is
+      type: z.string(),
       freq: z.number(),
       q: z.number(),
       gain: z.number(),
@@ -128,6 +128,7 @@ const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRele
                   <Input
                     placeholder="Description"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

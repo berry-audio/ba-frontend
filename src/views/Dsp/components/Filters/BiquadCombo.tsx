@@ -25,7 +25,7 @@ const ORDER_FREQ_TYPES = ["ButterworthLowpass", "ButterworthHighpass", "Linkwitz
 export type BiquadComboFilterType = {
   type: FilterTypeNames.BIQUAD_COMBO;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     type: string;
     freq_min: number;
@@ -40,7 +40,7 @@ export type BiquadComboFilterType = {
 export const defaultBiquadComboValues: BiquadComboFilterType = {
   type: FilterTypeNames.BIQUAD_COMBO,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     type: "GraphicEqualizer",
     freq_min: 20,
@@ -61,7 +61,7 @@ const buildOrderFreqSchema = (existingNames: string[], originalName?: string) =>
   z.object({
     type: z.string(),
     name: nameField(existingNames, originalName),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       type: z.string(),
       freq: z.number(),
@@ -73,7 +73,7 @@ const buildTiltSchema = (existingNames: string[], originalName?: string) =>
   z.object({
     type: z.string(),
     name: nameField(existingNames, originalName),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       type: z.string(),
       gain: z.number(),
@@ -84,7 +84,7 @@ const buildGraphicEqSchema = (existingNames: string[], originalName?: string) =>
   z.object({
     type: z.string(),
     name: nameField(existingNames, originalName),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       type: z.string(),
       freq_min: z.number(),
@@ -214,6 +214,7 @@ const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFilterType>, { filter: a
                   <Input
                     placeholder="Description"
                     {...field}
+                     value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

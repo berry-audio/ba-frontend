@@ -12,7 +12,7 @@ import { z } from "zod";
 export type FlangerFilterType = {
   type: FilterTypeNames.FLANGER;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     delay_ms: number;
     depth_ms: number;
@@ -28,7 +28,7 @@ export type FlangerFilterType = {
 export const defaultFlangerValues: FlangerFilterType = {
   type: FilterTypeNames.FLANGER,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     delay_ms: 3,
     depth_ms: 3,
@@ -51,7 +51,7 @@ const Flanger = forwardRef<UseFormReturn<FlangerFilterType>, { filter: any; onRe
     name: z
       .string()
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       delay_ms: z.number(),
       depth_ms: z.number(),
@@ -117,6 +117,7 @@ const Flanger = forwardRef<UseFormReturn<FlangerFilterType>, { filter: any; onRe
                   <Input
                     placeholder="Description"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

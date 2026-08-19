@@ -28,7 +28,7 @@ const OPTIONS_MUTE = [
 export type GainFilterType = {
   type: FilterTypeNames.GAIN;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     gain: number;
     inverted: boolean;
@@ -40,7 +40,7 @@ export type GainFilterType = {
 export const defaultGainValues: GainFilterType = {
   type: FilterTypeNames.GAIN,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     gain: 0,
     inverted: false,
@@ -54,14 +54,12 @@ const Gain = forwardRef<UseFormReturn<GainFilterType>, { filter: GainFilterType;
     config: { filters },
   } = useSelector((state: any) => state.dsp);
 
-  console.log(filters);
-
   const formSchema = z.object({
     type: z.literal(FilterTypeNames.GAIN),
     name: z
       .string()
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       gain: z.number(),
       inverted: z.boolean(),
@@ -124,6 +122,7 @@ const Gain = forwardRef<UseFormReturn<GainFilterType>, { filter: GainFilterType;
                   <Input
                     placeholder="Description"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

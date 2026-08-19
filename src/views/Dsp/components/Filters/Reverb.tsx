@@ -12,7 +12,7 @@ import { z } from "zod";
 export type ReverbFilterType = {
   type: FilterTypeNames.REVERB;
   name: string;
-  description: string;
+  description: string | null;
   parameters: {
     reverberance: number;
     hf_damping: number;
@@ -27,7 +27,7 @@ export type ReverbFilterType = {
 export const defaultReverbValues: ReverbFilterType = {
   type: FilterTypeNames.REVERB,
   name: "",
-  description: "",
+  description: null,
   parameters: {
     reverberance: 30,
     hf_damping: 0,
@@ -49,7 +49,7 @@ const Reverb = forwardRef<UseFormReturn<ReverbFilterType>, { filter: any; onRele
     name: z
       .string()
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
-    description: z.string(),
+    description: z.string().nullable(),
     parameters: z.object({
       reverberance: z.number(),
       hf_damping: z.number(),
@@ -114,6 +114,7 @@ const Reverb = forwardRef<UseFormReturn<ReverbFilterType>, { filter: any; onRele
                   <Input
                     placeholder="Description"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();
