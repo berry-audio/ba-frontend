@@ -63,6 +63,7 @@ const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRele
     type: z.literal(FilterTypeNames.BIQUAD),
     name: z
       .string()
+      .min(1, "Name is required")
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
     description: z.string().nullable(),
     parameters: z.object({

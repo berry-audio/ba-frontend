@@ -53,7 +53,7 @@ export const defaultBiquadComboValues: BiquadComboFilterType = {
 };
 
 const nameField = (existingNames: string[], originalName?: string) =>
-  z.string().refine((name) => name === originalName || !existingNames.includes(name), {
+  z.string().min(1, "Name is required").refine((name) => name === originalName || !existingNames.includes(name), {
     message: "A filter with this name already exists",
   });
 

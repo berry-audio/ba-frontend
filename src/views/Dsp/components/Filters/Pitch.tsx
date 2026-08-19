@@ -39,6 +39,7 @@ const Pitch = forwardRef<UseFormReturn<PitchFilterType>, { filter: any; onReleas
     type: z.literal(FilterTypeNames.PITCH),
     name: z
       .string()
+      .min(1, "Name is required")
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
     description: z.string().nullable(),
     parameters: z.object({

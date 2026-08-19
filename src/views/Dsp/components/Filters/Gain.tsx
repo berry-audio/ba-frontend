@@ -58,6 +58,7 @@ const Gain = forwardRef<UseFormReturn<GainFilterType>, { filter: GainFilterType;
     type: z.literal(FilterTypeNames.GAIN),
     name: z
       .string()
+      .min(1, "Name is required")
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
     description: z.string().nullable(),
     parameters: z.object({

@@ -48,6 +48,7 @@ const Reverb = forwardRef<UseFormReturn<ReverbFilterType>, { filter: any; onRele
     type: z.literal(FilterTypeNames.REVERB),
     name: z
       .string()
+      .min(1, "Name is required")
       .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
     description: z.string().nullable(),
     parameters: z.object({
