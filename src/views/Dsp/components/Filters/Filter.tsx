@@ -79,7 +79,7 @@ export const FilterHeader = ({ name, filter, onEdit, onDelete }: FilterHeaderPro
 };
 
 const Filter = ({ name, filter }: FilterProps) => {
-  const { saveFilter, loading } = useDspActions();
+  const { saveFilter, deleteFilter, loading } = useDspActions();
 
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
   const [editDialog, setEditDialog] = useState<boolean>(false);
@@ -88,8 +88,9 @@ const Filter = ({ name, filter }: FilterProps) => {
   const isGraphicEqualizer = filter.type === "BiquadCombo" && filter.parameters.type === "GraphicEqualizer";
 
   const formRef = useRef<UseFormReturn<any>>(null);
-  const handleSave = () => formRef.current?.handleSubmit((values) => saveFilter(name, { ...values, description: values.description || null }))();
-  const handleOnRelease = () => autoUpdate && handleSave();
+  const submitForm = (autoUpdate?: boolean) => formRef.current?.handleSubmit((values) => saveFilter(values, autoUpdate))();
+  const handleOnRelease = () => autoUpdate && submitForm(autoUpdate);
+  const handleSave = () => submitForm();
 
   return (
     <>
@@ -104,12 +105,12 @@ const Filter = ({ name, filter }: FilterProps) => {
           buttonLoading={loading}
           size={isGraphicEqualizer ? "w-200" : "w-125"}
         >
-          {filter.type === "Gain" && <Gain ref={formRef} filter={filter} onRelease={handleOnRelease} />}
-          {filter.type === "Pitch" && <Pitch ref={formRef} filter={filter} onRelease={handleOnRelease} />}
-          {filter.type === "Reverb" && <Reverb ref={formRef} filter={filter} onRelease={handleOnRelease} />}
-          {filter.type === "Biquad" && <Biquad ref={formRef} filter={filter} onRelease={handleOnRelease} />}
-          {filter.type === "Flanger" && <Flanger ref={formRef} filter={filter} onRelease={handleOnRelease} />}
-          {filter.type === "BiquadCombo" && <BiquadCombo ref={formRef} filter={filter} onRelease={handleOnRelease} />}
+          {filter.type === "Gain" && <Gain ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+          {filter.type === "Pitch" && <Pitch ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+          {filter.type === "Reverb" && <Reverb ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+          {filter.type === "Biquad" && <Biquad ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+          {filter.type === "Flanger" && <Flanger ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+          {filter.type === "BiquadCombo" && <BiquadCombo ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
 
           <div className="flex items-center mt-7">
             <Checkbox value={autoUpdate} onChange={setAutoUpdate} />
@@ -120,9 +121,15 @@ const Filter = ({ name, filter }: FilterProps) => {
         </Modal>
       </div>
 
-      <Modal title="Delete filter" onClose={() => setDeleteDialog(false)} isOpen={deleteDialog} buttonText={"Delete"} buttonOnClick={undefined}>
+      <Modal
+        title="Delete filter"
+        onClose={() => setDeleteDialog(false)}
+        isOpen={deleteDialog}
+        buttonText={"Delete"}
+        buttonOnClick={() => deleteFilter(name)}
+      >
         <div className="py-2 text-secondary">
-          Are you sure you want to delete the <span className="text-primary">{name}</span> filter ?
+          Are you sure you want to delete the <span className="text-primary">{name}</span> filter ? This will also remove the filter from the pipeline.
         </div>
       </Modal>
     </>

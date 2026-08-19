@@ -1,10 +1,12 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
+import { FilterTypeNames } from "../../types";
 import { z } from "zod";
 
 import SelectComboBox from "@/components/Form/SelectComboBox";
@@ -28,29 +30,58 @@ const OPTIONS_SUBTYPE = [
   { value: "Free", label: "Free : Biquad coefficients" },
 ];
 
-const formSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    type: z.string(),
-    freq: z.number(),
-    q: z.number(),
-    gain: z.number(),
-  }),
-});
+export type BiquadFilterType = {
+  type: FilterTypeNames.BIQUAD;
+  name: string;
+  description: string;
+  parameters: {
+    type: string;
+    freq: number;
+    q: number;
+    gain: number;
+  };
+};
 
-type GainFormValues = z.infer<typeof formSchema>;
+export const defaultBiquadValues: BiquadFilterType = {
+  type: FilterTypeNames.BIQUAD,
+  name: "",
+  description: "",
+  parameters: {
+    type: "Lowshelf",
+    freq: 20,
+    q: 1.0,
+    gain: 0,
+  },
+};
 
-const Biquad = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
-  const form = useForm<GainFormValues>({
+const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
+  const formSchema = z.object({
+    type: z.literal(FilterTypeNames.BIQUAD), // adjust to the actual enum value for this filter
+    name: z
+      .string()
+      .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
+    description: z.string(),
+    parameters: z.object({
+      type: z.string(), // nested biquad type (lowpass/highpass/etc) - left as-is
+      freq: z.number(),
+      q: z.number(),
+      gain: z.number(),
+    }),
+  });
+
+  const form = useForm<BiquadFilterType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultBiquadValues,
+      ...filter,
       parameters: {
+        ...defaultBiquadValues.parameters,
         ...filter.parameters,
-        // inverted: filter.parameters.inverted ?? false,
-        // mute: filter.parameters.mute ?? false,
       },
     },
   });
@@ -62,6 +93,30 @@ const Biquad = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onReleas
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <div className="col-span-2">
           <FormField
             control={form.control}
@@ -133,7 +188,7 @@ const Biquad = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onReleas
             )}
           />
         </div>
-        
+
         <div className="col-span-2 my-2">
           <FormField
             control={form.control}

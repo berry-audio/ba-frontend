@@ -81,7 +81,8 @@ const App = () => {
                 <Route path="/tuner" element={<Tuner />} />
                 <Route path="/storage/" element={<Storages />} />
                 <Route path="/storage/*" element={<StorageDirectory />} />
-                <Route path="/dsp" element={<Dsp />} />
+                <Route path="/dsp/" element={<Navigate to="/dsp/dashboard" replace />} />
+                <Route path="/dsp/:view?/" element={<Dsp />} />
                 <Route path="/settings/" element={<Settings />} />
                 <Route path="/settings/system/" element={<SettingsSystem />} />
                 <Route path="/settings/general/" element={<SettingsGeneral />} />

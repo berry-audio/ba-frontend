@@ -30,6 +30,7 @@ export const dialogReducer = (state = initialDialogState, action: any): DialogSt
     case DIALOG_EVENTS.DIALOG_EDIT_NETWORK:
     case DIALOG_EVENTS.DIALOG_REBOOT:
     case DIALOG_EVENTS.DIALOG_POWER_OPTIONS:
+    case DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD:
       return { dialog: type, payload };
 
     case "dialog/close":

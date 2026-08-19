@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useDspService } from "@/services/dsp";
 import { INTERNAL_EVENTS } from "@/store/constants";
@@ -9,35 +9,54 @@ const useDspActions = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const saveFilter = useCallback(
-    async (name: string, params: any) => {
-      setLoading(true);
-      try {
-        const currentConfig = await getDspConfig();
-        const config = {
-          ...currentConfig,
-          filters: {
-            ...currentConfig.filters,
-            [name]: { ...params },
+  const saveFilter = async (values: any, autoSave: boolean = false) => {
+    setLoading(true);
+    try {
+      const currentConfig = await getDspConfig();
+      const config = {
+        ...currentConfig,
+        filters: {
+          ...currentConfig.filters,
+          [values.name]: {
+            type: values.type,
+            description: values.description || null,
+            parameters: {
+              ...values.parameters,
+            },
           },
-        };
+        },
+      };
 
-        await setDspConfig(config);
+      await setDspConfig(config);
 
+      dispatch({
+        type: INTERNAL_EVENTS.DSP_CONFIG_STATE,
+        payload: { config },
+      });
+
+      if (!autoSave) {
         dispatch({
-          type: INTERNAL_EVENTS.DSP_CONFIG_STATE,
-          payload: { config },
+          type: INTERNAL_EVENTS.DSP_FILTER_SAVE,
+          payload: { name: values.name },
         });
-      } catch (error) {
-        throw error;
-      } finally {
-        setLoading(false);
       }
-    },
-    [dispatch],
-  );
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { saveFilter, loading };
+  const deleteFilter = async (name: string) => {
+
+
+      dispatch({
+          type: INTERNAL_EVENTS.DSP_FILTER_DELETE,
+          payload: { name },
+        });
+  };
+
+  return { saveFilter, deleteFilter, loading };
 };
 
 export default useDspActions;

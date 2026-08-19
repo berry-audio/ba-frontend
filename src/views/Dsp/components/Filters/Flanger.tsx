@@ -1,41 +1,78 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
+import { FilterTypeNames } from "../../types";
 import { z } from "zod";
 
-const formSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    delay_ms: z.number(),
-    depth_ms: z.number(),
-    regen: z.number(),
-    width: z.number(),
-    speed_hz: z.number(),
-    shape: z.string(),
-    phase_deg: z.number(),
-    wet: z.number(),
-  }),
-});
+export type FlangerFilterType = {
+  type: FilterTypeNames.FLANGER;
+  name: string;
+  description: string;
+  parameters: {
+    delay_ms: number;
+    depth_ms: number;
+    regen: number;
+    width: number;
+    speed_hz: number;
+    shape: string;
+    phase_deg: number;
+    wet: number;
+  };
+};
 
-type GainFormValues = z.infer<typeof formSchema>;
+export const defaultFlangerValues: FlangerFilterType = {
+  type: FilterTypeNames.FLANGER,
+  name: "",
+  description: "",
+  parameters: {
+    delay_ms: 3,
+    depth_ms: 3,
+    regen: 50,
+    width: 0,
+    speed_hz: 0,
+    shape: "triangle",
+    phase_deg: 0,
+    wet: 0,
+  },
+};
 
-const Flanger = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
-  const form = useForm<GainFormValues>({
+const Flanger = forwardRef<UseFormReturn<FlangerFilterType>, { filter: any; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
+  const formSchema = z.object({
+    type: z.literal(FilterTypeNames.FLANGER), // adjust to the actual enum value for this filter
+    name: z
+      .string()
+      .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
+    description: z.string(),
+    parameters: z.object({
+      delay_ms: z.number(),
+      depth_ms: z.number(),
+      regen: z.number(),
+      width: z.number(),
+      speed_hz: z.number(),
+      shape: z.string(),
+      phase_deg: z.number(),
+      wet: z.number(),
+    }),
+  });
+
+  const form = useForm<FlangerFilterType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultFlangerValues,
+      ...filter,
       parameters: {
+        ...defaultFlangerValues.parameters,
         ...filter.parameters,
-        delay_ms: filter.parameters.delay_ms ?? 3,
-        depth_ms: filter.parameters.depth_ms ?? 3,
-        regen: filter.parameters.regen ?? 50,
-        shape: filter.parameters.shape ?? "triangle",
       },
     },
   });
@@ -45,6 +82,30 @@ const Flanger = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelea
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <div className="col-span-2">
           <FormField
             control={form.control}

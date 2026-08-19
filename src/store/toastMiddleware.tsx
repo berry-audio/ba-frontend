@@ -10,7 +10,7 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
   switch (action.type) {
     //Favourite
     case EVENTS.FAVOURITE_ADDED:
-      toast.custom((id) =><ToastContent id={id} title={`Added to Favourites`} variant="success" />);
+      toast.custom((id) => <ToastContent id={id} title={`Added to Favourites`} variant="success" />);
       break;
     case EVENTS.FAVOURITE_REMOVED:
       toast.custom((id) => <ToastContent id={id} title={`Removed to Favourites`} variant="warning" />);
@@ -102,8 +102,8 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
     case INTERNAL_EVENTS.WLAN_SCAN_COMPLETED:
       toast.custom((id) => <ToastContent id={id} title="Wifi Scan Completed" variant="success" />);
       break;
-    
-     // Tuner Notifications
+
+    // Tuner Notifications
     case EVENTS.TUNER_PRESET_SAVED:
       toast.custom((id) => <ToastContent id={id} title="Preset saved" variant="success" />);
       break;
@@ -165,7 +165,10 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
     // DSP Notifications
     case INTERNAL_EVENTS.DSP_FILTER_SAVE:
       toast.custom((id) => <ToastContent id={id} title={`Filter ${payload.name} updated`} variant="success" />);
-      break;  
+      break;
+    case INTERNAL_EVENTS.DSP_FILTER_DELETE:
+      toast.custom((id) => <ToastContent id={id} title={`Filter ${payload.name} deleted`} variant="warning" />);
+      break;
 
     // Airplay Notifications
     case EVENTS.SHAIRPORTSYNC_CONNECTED:

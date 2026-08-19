@@ -1,27 +1,15 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { InputNumber } from "@/components/Form/InputNumber";
+import { Input } from "@/components/ui/input";
+import { FilterTypeNames } from "../../types";
 import { z } from "zod";
 
 import type { Resolver } from "react-hook-form";
 import SelectComboBox from "@/components/Form/SelectComboBox";
 import Chart from "@/components/Charts";
-
-type BiquadComboFormValues = {
-  type: string;
-  description: string;
-  parameters: {
-    type: string;
-    freq_min: number;
-    freq_max: number;
-    freq: number;
-    order: number;
-    gain: number;
-    gains: number[];
-  };
-};
 
 const OPTIONS_SUBTYPE = [
   { value: "ButterworthLowpass", label: "Butterworth Lowpass" },
@@ -34,48 +22,91 @@ const OPTIONS_SUBTYPE = [
 
 const ORDER_FREQ_TYPES = ["ButterworthLowpass", "ButterworthHighpass", "LinkwitzRileyLowpass", "LinkwitzRileyHighpass"] as const;
 
-const orderFreqSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    type: z.string(),
-    freq: z.number(),
-    order: z.number(),
-  }),
-});
+export type BiquadComboFilterType = {
+  type: FilterTypeNames.BIQUAD_COMBO;
+  name: string;
+  description: string;
+  parameters: {
+    type: string;
+    freq_min: number;
+    freq_max: number;
+    gains: number[];
+    order: number;
+    gain: number;
+    freq: number;
+  };
+};
 
-const tiltSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    type: z.string(),
-    gain: z.number(),
-  }),
-});
+export const defaultBiquadComboValues: BiquadComboFilterType = {
+  type: FilterTypeNames.BIQUAD_COMBO,
+  name: "",
+  description: "",
+  parameters: {
+    type: "GraphicEqualizer",
+    freq_min: 20,
+    freq_max: 20000,
+    gains: [0.0, 0.0, 0.0, 0.0, 0.0],
+    order: 0,
+    gain: 0,
+    freq: 20,
+  },
+};
 
-const graphicEqSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    type: z.string(),
-    freq_min: z.number(),
-    freq_max: z.number(),
-    gains: z.number().array(),
-  }),
-});
+const nameField = (existingNames: string[], originalName?: string) =>
+  z.string().refine((name) => name === originalName || !existingNames.includes(name), {
+    message: "A filter with this name already exists",
+  });
 
-function getSchemaForType(type: string) {
-  if (type === "Tilt") return tiltSchema;
-  if (type === "GraphicEqualizer") return graphicEqSchema;
-  return orderFreqSchema;
+const buildOrderFreqSchema = (existingNames: string[], originalName?: string) =>
+  z.object({
+    type: z.string(),
+    name: nameField(existingNames, originalName),
+    description: z.string(),
+    parameters: z.object({
+      type: z.string(),
+      freq: z.number(),
+      order: z.number(),
+    }),
+  });
+
+const buildTiltSchema = (existingNames: string[], originalName?: string) =>
+  z.object({
+    type: z.string(),
+    name: nameField(existingNames, originalName),
+    description: z.string(),
+    parameters: z.object({
+      type: z.string(),
+      gain: z.number(),
+    }),
+  });
+
+const buildGraphicEqSchema = (existingNames: string[], originalName?: string) =>
+  z.object({
+    type: z.string(),
+    name: nameField(existingNames, originalName),
+    description: z.string(),
+    parameters: z.object({
+      type: z.string(),
+      freq_min: z.number(),
+      freq_max: z.number(),
+      gains: z.number().array(),
+    }),
+  });
+
+function getSchemaForType(type: string, existingNames: string[], originalName?: string) {
+  if (type === "Tilt") return buildTiltSchema(existingNames, originalName);
+  if (type === "GraphicEqualizer") return buildGraphicEqSchema(existingNames, originalName);
+  return buildOrderFreqSchema(existingNames, originalName);
 }
 
-const dynamicResolver: Resolver<BiquadComboFormValues> = async (values) => {
-  const result = getSchemaForType(values?.parameters?.type).safeParse(values);
-  return result.success
-    ? { values: result.data as BiquadComboFormValues, errors: {} }
-    : { values: {}, errors: Object.fromEntries(result.error.issues.map((i) => [i.path.join("."), { type: i.code, message: i.message }])) };
-};
+function createDynamicResolver(existingNames: string[], originalName?: string): Resolver<BiquadComboFilterType> {
+  return async (values) => {
+    const result = getSchemaForType(values?.parameters?.type, existingNames, originalName).safeParse(values);
+    return result.success
+      ? { values: result.data as BiquadComboFilterType, errors: {} }
+      : { values: {}, errors: Object.fromEntries(result.error.issues.map((i) => [i.path.join("."), { type: i.code, message: i.message }])) };
+  };
+}
 
 function bandFrequency(fmin: number, fmax: number, bandLength: number, band: number) {
   const fMinLog = Math.log(fmin) / Math.log(2);
@@ -98,29 +129,29 @@ function resizeGains(gains: number[], newCount: number) {
   return [...gains, ...Array(newCount - gains.length).fill(0)];
 }
 
-const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
+const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFilterType>, { filter: any; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
   const params = filter?.parameters;
 
-  const initialGains = params?.gains ?? [0.0, 0.0, 0.0, 0.0, 0.0];
-  const initialFmin = params?.freq_min ?? 20;
-  const initialFmax = params?.freq_max ?? 20000;
+  const initialGains = params?.gains ?? defaultBiquadComboValues.parameters.gains;
+  const initialFmin = params?.freq_min ?? defaultBiquadComboValues.parameters.freq_min;
+  const initialFmax = params?.freq_max ?? defaultBiquadComboValues.parameters.freq_max;
 
   const [gains, setGains] = useState<number[]>(initialGains);
   const [bands, setBands] = useState<number>(initialGains.length);
 
-  const form = useForm<BiquadComboFormValues>({
-    resolver: dynamicResolver,
+  const form = useForm<BiquadComboFilterType>({
+    resolver: createDynamicResolver(Object.keys(filters ?? {}), filter?.name),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultBiquadComboValues,
+      ...filter,
       parameters: {
-        type: params?.type ?? "GraphicEqualizer",
-        freq_min: initialFmin,
-        freq_max: initialFmax,
-        freq: params?.freq ?? 20,
-        order: params?.order ?? 1,
-        gain: params?.gain ?? 0,
-        gains: initialGains,
+        ...defaultBiquadComboValues.parameters,
+        ...filter?.parameters,
       },
     },
   });
@@ -147,6 +178,31 @@ const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFormValues>, { filter: a
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+
         <div className="col-span-2">
           <FormField
             control={form.control}
@@ -206,7 +262,7 @@ const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFormValues>, { filter: a
                       <InputNumber
                         {...field}
                         max={100}
-                        min={1}
+                        min={0}
                         value={field.value ?? 0}
                         step={1}
                         onChange={(value) => {
@@ -359,7 +415,7 @@ const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFormValues>, { filter: a
                         values={gains}
                         min={-12}
                         max={12}
-                       onChangeCommitted={(newGains) => {
+                        onChangeCommitted={(newGains) => {
                           setGains(newGains);
                           field.onChange(newGains);
                           onRelease();

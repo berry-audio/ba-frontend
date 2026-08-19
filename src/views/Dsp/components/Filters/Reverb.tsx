@@ -1,39 +1,75 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
+import { FilterTypeNames } from "../../types";
 import { z } from "zod";
 
-const formSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    reverberance: z.number(),
-    hf_damping: z.number(),
-    room_scale: z.number(),
-    stereo_depth: z.number(),
-    pre_delay_ms: z.number(),
-    wet_gain_db: z.number(),
-    wet: z.number(),
-  }),
-});
+export type ReverbFilterType = {
+  type: FilterTypeNames.REVERB;
+  name: string;
+  description: string;
+  parameters: {
+    reverberance: number;
+    hf_damping: number;
+    room_scale: number;
+    stereo_depth: number;
+    pre_delay_ms: number;
+    wet_gain_db: number;
+    wet: number;
+  };
+};
 
-type GainFormValues = z.infer<typeof formSchema>;
+export const defaultReverbValues: ReverbFilterType = {
+  type: FilterTypeNames.REVERB,
+  name: "",
+  description: "",
+  parameters: {
+    reverberance: 30,
+    hf_damping: 0,
+    room_scale: 30,
+    stereo_depth: 0,
+    pre_delay_ms: 0,
+    wet_gain_db: 0,
+    wet: 0.2,
+  },
+};
 
-const Reverb = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
-  const form = useForm<GainFormValues>({
+const Reverb = forwardRef<UseFormReturn<ReverbFilterType>, { filter: any; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
+  const formSchema = z.object({
+    type: z.literal(FilterTypeNames.REVERB),
+    name: z
+      .string()
+      .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
+    description: z.string(),
+    parameters: z.object({
+      reverberance: z.number(),
+      hf_damping: z.number(),
+      room_scale: z.number(),
+      stereo_depth: z.number(),
+      pre_delay_ms: z.number(),
+      wet_gain_db: z.number(),
+      wet: z.number(),
+    }),
+  });
+
+  const form = useForm<ReverbFilterType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultReverbValues,
+      ...filter,
       parameters: {
+        ...defaultReverbValues.parameters,
         ...filter.parameters,
-        hf_damping: filter.parameters.hf_damping ?? 0,
-        pre_delay_ms: filter.parameters.pre_delay_ms ?? 0,
-        stereo_depth: filter.parameters.pre_delay_ms ?? 0,
       },
     },
   });
@@ -43,6 +79,30 @@ const Reverb = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onReleas
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <div className="col-span-2">
           <FormField
             control={form.control}

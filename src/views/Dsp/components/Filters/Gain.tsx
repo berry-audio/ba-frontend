@@ -1,7 +1,9 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FilterTypeNames } from "../../types";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,29 +25,60 @@ const OPTIONS_MUTE = [
   { value: false, label: "No" },
 ];
 
-const formSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    gain: z.number(),
-    inverted: z.boolean(),
-    mute: z.boolean(),
-    scale: z.string(),
-  }),
-});
+export type GainFilterType = {
+  type: FilterTypeNames.GAIN;
+  name: string;
+  description: string;
+  parameters: {
+    gain: number;
+    inverted: boolean;
+    mute: boolean;
+    scale: string;
+  };
+};
 
-type GainFormValues = z.infer<typeof formSchema>;
+export const defaultGainValues: GainFilterType = {
+  type: FilterTypeNames.GAIN,
+  name: "",
+  description: "",
+  parameters: {
+    gain: 0,
+    inverted: false,
+    mute: false,
+    scale: "dB",
+  },
+};
 
-const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
-  const form = useForm<GainFormValues>({
+const Gain = forwardRef<UseFormReturn<GainFilterType>, { filter: GainFilterType; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
+  console.log(filters);
+
+  const formSchema = z.object({
+    type: z.literal(FilterTypeNames.GAIN),
+    name: z
+      .string()
+      .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
+    description: z.string(),
+    parameters: z.object({
+      gain: z.number(),
+      inverted: z.boolean(),
+      mute: z.boolean(),
+      scale: z.string(),
+    }),
+  });
+
+  const form = useForm<GainFilterType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultGainValues,
+      ...filter,
       parameters: {
-        ...filter.parameters,
-        inverted: filter.parameters.inverted ?? false,
-        mute: filter.parameters.mute ?? false,
+        ...defaultGainValues.parameters,
+        ...filter?.parameters,
       },
     },
   });
@@ -55,6 +88,31 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+
         <div className="col-span-2">
           <FormField
             control={form.control}
@@ -90,7 +148,7 @@ const Gain = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease:
                     showTicks
                     showLabels
                     tickInterval={25}
-                    unit={''}
+                    unit={""}
                     value={[field.value]}
                     max={100}
                     min={-100}

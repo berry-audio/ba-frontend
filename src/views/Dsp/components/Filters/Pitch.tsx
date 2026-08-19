@@ -1,33 +1,62 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FilterTypeNames } from "../../types";
 import { z } from "zod";
 
-const formSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  parameters: z.object({
-    semitones: z.number(),
-    tempo: z.number(),
-    wet: z.number(),
-  }),
-});
+export type PitchFilterType = {
+  type: FilterTypeNames.PITCH;
+  name: string;
+  description: string;
+  parameters: {
+    semitones: number;
+    tempo: number;
+    wet: number;
+  };
+};
 
-type GainFormValues = z.infer<typeof formSchema>;
+export const defaultPitchValues: PitchFilterType = {
+  type: FilterTypeNames.PITCH,
+  name: "",
+  description: "",
+  parameters: {
+    semitones: 0,
+    tempo: 0,
+    wet: 0,
+  },
+};
 
-const Pitch = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease: any }>(({ filter, onRelease }, ref) => {
-  const form = useForm<GainFormValues>({
+const Pitch = forwardRef<UseFormReturn<PitchFilterType>, { filter: any; onRelease?: any }>(({ filter, onRelease }, ref) => {
+  const {
+    config: { filters },
+  } = useSelector((state: any) => state.dsp);
+
+  const formSchema = z.object({
+    type: z.literal(FilterTypeNames.PITCH),
+    name: z
+      .string()
+      .refine((name) => name === filter?.name || !Object.keys(filters ?? {}).includes(name), { message: "A filter with this name already exists" }),
+    description: z.string(),
+    parameters: z.object({
+      semitones: z.number(),
+      tempo: z.number(),
+      wet: z.number(),
+    }),
+  });
+
+  const form = useForm<PitchFilterType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      type: filter.type,
-      description: filter.description ?? "",
+      ...defaultPitchValues,
+      ...filter,
       parameters: {
+        ...defaultPitchValues.parameters,
         ...filter.parameters,
-        tempo: 1,
-        wet: 1,
       },
     },
   });
@@ -37,6 +66,31 @@ const Pitch = forwardRef<UseFormReturn<GainFormValues>, { filter: any; onRelease
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">
+        {filter?.name === "" && (
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        onRelease();
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+
         <div className="col-span-2">
           <FormField
             control={form.control}

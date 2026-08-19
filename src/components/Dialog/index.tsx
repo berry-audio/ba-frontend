@@ -17,6 +17,7 @@ import DialogEditNetwork from "./DialogEditNetwork";
 import DialogWifiAuth from "./DialogWifiAuth";
 import DialogAddSmb from "./DialogAddSmb";
 import DialogMulitroomInfo from "./DialogMultiroomInfo";
+import DialogAddFilter from "./DialogAddFilter";
 
 const Dialog = () => {
   const { dialog, payload: item } = useSelector((state: any) => state.dialog);
@@ -60,6 +61,9 @@ const Dialog = () => {
       )}
       {dialog === DIALOG_EVENTS.DIALOG_ADD_SMB && (
         <DialogAddSmb/>
+      )}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD && (
+        <DialogAddFilter/>
       )}
     </>
   );

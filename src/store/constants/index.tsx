@@ -55,6 +55,7 @@ export enum INTERNAL_EVENTS {
   //DSP
   DSP_CONFIG_STATE = "dsp/config",
   DSP_FILTER_SAVE = "dsp/filter/save",
+  DSP_FILTER_DELETE = "dsp/filter/delete",
 }
 
 export enum DIALOG_EVENTS {
@@ -75,6 +76,7 @@ export enum DIALOG_EVENTS {
   DIALOG_REBOOT = "dialog/system/reboot",
   DIALOG_POWER_OPTIONS = "dialog/system/power",
   DIALOG_MULTIROOM_INFO = "dialog/multiroom/info",
+  DIALOG_DSP_FILTER_ADD = "dialog/dsp/filter/add",
 }
 
 export enum OVERLAY_EVENTS {
