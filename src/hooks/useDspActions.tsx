@@ -48,12 +48,24 @@ const useDspActions = () => {
   };
 
   const deleteFilter = async (name: string) => {
+    setLoading(true);
+    try {
+      const currentConfig = await getDspConfig();
 
+      const filters = { ...currentConfig.filters };
+      delete filters[name];
 
-      dispatch({
-          type: INTERNAL_EVENTS.DSP_FILTER_DELETE,
-          payload: { name },
-        });
+      const config = { ...currentConfig, filters };
+
+      await setDspConfig(config);
+
+      dispatch({ type: INTERNAL_EVENTS.DSP_CONFIG_STATE, payload: { config } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_FILTER_DELETE, payload: { name } });
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return { saveFilter, deleteFilter, loading };

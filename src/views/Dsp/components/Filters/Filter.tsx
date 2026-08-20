@@ -83,7 +83,7 @@ const Filter = ({ name, filter }: FilterProps) => {
 
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
   const [editDialog, setEditDialog] = useState<boolean>(false);
-  const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
+  const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
 
   const isGraphicEqualizer = filter.type === "BiquadCombo" && filter.parameters.type === "GraphicEqualizer";
 
@@ -125,6 +125,7 @@ const Filter = ({ name, filter }: FilterProps) => {
         title="Delete filter"
         onClose={() => setDeleteDialog(false)}
         isOpen={deleteDialog}
+        buttonLoading={loading}
         buttonText={"Delete"}
         buttonOnClick={() => deleteFilter(name)}
       >

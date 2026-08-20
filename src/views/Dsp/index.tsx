@@ -37,7 +37,7 @@ const Dsp = () => {
   };
 
   return (
-    <Page backButton title="Camilla DSP">
+    <Page backButton title="DSP">
       <div className="px-4 py-4">
         <div className="mb-8">
           <Tabs activeTab={activeTab} onTabChange={onTabChange} items={directory} />
