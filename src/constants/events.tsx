@@ -25,6 +25,7 @@ export enum EVENTS {
   STORAGE_UNSHARED = "storage_unshared",
   SYSTEM_TIME_UPDATED = "system_time_updated",
   SYSTEM_POWER_STATE = "system_power_state_changed",
+  DSP_STATE_CHANGED = "dsp_state_changed",
   CONFIG_UPDATED = "config_updated",
   TRACK_SEEKED = "seeked",
   PLAYLIST_RENAMED = "playlist_renamed",

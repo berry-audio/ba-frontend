@@ -89,8 +89,6 @@ const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRele
 
   useImperativeHandle(ref, () => form, [form]);
 
-  console.log(filter);
-
   return (
     <Form {...form}>
       <div className="grid grid-cols-2 gap-5">

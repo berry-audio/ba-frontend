@@ -1,4 +1,4 @@
-import { INTERNAL_EVENTS } from "../constants";
+import { EVENTS } from "@/constants/events";
 
 interface DspState {
   config: Object | null;
@@ -12,7 +12,7 @@ export const dspReducer = (state = initialDspState, action: any): DspState => {
   const { type, payload } = action;
 
   switch (type) {
-    case INTERNAL_EVENTS.DSP_CONFIG_STATE:
+    case EVENTS.DSP_STATE_CHANGED:
       return {
         config: payload.config,
       };

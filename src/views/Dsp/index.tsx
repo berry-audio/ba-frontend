@@ -7,6 +7,7 @@ import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import Tabs from "@/components/ui/tabs";
 import Filters from "./components/Filters";
 import { useNavigate, useParams } from "react-router-dom";
+import Pipeline from "./components/Pipeline";
 
 const Dsp = () => {
   const navigate = useNavigate();
@@ -57,6 +58,11 @@ const Dsp = () => {
         {view === "filters" && (
           <div className="pb-8">
             <Filters />
+          </div>
+        )}
+         {view === "pipeline" && (
+          <div className="pb-8">
+            <Pipeline />
           </div>
         )}
       </div>

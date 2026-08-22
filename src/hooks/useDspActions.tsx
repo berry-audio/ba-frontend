@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDspService } from "@/services/dsp";
 import { INTERNAL_EVENTS } from "@/store/constants";
 
 const useDspActions = () => {
   const dispatch = useDispatch();
-  const { getDspConfig, setDspConfig } = useDspService();
+
+  const { config } = useSelector((state: any) => state.dsp);
+  const { setDspConfig } = useDspService();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const saveFilter = async (values: any, autoSave: boolean = false) => {
     setLoading(true);
     try {
-      const currentConfig = await getDspConfig();
-      const config = {
-        ...currentConfig,
+      const configUpdated = {
+        ...config,
         filters: {
-          ...currentConfig.filters,
+          ...config.filters,
           [values.name]: {
             type: values.type,
             description: values.description,
@@ -27,12 +28,7 @@ const useDspActions = () => {
         },
       };
 
-      await setDspConfig(config);
-
-      dispatch({
-        type: INTERNAL_EVENTS.DSP_CONFIG_STATE,
-        payload: { config },
-      });
+      await setDspConfig(configUpdated);
 
       if (!autoSave) {
         dispatch({
@@ -50,16 +46,13 @@ const useDspActions = () => {
   const deleteFilter = async (name: string) => {
     setLoading(true);
     try {
-      const currentConfig = await getDspConfig();
-
-      const filters = { ...currentConfig.filters };
+      const filters = { ...config.filters };
       delete filters[name];
 
-      const config = { ...currentConfig, filters };
+      const configUpdated = { ...config, filters };
 
-      await setDspConfig(config);
+      await setDspConfig(configUpdated);
 
-      dispatch({ type: INTERNAL_EVENTS.DSP_CONFIG_STATE, payload: { config } });
       dispatch({ type: INTERNAL_EVENTS.DSP_FILTER_DELETE, payload: { name } });
     } catch (error) {
       throw error;
@@ -68,7 +61,30 @@ const useDspActions = () => {
     }
   };
 
-  return { saveFilter, deleteFilter, loading };
+  const saveStage = async (values: any, autoSave: boolean = false) => {
+    setLoading(true);
+    try {
+      const configUpdated = {
+        ...config,
+        pipeline: values,
+      };
+
+      await setDspConfig(configUpdated);
+
+      // if (!autoSave) {
+      //   dispatch({
+      //     type: INTERNAL_EVENTS.DSP_FILTER_SAVE,
+      //     payload: { name: values.name },
+      //   });
+      // }
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { saveFilter, deleteFilter, saveStage, loading };
 };
 
 export default useDspActions;

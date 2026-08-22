@@ -53,7 +53,6 @@ export enum INTERNAL_EVENTS {
   SOURCE_STATE = "event/source/state",
 
   //DSP
-  DSP_CONFIG_STATE = "dsp/config",
   DSP_FILTER_SAVE = "dsp/filter/save",
   DSP_FILTER_DELETE = "dsp/filter/delete",
 }

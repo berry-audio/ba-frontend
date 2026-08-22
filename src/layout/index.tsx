@@ -80,7 +80,7 @@ export default function Layout({ children }: { children: any }) {
         });
 
         dispatch({
-          type: INTERNAL_EVENTS.DSP_CONFIG_STATE,
+          type: EVENTS.DSP_STATE_CHANGED,
           payload: { config: _getDspState },
         });
 

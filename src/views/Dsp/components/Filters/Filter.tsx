@@ -1,30 +1,20 @@
 import { useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { GearIcon, TrashIcon } from "@phosphor-icons/react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FilterParameterType, FilterTypeNames, FilterTypeNameShort } from "../../types";
-import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import Gain from "./Gain";
 import Modal from "@/components/Modal";
-import ButtonIcon from "@/components/Button/ButtonIcon";
-import useDspActions from "@/hooks/useDspActions";
 import Pitch from "./Pitch";
 import Reverb from "./Reverb";
 import Flanger from "./Flanger";
 import Biquad from "./Biquad";
 import BiquadCombo from "./BiquadCombo";
+import useDspActions from "@/hooks/useDspActions";
 
 export interface FilterProps {
   name: string;
   filter: any;
-}
-
-export interface FilterHeaderProps {
-  name: string;
-  filter: any;
-  onEdit: () => void;
-  onDelete: () => void;
 }
 
 const getFilterAlphabet = (filter: any) => {
@@ -54,36 +44,11 @@ const getFilterAlphabet = (filter: any) => {
   }
 };
 
-export const FilterHeader = ({ name, filter, onEdit, onDelete }: FilterHeaderProps) => {
-  return (
-    <div className="mb-2 flex justify-between">
-      <div className="flex items-center">
-        <div className="bg-foreground text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">
-          {getFilterAlphabet(filter)}
-        </div>
-        <div>
-          {name}
-          <div className="text-secondary text-md">{filter.type}</div>
-        </div>
-      </div>
-      <div className="flex">
-        <ButtonIcon onClick={onEdit}>
-          <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
-        </ButtonIcon>
-        <ButtonIcon onClick={onDelete}>
-          <TrashIcon weight={ICON_WEIGHT} size={ICON_SM} />
-        </ButtonIcon>
-      </div>
-    </div>
-  );
-};
+export const Filter = ({ name, filter }: FilterProps) => {
+  const { saveFilter, loading } = useDspActions();
 
-const Filter = ({ name, filter }: FilterProps) => {
-  const { saveFilter, deleteFilter, loading } = useDspActions();
-
-  const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
   const [editDialog, setEditDialog] = useState<boolean>(false);
-  const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
+  const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
 
   const isGraphicEqualizer = filter.type === "BiquadCombo" && filter.parameters.type === "GraphicEqualizer";
 
@@ -94,43 +59,37 @@ const Filter = ({ name, filter }: FilterProps) => {
 
   return (
     <>
-      <div className="col-span-2 md:col-span-1 ">
-        <FilterHeader name={name} filter={filter} onEdit={() => setEditDialog(true)} onDelete={() => setDeleteDialog(true)} />
-        <Modal
-          title={name}
-          onClose={() => setEditDialog(false)}
-          isOpen={editDialog}
-          buttonText="Save"
-          buttonOnClick={handleSave}
-          buttonLoading={loading}
-          size={isGraphicEqualizer ? "w-200" : "w-125"}
-        >
-          {filter.type === "Gain" && <Gain ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-          {filter.type === "Pitch" && <Pitch ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-          {filter.type === "Reverb" && <Reverb ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-          {filter.type === "Biquad" && <Biquad ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-          {filter.type === "Flanger" && <Flanger ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-          {filter.type === "BiquadCombo" && <BiquadCombo ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
-
-          <div className="flex items-center mt-7">
-            <Checkbox value={autoUpdate} onChange={setAutoUpdate} />
-            <label className="cursor-pointer ml-2" onClick={() => setAutoUpdate(!autoUpdate)}>
-              Save automatically
-            </label>
+      <div className="flex items-center w-full cursor-pointer justify-between relative group py-3 px-4 " onClick={() => setEditDialog(true)}>
+        <div className="flex items-center">
+          <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">{getFilterAlphabet(filter)}</div>
+          <div>
+            {name}
+            <div className="text-secondary text-md">{filter.type}</div>
           </div>
-        </Modal>
+        </div>
       </div>
 
       <Modal
-        title="Delete filter"
-        onClose={() => setDeleteDialog(false)}
-        isOpen={deleteDialog}
+        title={name}
+        onClose={() => setEditDialog(false)}
+        isOpen={editDialog}
+        buttonText="Apply"
+        buttonOnClick={handleSave}
         buttonLoading={loading}
-        buttonText={"Delete"}
-        buttonOnClick={() => deleteFilter(name)}
+        size={isGraphicEqualizer ? "w-200" : "w-125"}
       >
-        <div className="py-2 text-secondary">
-          Are you sure you want to delete the <span className="text-primary">{name}</span> filter ? This will also remove the filter from the pipeline.
+        {filter.type === "Gain" && <Gain ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+        {filter.type === "Pitch" && <Pitch ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+        {filter.type === "Reverb" && <Reverb ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+        {filter.type === "Biquad" && <Biquad ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+        {filter.type === "Flanger" && <Flanger ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+        {filter.type === "BiquadCombo" && <BiquadCombo ref={formRef} filter={{ name, ...filter }} onRelease={handleOnRelease} />}
+
+        <div className="flex items-center mt-7">
+          <Checkbox value={autoUpdate} onChange={setAutoUpdate} />
+          <label className="cursor-pointer ml-2" onClick={() => setAutoUpdate(!autoUpdate)}>
+            Apply automatically
+          </label>
         </div>
       </Modal>
     </>
