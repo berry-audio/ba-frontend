@@ -53,7 +53,7 @@
   --primary: #db462b;
   --primary-text-hover: #ffffff;
 
-  --background: #1F1F1F;
+  --background: #1f1f1f;
   --background-foreground: #242424;
   --background-cover: var(--color-neutral-800);
   --background-dialog: var(--color-neutral-950);
@@ -116,13 +116,12 @@
   .bg-hover {
     background-color: var(--background-hover);
   }
-
   .bg-gradient-light {
-    @apply bg-linear-to-t from-[var(--background)]  to-[#f7f7f7];
+    @apply bg-background;
   }
 
   .dark .bg-gradient-dark {
-    @apply bg-linear-to-t from-[var(--background)]  to-[#111111];
+    @apply bg-background;
   }
 
   .bg-cover {

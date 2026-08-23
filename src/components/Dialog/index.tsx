@@ -17,54 +17,38 @@ import DialogEditNetwork from "./DialogEditNetwork";
 import DialogWifiAuth from "./DialogWifiAuth";
 import DialogAddSmb from "./DialogAddSmb";
 import DialogMulitroomInfo from "./DialogMultiroomInfo";
-import DialogAddFilter from "./DialogAddFilter";
+import DialogFilterAdd from "./DialogFilterAdd";
+import DialogStageTypeAdd from "./DialogStageTypeAdd";
+import DialogStageTypeDelete from "./DialogStageTypeDelete";
+import DialogStageDelete from "./DialogStageDelete";
+import DialogFilterDelete from "./DialogFilterDelete";
 
 const Dialog = () => {
   const { dialog, payload: item } = useSelector((state: any) => state.dialog);
 
   return (
     <>
-      {dialog === DIALOG_EVENTS.DIALOG_ERROR && (
-        <DialogError item={item}/>
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_PLAYLISTS && (
-        <DialogAddToPlaylist item={item} />
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_PLAYLIST_RENAME && (
-        <DialogRenamePlaylist item={item} />
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_PLAYLIST_DELETE && (
-        <DialogDeletePlaylist item={item} />
-      )}
+      {dialog === DIALOG_EVENTS.DIALOG_ERROR && <DialogError item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_PLAYLISTS && <DialogAddToPlaylist item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_PLAYLIST_RENAME && <DialogRenamePlaylist item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_PLAYLIST_DELETE && <DialogDeletePlaylist item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_CLEAR_LIBRARY && <DialogClearLibrary />}
       {dialog === DIALOG_EVENTS.DIALOG_SCAN_LIBRARY && <DialogScanLibrary />}
-      {dialog === DIALOG_EVENTS.DIALOG_SCAN_LIBRARY_ARTIST && (
-        <DialogScanArtist />
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_BLUETOOTH_NOT_CONNECTED && (
-        <DialogNoBluetooth />
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_WIFI_AUTH && (
-        <DialogWifiAuth item={item}/>
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_EDIT_NETWORK && (
-        <DialogEditNetwork item={item}/>
-      )}
+      {dialog === DIALOG_EVENTS.DIALOG_SCAN_LIBRARY_ARTIST && <DialogScanArtist />}
+      {dialog === DIALOG_EVENTS.DIALOG_BLUETOOTH_NOT_CONNECTED && <DialogNoBluetooth />}
+      {dialog === DIALOG_EVENTS.DIALOG_WIFI_AUTH && <DialogWifiAuth item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_EDIT_NETWORK && <DialogEditNetwork item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_REBOOT && <DialogReboot />}
       {dialog === DIALOG_EVENTS.DIALOG_POWER_OPTIONS && <DialogPowerOptions />}
       {dialog === DIALOG_EVENTS.DIALOG_ADD_LIBRARY && <DialogEmptyLibrary />}
-      {dialog === DIALOG_EVENTS.DIALOG_INFO_LIBRARY && (
-        <DialogLibraryInfo item={item} />
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_MULTIROOM_INFO && (
-        <DialogMulitroomInfo/>
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_ADD_SMB && (
-        <DialogAddSmb/>
-      )}
-      {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD && (
-        <DialogAddFilter/>
-      )}
+      {dialog === DIALOG_EVENTS.DIALOG_INFO_LIBRARY && <DialogLibraryInfo item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_MULTIROOM_INFO && <DialogMulitroomInfo />}
+      {dialog === DIALOG_EVENTS.DIALOG_ADD_SMB && <DialogAddSmb />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD && <DialogFilterAdd />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_DELETE && <DialogFilterDelete item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_ADD_TYPE && <DialogStageTypeAdd item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE_TYPE && <DialogStageTypeDelete item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE && <DialogStageDelete item={item} />}
     </>
   );
 };

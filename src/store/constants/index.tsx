@@ -76,6 +76,11 @@ export enum DIALOG_EVENTS {
   DIALOG_POWER_OPTIONS = "dialog/system/power",
   DIALOG_MULTIROOM_INFO = "dialog/multiroom/info",
   DIALOG_DSP_FILTER_ADD = "dialog/dsp/filter/add",
+  DIALOG_DSP_FILTER_DELETE = "dialog/dsp/filter/delete",
+  DIALOG_DSP_STAGE_ADD_TYPE = "dialog/dsp/stage/add/type",
+  DIALOG_DSP_STAGE_DELETE_TYPE = "dialog/dsp/stage/delete/type",
+  DIALOG_DSP_STAGE_ADD = "dialog/dsp/stage/add",
+  DIALOG_DSP_STAGE_DELETE = "dialog/dsp/stage/delete",
 }
 
 export enum OVERLAY_EVENTS {
@@ -92,5 +97,3 @@ export enum DRAWER_EVENTS {
   DRAWER_TRACKLIST = "drawer/tracklist",
   DRAWER_CLOSE = "drawer/close",
 }
-
-

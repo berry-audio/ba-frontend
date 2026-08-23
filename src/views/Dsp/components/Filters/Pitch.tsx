@@ -5,11 +5,11 @@ import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { z } from "zod";
 
 export type PitchFilterType = {
-  type: FilterTypeNames.PITCH;
+  type: FILTER_TYPE.PITCH;
   name: string;
   description: string | null;
   parameters: {
@@ -20,7 +20,7 @@ export type PitchFilterType = {
 };
 
 export const defaultPitchValues: PitchFilterType = {
-  type: FilterTypeNames.PITCH,
+  type: FILTER_TYPE.PITCH,
   name: "",
   description: null,
   parameters: {
@@ -36,7 +36,7 @@ const Pitch = forwardRef<UseFormReturn<PitchFilterType>, { filter: any; onReleas
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.PITCH),
+    type: z.literal(FILTER_TYPE.PITCH),
     name: z
       .string()
       .min(1, "Name is required")

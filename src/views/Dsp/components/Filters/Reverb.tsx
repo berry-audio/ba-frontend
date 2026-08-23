@@ -6,11 +6,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { z } from "zod";
 
 export type ReverbFilterType = {
-  type: FilterTypeNames.REVERB;
+  type: FILTER_TYPE.REVERB;
   name: string;
   description: string | null;
   parameters: {
@@ -25,7 +25,7 @@ export type ReverbFilterType = {
 };
 
 export const defaultReverbValues: ReverbFilterType = {
-  type: FilterTypeNames.REVERB,
+  type: FILTER_TYPE.REVERB,
   name: "",
   description: null,
   parameters: {
@@ -45,7 +45,7 @@ const Reverb = forwardRef<UseFormReturn<ReverbFilterType>, { filter: any; onRele
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.REVERB),
+    type: z.literal(FILTER_TYPE.REVERB),
     name: z
       .string()
       .min(1, "Name is required")

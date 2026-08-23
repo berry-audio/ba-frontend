@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDspService } from "@/services/dsp";
-import { INTERNAL_EVENTS } from "@/store/constants";
+import { DIALOG_EVENTS, INTERNAL_EVENTS } from "@/store/constants";
+import { STAGE_TYPE } from "@/views/Dsp/types";
+import { EVENTS } from "@/constants/events";
 
 const useDspActions = () => {
   const dispatch = useDispatch();
@@ -27,10 +29,11 @@ const useDspActions = () => {
           },
         },
       };
-
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
       await setDspConfig(configUpdated);
 
       if (!autoSave) {
+        dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
         dispatch({
           type: INTERNAL_EVENTS.DSP_FILTER_SAVE,
           payload: { name: values.name },
@@ -53,6 +56,7 @@ const useDspActions = () => {
 
       await setDspConfig(configUpdated);
 
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: INTERNAL_EVENTS.DSP_FILTER_DELETE, payload: { name } });
     } catch (error) {
       throw error;
@@ -61,22 +65,15 @@ const useDspActions = () => {
     }
   };
 
-  const saveStage = async (values: any, autoSave: boolean = false) => {
+  const saveStage = async (values: any) => {
     setLoading(true);
     try {
       const configUpdated = {
         ...config,
         pipeline: values,
       };
-
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
       await setDspConfig(configUpdated);
-
-      // if (!autoSave) {
-      //   dispatch({
-      //     type: INTERNAL_EVENTS.DSP_FILTER_SAVE,
-      //     payload: { name: values.name },
-      //   });
-      // }
     } catch (error) {
       throw error;
     } finally {
@@ -84,7 +81,119 @@ const useDspActions = () => {
     }
   };
 
-  return { saveFilter, deleteFilter, saveStage, loading };
+  const deleteStage = async (index: number) => {
+    setLoading(true);
+
+    try {
+      const configUpdated = {
+        ...config,
+        pipeline: config.pipeline.filter((_stage: any, i: number) => i !== index),
+      };
+
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addStage = async (_: number) => {
+    setLoading(true);
+    try {
+      const defaultStageValues = {
+        type: STAGE_TYPE.FILTER,
+        channels: null,
+        names: [],
+        description: null,
+        bypassed: true,
+      };
+
+      const configUpdated = {
+        ...config,
+        pipeline: [...config.pipeline, defaultStageValues],
+      };
+
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addStageType = async (index: number, type: string, items: string[]) => {
+    setLoading(true);
+
+    try {
+      const currentStage = config.pipeline[index];
+      const updatedStage = {
+        ...currentStage,
+        type,
+        ...(type === STAGE_TYPE.FILTER || type === STAGE_TYPE.PROCESSOR
+          ? {
+              names: [...(currentStage.names ?? []), ...items],
+            }
+          : {}),
+        ...(type === STAGE_TYPE.MIXER
+          ? {
+              name: items[0],
+            }
+          : {}),
+      };
+
+      const configUpdated = {
+        ...config,
+        pipeline: config.pipeline.map((stage: any, i: number) => (i === index ? updatedStage : stage)),
+      };
+
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteStageType = async (stageIndex: number, stageType: string, typeIndex: number, typeName: string) => {
+    setLoading(true);
+
+    try {
+      const currentStage = config.pipeline[stageIndex];
+      const updatedStage = {
+        ...currentStage,
+        ...(stageType === STAGE_TYPE.FILTER || stageType === STAGE_TYPE.PROCESSOR
+          ? {
+              names: (currentStage.names ?? []).filter((_: string, i: number) => i !== typeIndex),
+            }
+          : {}),
+        ...(stageType === STAGE_TYPE.MIXER
+          ? {
+              names: (currentStage.names ?? []).filter((name: string) => name !== typeName),
+            }
+          : {}),
+      };
+      const configUpdated = {
+        ...config,
+        pipeline: config.pipeline.map((stage: any, i: number) => (i === stageIndex ? updatedStage : stage)),
+      };
+
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { saveFilter, deleteFilter, addStage, deleteStage, saveStage, addStageType, deleteStageType, loading };
 };
 
 export default useDspActions;

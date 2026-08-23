@@ -10,10 +10,15 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 
 export interface SystemInfo {
   os: string;
-  os_version:string;
+  os_version: string;
   hostname: string;
   model: string;
   version: string;
+  camilladsp: string;
+  shairport_sync: string;
+  librespot: string;
+  snapcast_server: string;
+  snapcast_client: string;
   cpu: {
     volts: number;
     usage_percent: number;
@@ -42,6 +47,11 @@ const defaultSystemInfo: SystemInfo = {
   hostname: "unknown",
   model: "unknown",
   version: "unknown",
+  camilladsp: "unknown",
+  shairport_sync: "unknown",
+  librespot: "unknown",
+  snapcast_server: "unknown",
+  snapcast_client: "unknown",
 
   cpu: {
     volts: 0,
@@ -95,7 +105,7 @@ const SettingsSystem = () => {
   const ListHardwareItem = ({ title, desc }: { title: string; desc: string }) => {
     return (
       <div className="flex mt-2 text-secondary text-md">
-        <div className="w-25 flex">{title}:</div>
+        <div className="w-50 flex">{title}:</div>
         <div className="flex-1 flex flex-col">{desc}</div>
       </div>
     );
@@ -164,6 +174,11 @@ const SettingsSystem = () => {
             <ListHardwareItem title="OS Version" desc={systemInfo?.os_version} />
             <ListHardwareItem title="Hostname" desc={systemInfo?.hostname} />
             <ListHardwareItem title="Version" desc={systemInfo?.version} />
+            <ListHardwareItem title="CamillaDsp" desc={systemInfo?.camilladsp} />
+            <ListHardwareItem title="Shairport Sync" desc={systemInfo?.shairport_sync} />
+            <ListHardwareItem title="Librespot" desc={systemInfo?.librespot} />
+            <ListHardwareItem title="Snapcast Server" desc={systemInfo?.snapcast_server} />
+            <ListHardwareItem title="Snapcast Client" desc={systemInfo?.snapcast_client} />
           </div>
         </div>
       )}

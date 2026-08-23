@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import Stage from "./Stage";
-import ButtonAddStage from "@/components/Button/ButtonAddStage";
+import ButtonStageAdd from "@/components/Button/ButtonStageAdd";
 
 interface PipelineStep {
   id: string;
@@ -21,8 +21,6 @@ const Pipeline = () => {
 
   const pipeline = config?.pipeline ?? [];
 
-  console.log(pipeline)
-
   return (
     <>
       <div className="">
@@ -32,7 +30,7 @@ const Pipeline = () => {
       </div>
 
       <div className="flex items-center justify-center mt-8">
-        <ButtonAddStage />
+        <ButtonStageAdd />
       </div>
     </>
   );

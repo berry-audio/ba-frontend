@@ -4,7 +4,7 @@ const Button = ({
   loading,
   children,
   type = "ghost",
-  size ="md",
+  size = "md",
   onClick,
   disabled,
   className = "",
@@ -15,12 +15,15 @@ const Button = ({
   size?: "sm" | "md" | "lg";
   onClick?: () => void;
   disabled?: boolean;
-  className?:string;
+  className?: string;
 }) => {
   return (
     <button
       type="submit"
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick && onClick();
+      }}
       disabled={disabled}
       className={`${size === "md" && "px-6 py-4"}  ${size === "sm" && "px-5 py-2.5"} transition flex items-center rounded-full ${className} ${type === "ghost" && " hover:bg-hover disabled:opacity-50 "}  ${
         type === "primary" && "bg-primary hover:bg-primary/90 "

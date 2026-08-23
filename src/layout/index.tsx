@@ -24,7 +24,6 @@ import OverlayVolume from "@/components/Overlay/OverlayVolume";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
 import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
 
-
 export default function Layout({ children }: { children: any }) {
   const dispatch = useDispatch();
   const connected = useSelector((state: any) => state.socket.connected);

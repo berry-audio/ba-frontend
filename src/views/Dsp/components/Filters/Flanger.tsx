@@ -6,11 +6,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { z } from "zod";
 
 export type FlangerFilterType = {
-  type: FilterTypeNames.FLANGER;
+  type: FILTER_TYPE.FLANGER;
   name: string;
   description: string | null;
   parameters: {
@@ -26,7 +26,7 @@ export type FlangerFilterType = {
 };
 
 export const defaultFlangerValues: FlangerFilterType = {
-  type: FilterTypeNames.FLANGER,
+  type: FILTER_TYPE.FLANGER,
   name: "",
   description: null,
   parameters: {
@@ -47,7 +47,7 @@ const Flanger = forwardRef<UseFormReturn<FlangerFilterType>, { filter: any; onRe
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.FLANGER), // adjust to the actual enum value for this filter
+    type: z.literal(FILTER_TYPE.FLANGER), // adjust to the actual enum value for this filter
     name: z
       .string()
       .min(1, "Name is required")

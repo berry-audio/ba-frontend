@@ -5,14 +5,14 @@ import { DIALOG_EVENTS } from "@/store/constants";
 
 import Button from ".";
 
-const ButtonAddStage = () => {
+const ButtonFilterAdd = () => {
   const dispatch = useDispatch();
 
   return (
     <Button type="ghost" onClick={() => dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD })}>
-      <PlusIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" /> Add Stage
+      <PlusIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2" /> Add Filter
     </Button>
   );
 };
 
-export default ButtonAddStage;
+export default ButtonFilterAdd;

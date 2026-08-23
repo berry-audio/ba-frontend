@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FilterParameterType, FilterTypeNames, FilterTypeNameShort } from "../../types";
+import { FilterParameterType, FILTER_TYPE, FILTER_TYPE_SHORT } from "../../types";
 
 import Gain from "./Gain";
 import Modal from "@/components/Modal";
@@ -15,36 +15,35 @@ import useDspActions from "@/hooks/useDspActions";
 export interface FilterProps {
   name: string;
   filter: any;
+  onClick?: (name: string) => void;
 }
 
 const getFilterAlphabet = (filter: any) => {
   switch (filter.type) {
-    case FilterTypeNames.GAIN:
-      return FilterTypeNameShort.GAIN;
+    case FILTER_TYPE.GAIN:
+      return FILTER_TYPE_SHORT.GAIN;
 
-    case FilterTypeNames.FLANGER:
-      return FilterTypeNameShort.FLANGER;
+    case FILTER_TYPE.FLANGER:
+      return FILTER_TYPE_SHORT.FLANGER;
 
-    case FilterTypeNames.REVERB:
-      return FilterTypeNameShort.REVERB;
+    case FILTER_TYPE.REVERB:
+      return FILTER_TYPE_SHORT.REVERB;
 
-    case FilterTypeNames.PITCH:
-      return FilterTypeNameShort.PITCH;
+    case FILTER_TYPE.PITCH:
+      return FILTER_TYPE_SHORT.PITCH;
 
-    case FilterTypeNames.BIQUAD:
-      return FilterTypeNameShort.BIQUAD;
+    case FILTER_TYPE.BIQUAD:
+      return FILTER_TYPE_SHORT.BIQUAD;
 
-    case FilterTypeNames.BIQUAD_COMBO:
-      return filter.parameters?.type === FilterParameterType.GRAPHIC_EQUALIZER
-        ? FilterTypeNameShort.GRAPHIC_EQUALIZER
-        : FilterTypeNameShort.BIQUAD_COMBO;
+    case FILTER_TYPE.BIQUAD_COMBO:
+      return filter.parameters?.type === FilterParameterType.GRAPHIC_EQUALIZER ? FILTER_TYPE_SHORT.GRAPHIC_EQUALIZER : FILTER_TYPE_SHORT.BIQUAD_COMBO;
 
     default:
       return "";
   }
 };
 
-export const Filter = ({ name, filter }: FilterProps) => {
+export const Filter = ({ name, filter, onClick }: FilterProps) => {
   const { saveFilter, loading } = useDspActions();
 
   const [editDialog, setEditDialog] = useState<boolean>(false);
@@ -59,7 +58,10 @@ export const Filter = ({ name, filter }: FilterProps) => {
 
   return (
     <>
-      <div className="flex items-center w-full cursor-pointer justify-between relative group py-3 px-4 " onClick={() => setEditDialog(true)}>
+      <div
+        className="flex items-center w-full cursor-pointer justify-between relative group py-3 px-4 "
+        onClick={() => (onClick ? onClick(name) : setEditDialog(true))}
+      >
         <div className="flex items-center">
           <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">{getFilterAlphabet(filter)}</div>
           <div>

@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumber } from "@/components/Form/InputNumber";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { z } from "zod";
 
 import SelectComboBox from "@/components/Form/SelectComboBox";
@@ -31,7 +31,7 @@ const OPTIONS_SUBTYPE = [
 ];
 
 export type BiquadFilterType = {
-  type: FilterTypeNames.BIQUAD;
+  type: FILTER_TYPE.BIQUAD;
   name: string;
   description: string | null;
   parameters: {
@@ -43,7 +43,7 @@ export type BiquadFilterType = {
 };
 
 export const defaultBiquadValues: BiquadFilterType = {
-  type: FilterTypeNames.BIQUAD,
+  type: FILTER_TYPE.BIQUAD,
   name: "",
   description: null,
   parameters: {
@@ -60,7 +60,7 @@ const Biquad = forwardRef<UseFormReturn<BiquadFilterType>, { filter: any; onRele
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.BIQUAD),
+    type: z.literal(FILTER_TYPE.BIQUAD),
     name: z
       .string()
       .min(1, "Name is required")

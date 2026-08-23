@@ -4,7 +4,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputNumber } from "@/components/Form/InputNumber";
 import { Input } from "@/components/ui/input";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { z } from "zod";
 
 import type { Resolver } from "react-hook-form";
@@ -23,7 +23,7 @@ const OPTIONS_SUBTYPE = [
 const ORDER_FREQ_TYPES = ["ButterworthLowpass", "ButterworthHighpass", "LinkwitzRileyLowpass", "LinkwitzRileyHighpass"] as const;
 
 export type BiquadComboFilterType = {
-  type: FilterTypeNames.BIQUAD_COMBO;
+  type: FILTER_TYPE.BIQUAD_COMBO;
   name: string;
   description: string | null;
   parameters: {
@@ -38,7 +38,7 @@ export type BiquadComboFilterType = {
 };
 
 export const defaultBiquadComboValues: BiquadComboFilterType = {
-  type: FilterTypeNames.BIQUAD_COMBO,
+  type: FILTER_TYPE.BIQUAD_COMBO,
   name: "",
   description: null,
   parameters: {
@@ -53,9 +53,12 @@ export const defaultBiquadComboValues: BiquadComboFilterType = {
 };
 
 const nameField = (existingNames: string[], originalName?: string) =>
-  z.string().min(1, "Name is required").refine((name) => name === originalName || !existingNames.includes(name), {
-    message: "A filter with this name already exists",
-  });
+  z
+    .string()
+    .min(1, "Name is required")
+    .refine((name) => name === originalName || !existingNames.includes(name), {
+      message: "A filter with this name already exists",
+    });
 
 const buildOrderFreqSchema = (existingNames: string[], originalName?: string) =>
   z.object({
@@ -214,7 +217,7 @@ const BiquadCombo = forwardRef<UseFormReturn<BiquadComboFilterType>, { filter: a
                   <Input
                     placeholder="Description"
                     {...field}
-                     value={field.value ?? ""}
+                    value={field.value ?? ""}
                     onChange={(value) => {
                       field.onChange(value);
                       onRelease();

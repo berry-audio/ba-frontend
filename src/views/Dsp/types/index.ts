@@ -1,5 +1,4 @@
-
-export enum FilterTypeNames {
+export enum FILTER_TYPE {
   GAIN = "Gain",
   FLANGER = "Flanger",
   REVERB = "Reverb",
@@ -8,7 +7,7 @@ export enum FilterTypeNames {
   BIQUAD_COMBO = "BiquadCombo",
 }
 
-export enum FilterTypeNameShort {
+export enum FILTER_TYPE_SHORT {
   GAIN = "GA",
   FLANGER = "FL",
   REVERB = "RE",
@@ -20,4 +19,10 @@ export enum FilterTypeNameShort {
 
 export enum FilterParameterType {
   GRAPHIC_EQUALIZER = "GraphicEqualizer",
+}
+
+export enum STAGE_TYPE {
+  FILTER = "Filter",
+  PROCESSOR = "Processor",
+  MIXER = "Mixer",
 }

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Slider } from "@/components/Form/Slider";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { FilterTypeNames } from "../../types";
+import { FILTER_TYPE } from "../../types";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -26,7 +26,7 @@ const OPTIONS_MUTE = [
 ];
 
 export type GainFilterType = {
-  type: FilterTypeNames.GAIN;
+  type: FILTER_TYPE.GAIN;
   name: string;
   description: string | null;
   parameters: {
@@ -38,7 +38,7 @@ export type GainFilterType = {
 };
 
 export const defaultGainValues: GainFilterType = {
-  type: FilterTypeNames.GAIN,
+  type: FILTER_TYPE.GAIN,
   name: "",
   description: null,
   parameters: {
@@ -55,7 +55,7 @@ const Gain = forwardRef<UseFormReturn<GainFilterType>, { filter: GainFilterType;
   } = useSelector((state: any) => state.dsp);
 
   const formSchema = z.object({
-    type: z.literal(FilterTypeNames.GAIN),
+    type: z.literal(FILTER_TYPE.GAIN),
     name: z
       .string()
       .min(1, "Name is required")
