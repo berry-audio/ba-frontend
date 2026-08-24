@@ -72,7 +72,10 @@ const useDspActions = () => {
         ...config,
         pipeline: values,
       };
+
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_UPDATED });
+
       await setDspConfig(configUpdated);
     } catch (error) {
       throw error;
@@ -92,6 +95,7 @@ const useDspActions = () => {
 
       dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_DELETED });
       await setDspConfig(configUpdated);
     } catch (error) {
       throw error;
@@ -185,6 +189,7 @@ const useDspActions = () => {
 
       dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_TYPE_DELETED });
       await setDspConfig(configUpdated);
     } catch (error) {
       throw error;
@@ -193,7 +198,33 @@ const useDspActions = () => {
     }
   };
 
-  return { saveFilter, deleteFilter, addStage, deleteStage, saveStage, addStageType, deleteStageType, loading };
+  const updateStageChannels = async (stageIndex: number, channels: number[], channelsCount: number) => {
+    setLoading(true);
+
+    try {
+      const currentStage = config.pipeline[stageIndex];
+      const updatedStage = {
+        ...currentStage,
+        channels: channels.length === channelsCount ? null : channels,
+      };
+      const configUpdated = {
+        ...config,
+        pipeline: config.pipeline.map((stage: any, i: number) => (i === stageIndex ? updatedStage : stage)),
+      };
+
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_CHANNEL_UPDATED });
+
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { saveFilter, deleteFilter, addStage, deleteStage, saveStage, addStageType, deleteStageType, updateStageChannels, loading };
 };
 
 export default useDspActions;

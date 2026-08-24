@@ -35,6 +35,7 @@ export const dialogReducer = (state = initialDialogState, action: any): DialogSt
     case DIALOG_EVENTS.DIALOG_DSP_STAGE_ADD_TYPE:
     case DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE_TYPE:
     case DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE:
+    case DIALOG_EVENTS.DIALOG_DSP_STAGE_CHANNELS:
       return { dialog: type, payload };
 
     case "dialog/close":

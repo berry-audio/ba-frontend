@@ -4,8 +4,9 @@ import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DIALOG_EVENTS } from "@/store/constants";
 
 import ButtonIcon from "./ButtonIcon";
+import { STAGE_TYPE } from "@/views/Dsp/types";
 
-const ButtonStageDelete = ({ index, type }: { index: number; type: string }) => {
+const ButtonStageDelete = ({ index, type }: { index: number; type: STAGE_TYPE }) => {
   const dispatch = useDispatch();
 
   return (

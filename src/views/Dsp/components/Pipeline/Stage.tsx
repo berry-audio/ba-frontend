@@ -16,6 +16,7 @@ import useDspActions from "@/hooks/useDspActions";
 import Button from "@/components/Button";
 import ButtonStageAddType from "@/components/Button/ButtonStageAddType";
 import ButtonStageDelete from "@/components/Button/ButtonStageDelete";
+import ButtonStageChannels from "@/components/Button/ButtonStageChannels";
 
 const OPTIONS_TYPE = [
   { value: "Filter", label: "Filter" },
@@ -127,6 +128,10 @@ const Stage = ({ stage, config, index }: { stage: any; config: any; index: numbe
             </div>
 
             <div className="flex justify-end items-center w-100">
+              <div className="mr-3">
+                <ButtonStageChannels index={index} type={stage.type} channels={stage.channels} />
+              </div>
+
               <FormField
                 control={form.control}
                 name="bypassed"

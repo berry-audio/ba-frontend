@@ -25,9 +25,9 @@ const Button = ({
         onClick && onClick();
       }}
       disabled={disabled}
-      className={`${size === "md" && "px-6 py-4"}  ${size === "sm" && "px-5 py-2.5"} transition flex items-center rounded-full ${className} ${type === "ghost" && " hover:bg-hover disabled:opacity-50 "}  ${
+      className={`${size === "md" && "px-6 py-3.5"}  ${size === "sm" && "px-5 py-2.5"} transition flex items-center rounded-full ${className} ${type === "ghost" && " hover:bg-hover disabled:opacity-50 "}  ${
         type === "primary" && "bg-primary hover:bg-primary/90 "
-      } cursor-pointer ${loading ? "disabled:opacity-50" : ""}`}
+      } ${type === "secondary" && "bg-foreground hover:bg-foreground/10"} cursor-pointer ${loading ? "disabled:opacity-50" : ""}`}
     >
       {loading && (
         <div className="flex items-center justify-center h-full">

@@ -55,6 +55,10 @@ export enum INTERNAL_EVENTS {
   //DSP
   DSP_FILTER_SAVE = "dsp/filter/save",
   DSP_FILTER_DELETE = "dsp/filter/delete",
+  DSP_STAGE_CHANNEL_UPDATED = "dsp/pipeline/channel/update",
+  DSP_STAGE_UPDATED = "dsp/pipeline/update",
+  DSP_STAGE_DELETED = "dsp/pipeline/delete",
+  DSP_STAGE_TYPE_DELETED = "dsp/pipeline/type/delete",
 }
 
 export enum DIALOG_EVENTS {
@@ -81,6 +85,7 @@ export enum DIALOG_EVENTS {
   DIALOG_DSP_STAGE_DELETE_TYPE = "dialog/dsp/stage/delete/type",
   DIALOG_DSP_STAGE_ADD = "dialog/dsp/stage/add",
   DIALOG_DSP_STAGE_DELETE = "dialog/dsp/stage/delete",
+  DIALOG_DSP_STAGE_CHANNELS = "dialog/dsp/stage/channels",
 }
 
 export enum OVERLAY_EVENTS {

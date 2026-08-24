@@ -169,6 +169,18 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
     case INTERNAL_EVENTS.DSP_FILTER_DELETE:
       toast.custom((id) => <ToastContent id={id} title={`Filter ${payload.name} deleted`} variant="warning" />);
       break;
+    case INTERNAL_EVENTS.DSP_STAGE_CHANNEL_UPDATED:
+      toast.custom((id) => <ToastContent id={id} title={`Stage Channels updated`} variant="success" />);
+      break;
+    case INTERNAL_EVENTS.DSP_STAGE_UPDATED:
+      toast.custom((id) => <ToastContent id={id} title={`Stage updated`} variant="success" />);
+      break;
+    case INTERNAL_EVENTS.DSP_STAGE_DELETED:
+      toast.custom((id) => <ToastContent id={id} title={`Stage deleted`} variant="warning" />);
+      break;
+    case INTERNAL_EVENTS.DSP_STAGE_TYPE_DELETED:
+      toast.custom((id) => <ToastContent id={id} title={`Filter removed`} variant="warning" />);
+      break;
 
     // Airplay Notifications
     case EVENTS.SHAIRPORTSYNC_CONNECTED:

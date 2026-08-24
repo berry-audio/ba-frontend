@@ -2,6 +2,7 @@ import { ICON_SM, ICON_WEIGHT, SERVER_URL } from "@/constants";
 import { MODEL } from "@/constants/refs";
 import { REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { Album, AnyItem, Artist, TlTrack, Track, Tuner } from "@/types";
+import { STAGE_TYPE } from "@/views/Dsp/types";
 import { BluetoothIcon, DeviceMobileIcon, HeadphonesIcon, LaptopIcon, NetworkIcon, WifiHighIcon } from "@phosphor-icons/react";
 
 /**
@@ -81,10 +82,7 @@ export const getChannels = (channels: number) => `${channels === 2 ? "Stereo" : 
 /**
  * Returns the track's sample rate in khz.
  */
-export const getSampleRate = (samplerate: number) =>
-  samplerate >= 10000
-    ? `${samplerate / 1000}kHz`
-    : `${samplerate}Hz`;
+export const getSampleRate = (samplerate: number) => (samplerate >= 10000 ? `${samplerate / 1000}kHz` : `${samplerate}Hz`);
 /**
  * Returns the track'saudio codec shortname.
  */
@@ -422,7 +420,7 @@ export const getFavourite = (item: AnyItem) => {
  * @throws If the HTTP request fails or the response has no result.
  */
 export async function fetchJsonRpc<T>(method: string, id: number, params = {}): Promise<T> {
-  const res = await fetch('http://berryaudio.local/rpc', {
+  const res = await fetch("http://berryaudio.local/rpc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -447,3 +445,41 @@ export async function fetchJsonRpc<T>(method: string, id: number, params = {}): 
 
   return data.result;
 }
+
+export const getChannelLabels = (config: any, index: number): (string | null)[] | null => {
+  const cap_params = config.devices.capture;
+  let channel_labels = cap_params.labels;
+  const pipeline = config.pipeline ? config.pipeline : [];
+  for (let idx = 0; idx < index; idx++) {
+    const step = pipeline[idx];
+    const disabled = step.bypassed === true;
+    if (step.type === STAGE_TYPE.MIXER && config.mixers && !disabled) {
+      const mixername = step.name;
+      const mixconf = config["mixers"][mixername];
+      if (mixconf) {
+        channel_labels = mixconf.labels;
+      } else {
+        channel_labels = null;
+      }
+    }
+  }
+  return channel_labels;
+};
+
+export const getLabelForChannel = (labels: (string | null)[] | null | undefined, channel: number, compact?: boolean, nullable?: boolean): string => {
+  let result = "";
+  if (!compact || !nullable) {
+    result = channel.toString();
+  }
+  if (labels === undefined || labels === null || labels.length <= channel) {
+    return result;
+  }
+  const label = labels[channel];
+  if (label) {
+    if (compact) {
+      return label;
+    }
+    return result + ": " + label;
+  }
+  return result;
+};

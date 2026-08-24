@@ -25,7 +25,7 @@ const Pipeline = () => {
     <>
       <div className="">
         {pipeline.map((stage, key) => (
-          <Stage key={key} stage={stage} config={config} index={key} />
+          <Stage key={key} index={key} config={config} stage={stage} />
         ))}
       </div>
 

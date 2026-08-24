@@ -1,0 +1,46 @@
+import { useDispatch, useSelector } from "react-redux";
+import { SpeakerSimpleHighIcon } from "@phosphor-icons/react";
+import { STAGE_TYPE } from "@/views/Dsp/types";
+import { ICON_WEIGHT, ICON_XS } from "@/constants";
+import { DIALOG_EVENTS } from "@/store/constants";
+
+import Button from ".";
+
+const calculateChannels = (config: any, stageIndex: number): number => {
+  let lastValidMixerStepBeforeIndex = null;
+  if (config.pipeline) {
+    lastValidMixerStepBeforeIndex = config.pipeline.findLast(
+      (step, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index < stageIndex,
+    ) as any;
+  }
+  if (lastValidMixerStepBeforeIndex && config.mixers) {
+    const mixer = config.mixers[lastValidMixerStepBeforeIndex.name];
+    return mixer.channels.out;
+  }
+  return config.devices.capture.channels;
+};
+
+const ButtonStageChannels = ({ index, channels, type }: { index: number; channels: number[] | null; type: STAGE_TYPE }) => {
+  const dispatch = useDispatch();
+
+  const { config } = useSelector((state: any) => state.dsp);
+
+  const channelsCount = calculateChannels(config, index);
+
+  return (
+    <div>
+      {(type === STAGE_TYPE.FILTER || type === STAGE_TYPE.PROCESSOR) && (
+        <Button
+          type="ghost"
+          size="md"
+          onClick={() => dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_STAGE_CHANNELS, payload: { index, channels, channelsCount } })}
+        >
+          <SpeakerSimpleHighIcon weight={ICON_WEIGHT} size={ICON_XS} className="mr-2" />
+          {channels === null ? "All" : `${channels && channels.length}/${channelsCount}`} Channels
+        </Button>
+      )}
+    </div>
+  );
+};
+
+export default ButtonStageChannels;
