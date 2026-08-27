@@ -23,7 +23,7 @@ const ButtonStageChannels = ({ index, channels, type }: { index: number; channel
           onClick={() => dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_STAGE_CHANNELS, payload: { index, channels, channelsCount } })}
         >
           <SpeakerSimpleHighIcon weight={ICON_WEIGHT} size={ICON_XS} className="mr-2" />
-          {channels === null ? "All" : `${channels && channels.length}/${channelsCount}`} Channels
+          {channels === null ? "All" : `${channels && channels.length}/${channelsCount}`} <span className="hidden md:block">&nbsp;Channels</span>
         </Button>
       )}
     </div>

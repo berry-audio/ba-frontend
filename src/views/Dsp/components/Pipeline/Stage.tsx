@@ -190,7 +190,7 @@ const Stage = ({ stage, config, index }: { stage: any; config: any; index: numbe
         <form className="">
           <div className="flex justify-between md:mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-5 px-4">
             <div className="flex items-center">
-              <div className="w-50 mr-3">
+              <div className="w-30 mr-2">
                 <FormField
                   control={form.control}
                   name="type"
@@ -212,9 +212,9 @@ const Stage = ({ stage, config, index }: { stage: any; config: any; index: numbe
                   )}
                 />
               </div>
-              <div>{stage.type !== STAGE_TYPE.MIXER && <DisplayChannel text="IN" count={channelsCount} />}</div>
+              <div className="hidden md:block">{stage.type !== STAGE_TYPE.MIXER && <DisplayChannel text="IN" count={channelsCount} />}</div>
             </div>
-            <div className="flex justify-end items-center w-100">
+            <div className="flex justify-end items-center w-100 ">
               <div className="mr-3">
                 <ButtonStageChannels index={index} type={stage.type} channels={stage.channels} />
               </div>

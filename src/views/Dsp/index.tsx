@@ -34,7 +34,7 @@ const Dsp = () => {
 
   return (
     <Page backButton title="DSP">
-      <div className="px-4 py-4">
+      <div className="py-4 md:px-4">
         <div className="mb-8">
           <Tabs activeTab={view} onTabChange={onTabChange} items={directory} />
         </div>
