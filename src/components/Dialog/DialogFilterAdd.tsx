@@ -1,6 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useDspActions } from "@/hooks/useDspActions";
 import { FILTER_TYPE } from "@/views/Dsp/types";
 import { DIALOG_EVENTS } from "@/store/constants";
 
@@ -12,7 +13,6 @@ import Flanger, { defaultFlangerValues } from "@/views/Dsp/components/Filters/Fl
 import BiquadCombo, { defaultBiquadComboValues } from "@/views/Dsp/components/Filters/BiquadCombo";
 
 import Modal from "@/components/Modal";
-import useDspActions from "@/hooks/useDspActions";
 import SelectComboBox from "../Form/SelectComboBox";
 
 export const OPTIONS_TYPE = [

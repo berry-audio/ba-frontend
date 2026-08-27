@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useDspActions } from "@/hooks/useDspActions";
 import { UseFormReturn } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FilterParameterType, FILTER_TYPE, FILTER_TYPE_SHORT } from "../../types";
@@ -10,7 +11,6 @@ import Reverb from "./Reverb";
 import Flanger from "./Flanger";
 import Biquad from "./Biquad";
 import BiquadCombo from "./BiquadCombo";
-import useDspActions from "@/hooks/useDspActions";
 
 export interface FilterProps {
   name: string;

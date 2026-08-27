@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useDspActions } from "@/hooks/useDspActions";
 import { CheckCircleIcon, CircleIcon, ListIcon } from "@phosphor-icons/react";
 import { DIALOG_EVENTS } from "@/store/constants";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import Filter from "@/views/Dsp/components/Filters/Filter";
-import useDspActions from "@/hooks/useDspActions";
+import Mixer from "@/views/Dsp/components/Mixers/Mixer";
 import ItemWrapper from "../Wrapper/ItemWrapper";
 import NoItems from "../Item/NoItems";
 import Modal from "../Modal";
+import Processor from "@/views/Dsp/components/Processors/processor";
 
 type DialogStageType = {
   item: {
@@ -26,15 +28,16 @@ const DialogStageTypeAdd = ({ item }: DialogStageType) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const propertyName: { [key: string]: string } = {
-    Filter: "filters",
+    Mixer: "mixers",
     Processor: "processors",
+    Filter: "filters",
   };
   const StageType = propertyName[item.type];
   const items = Object.entries(config[StageType] ?? {});
 
   return (
     <Modal
-      title={`Choose ${item.type}s`}
+      title={`Choose ${item.type}`}
       onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
       isOpen={true}
       buttonText="Add"
@@ -54,6 +57,7 @@ const DialogStageTypeAdd = ({ item }: DialogStageType) => {
                 <div key={name} className="col-span-2 md:col-span-1">
                   <ItemWrapper>
                     <div className="flex-1">
+                      {StageType === "mixers" && <Mixer name={name} mixer={item} onClick={(name) => setSelectedItems([name])} />}
                       {StageType === "filters" && (
                         <Filter
                           name={name}
@@ -63,7 +67,7 @@ const DialogStageTypeAdd = ({ item }: DialogStageType) => {
                           }
                         />
                       )}
-                      {StageType === "processors" && <>Not Available</>}
+                      {StageType === "processors" && <Processor name={name} processor={item} onClick={(name) => setSelectedItems([name])} />}
                     </div>
 
                     <div className="pr-4">

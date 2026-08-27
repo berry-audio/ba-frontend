@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
+import { useDspActions } from "@/hooks/useDspActions";
 import { DIALOG_EVENTS } from "@/store/constants";
 
 import Modal from "../Modal";
-import useDspActions from "@/hooks/useDspActions";
 
 type DialogStageType = {
   item: {

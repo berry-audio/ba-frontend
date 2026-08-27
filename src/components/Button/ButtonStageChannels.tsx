@@ -1,24 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { SpeakerSimpleHighIcon } from "@phosphor-icons/react";
+import { calculateChannels } from "@/util";
 import { STAGE_TYPE } from "@/views/Dsp/types";
 import { ICON_WEIGHT, ICON_XS } from "@/constants";
 import { DIALOG_EVENTS } from "@/store/constants";
 
 import Button from ".";
-
-const calculateChannels = (config: any, stageIndex: number): number => {
-  let lastValidMixerStepBeforeIndex = null;
-  if (config.pipeline) {
-    lastValidMixerStepBeforeIndex = config.pipeline.findLast(
-      (step, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index < stageIndex,
-    ) as any;
-  }
-  if (lastValidMixerStepBeforeIndex && config.mixers) {
-    const mixer = config.mixers[lastValidMixerStepBeforeIndex.name];
-    return mixer.channels.out;
-  }
-  return config.devices.capture.channels;
-};
 
 const ButtonStageChannels = ({ index, channels, type }: { index: number; channels: number[] | null; type: STAGE_TYPE }) => {
   const dispatch = useDispatch();

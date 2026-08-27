@@ -6,7 +6,7 @@
 
 @theme inline {
   --radius-sm: 2px;
-  --radius-md: 10px;
+  --radius-md: 7px;
   --radius-lg: 10px;
   --radius-4xl: 4px;
   --radius-full: calc(var(--radius) + 40px);
@@ -35,6 +35,7 @@
   --primary-text-hover: #ffffff;
 
   --background: #ffffff;
+  --background-invert: #000000;
   --background-foreground: rgb(241, 241, 241);
   --background-cover: var(--color-neutral-200);
   --background-dialog: var(--color-white);
@@ -54,6 +55,7 @@
   --primary-text-hover: #ffffff;
 
   --background: #1f1f1f;
+  --background-invert: #ffffff;
   --background-foreground: #242424;
   --background-cover: var(--color-neutral-800);
   --background-dialog: var(--color-neutral-950);
@@ -126,6 +128,10 @@
 
   .bg-cover {
     background-color: var(--background-cover);
+  }
+
+  .bg-invert {
+    background-color: var(--background-invert);
   }
 
   .bg-dialog {

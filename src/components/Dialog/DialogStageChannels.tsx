@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useDspActions } from "@/hooks/useDspActions";
 import { getChannelLabels, getLabelForChannel } from "@/util";
 import { SpeakerSimpleLowIcon } from "@phosphor-icons/react/dist/ssr";
 import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react";
@@ -7,7 +8,6 @@ import { ICON_SM } from "@/constants";
 import { DIALOG_EVENTS } from "@/store/constants";
 
 import Modal from "../Modal";
-import useDspActions from "@/hooks/useDspActions";
 import ItemWrapper from "../Wrapper/ItemWrapper";
 
 const DialogStageChannels = ({

@@ -179,7 +179,7 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
       toast.custom((id) => <ToastContent id={id} title={`Stage deleted`} variant="warning" />);
       break;
     case INTERNAL_EVENTS.DSP_STAGE_TYPE_DELETED:
-      toast.custom((id) => <ToastContent id={id} title={`Filter removed`} variant="warning" />);
+      toast.custom((id) => <ToastContent id={id} title={`${payload.stageType} ${payload.typeName} removed`} variant="warning" />);
       break;
 
     // Airplay Notifications

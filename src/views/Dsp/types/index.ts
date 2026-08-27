@@ -21,6 +21,16 @@ export enum FilterParameterType {
   GRAPHIC_EQUALIZER = "GraphicEqualizer",
 }
 
+export enum PROCESSOR_TYPE {
+  COMPRESSOR = "Compressor",
+  NOISE = "NoiseGate",
+}
+
+export enum PROCESSOR_TYPE_SHORT {
+  COMPRESSOR = "CO",
+  NOISE = "NO",
+}
+
 export enum STAGE_TYPE {
   FILTER = "Filter",
   PROCESSOR = "Processor",

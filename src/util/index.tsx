@@ -483,3 +483,17 @@ export const getLabelForChannel = (labels: (string | null)[] | null | undefined,
   }
   return result;
 };
+
+export const calculateChannels = (config: any, stageIndex: number): number => {
+  let lastValidMixerStepBeforeIndex = null;
+  if (config.pipeline) {
+    lastValidMixerStepBeforeIndex = config.pipeline.findLast(
+      (step: any, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index < stageIndex,
+    ) as any;
+  }
+  if (lastValidMixerStepBeforeIndex && config.mixers) {
+    const mixer = config.mixers[lastValidMixerStepBeforeIndex.name];
+    return mixer.channels.out;
+  }
+  return config.devices.capture.channels;
+};

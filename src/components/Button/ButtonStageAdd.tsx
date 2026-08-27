@@ -1,8 +1,8 @@
+import { useDspActions } from "@/hooks/useDspActions";
 import { PlusIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 
 import Button from ".";
-import useDspActions from "@/hooks/useDspActions";
 
 const ButtonStageAdd = () => {
   const { addStage } = useDspActions();
