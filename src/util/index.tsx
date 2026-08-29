@@ -484,16 +484,32 @@ export const getLabelForChannel = (labels: (string | null)[] | null | undefined,
   return result;
 };
 
-export const calculateChannels = (config: any, stageIndex: number): number => {
+export const calculateInChannels = (config: any, stageIndex: number): number => {
   let lastValidMixerStepBeforeIndex = null;
-  if (config.pipeline) {
-    lastValidMixerStepBeforeIndex = config.pipeline.findLast(
-      (step: any, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index < stageIndex,
-    ) as any;
-  }
+
+  lastValidMixerStepBeforeIndex = config.pipeline.findLast(
+    (step: any, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index < stageIndex,
+  ) as any;
+
   if (lastValidMixerStepBeforeIndex && config.mixers) {
     const mixer = config.mixers[lastValidMixerStepBeforeIndex.name];
-    return mixer.channels.out;
+    return mixer?.channels.out ?? 0;
   }
+
   return config.devices.capture.channels;
+};
+
+export const calculateOutChannels = (config: any, stageIndex: number): number => {
+  let nextValidMixerStepAfterIndex = null;
+
+  nextValidMixerStepAfterIndex = config.pipeline.find(
+    (step: any, index: number) => step.type === STAGE_TYPE.MIXER && step.name !== "" && index > stageIndex,
+  ) as any;
+
+  if (nextValidMixerStepAfterIndex && config.mixers) {
+    const mixer = config.mixers[nextValidMixerStepAfterIndex.name];
+    return mixer?.channels.in ?? 0;
+  }
+
+  return config.devices.playback.channels;
 };

@@ -5,7 +5,7 @@ import { DIALOG_EVENTS, SOCKET_EVENTS } from "./constants";
 export const socketMiddleware: Middleware = (store) => {
   let socket: WebSocket | null = null;
   let requestId = 0;
-  const pendingRequests = new Map<number, (data: any) => void>();
+  const pendingRequests = new Map<number, { resolve: (data: any) => void; reject: (err: any) => void }>();
 
   let reconnectAttempts = 0;
   let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -21,9 +21,7 @@ export const socketMiddleware: Middleware = (store) => {
     socket.onclose = () => {
       store.dispatch({ type: SOCKET_EVENTS.SOCKET_DISCONNECTED });
 
-      pendingRequests.forEach((resolve) =>
-        resolve(Promise.reject(new Error("Socket disconnected")))
-      );
+      pendingRequests.forEach(({ reject }) => reject(new Error("Socket disconnected")));
       pendingRequests.clear();
 
       const delay = Math.min(1000 * 2 ** reconnectAttempts, 3000);
@@ -34,19 +32,24 @@ export const socketMiddleware: Middleware = (store) => {
     socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        
-        if (data.error){
+
+        if (data.error) {
           store.dispatch({
             type: DIALOG_EVENTS.DIALOG_ERROR,
             payload: data.error,
-            toast: { title: data.error.message || "Unknown error occured" , variant: "error" },
+            toast: { title: data.error.message || "Unknown error occured", variant: "error" },
           });
         }
 
         if (data.id && pendingRequests.has(data.id)) {
-          pendingRequests.get(data.id)?.(data);
+          const { resolve, reject } = pendingRequests.get(data.id)!;
+          if (data.error) {
+            reject(data.error);
+          } else {
+            resolve(data);
+          }
           pendingRequests.delete(data.id);
-        } else if (data.event) {
+        } else if (data) {
           store.dispatch({
             type: data.event,
             payload: data,
@@ -75,8 +78,8 @@ export const socketMiddleware: Middleware = (store) => {
           id: requestId,
         };
 
-        const promise = new Promise((resolve) => {
-          pendingRequests.set(requestId, resolve);
+        const promise = new Promise((resolve, reject) => {
+          pendingRequests.set(requestId, { resolve, reject });
         });
 
         socket.send(JSON.stringify(msg));

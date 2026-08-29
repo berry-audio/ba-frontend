@@ -25,7 +25,7 @@ const DialogStageChannels = ({
   const [selectedChannels, setSelectedChannels] = useState<number[]>(item.channels ?? allChannels);
 
   const { config } = useSelector((state: any) => state.dsp);
-  const { updateStageChannels } = useDspActions();
+  const { updateStageChannels, loading } = useDspActions();
 
   const channelLabels = getChannelLabels(config, item.index);
 
@@ -35,7 +35,7 @@ const DialogStageChannels = ({
       onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
       isOpen={true}
       buttonText="Apply"
-      buttonLoading={false}
+      buttonLoading={loading}
       buttonOnClick={() => updateStageChannels(item.index, selectedChannels, item.channelsCount)}
     >
       {allChannels.map((index) => (

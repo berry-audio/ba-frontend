@@ -8,6 +8,7 @@ import Status from "./components/Status";
 import VuMeter from "./components/VuMeter";
 import Filters from "./components/Filters";
 import Pipeline from "./components/Pipeline";
+import ButtonDspRefresh from "@/components/Button/ButtonDspRefresh";
 
 const Dsp = () => {
   const navigate = useNavigate();
@@ -33,7 +34,17 @@ const Dsp = () => {
   };
 
   return (
-    <Page backButton title="DSP">
+    <Page
+      backButton
+      title="Digital Signal Processor"
+      rightComponent={
+        <div className="flex">
+          <div className="mr-4">
+            <ButtonDspRefresh />
+          </div>
+        </div>
+      }
+    >
       <div className="py-4 md:px-4">
         <div className="mb-8">
           <Tabs activeTab={view} onTabChange={onTabChange} items={directory} />

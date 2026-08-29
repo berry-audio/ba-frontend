@@ -48,6 +48,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-toast": "^1.2.15",
+    "@radix-ui/react-tooltip": "^1.2.16",
     "@react-stately/combobox": "^3.12.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/cli": "^4.1.11",

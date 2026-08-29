@@ -16,7 +16,7 @@ type DialogStageType = {
 const DialogStageTypeDelete = ({ item }: DialogStageType) => {
   const dispatch = useDispatch();
 
-  const { deleteStageType } = useDspActions();
+  const { deleteStageType, loading } = useDspActions();
 
   return (
     <Modal
@@ -24,7 +24,7 @@ const DialogStageTypeDelete = ({ item }: DialogStageType) => {
       onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
       isOpen={true}
       buttonText="Delete"
-      buttonLoading={false}
+      buttonLoading={loading}
       buttonOnClick={() => deleteStageType(item.stageIndex, item.stageType, item.typeIndex, item.typeName)}
     >
       <span className="text-secondary">

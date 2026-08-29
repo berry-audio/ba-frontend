@@ -23,6 +23,7 @@ import DialogStageTypeDelete from "./DialogStageTypeDelete";
 import DialogStageDelete from "./DialogStageDelete";
 import DialogFilterDelete from "./DialogFilterDelete";
 import DialogStageChannels from "./DialogStageChannels";
+import DialogFilterEdit from "./DialogFilterEdit";
 
 const Dialog = () => {
   const { dialog, payload: item } = useSelector((state: any) => state.dialog);
@@ -48,6 +49,7 @@ const Dialog = () => {
       {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_ADD && <DialogFilterAdd />}
       {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_DELETE && <DialogFilterDelete item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_ADD_TYPE && <DialogStageTypeAdd item={item} />}
+      {dialog === DIALOG_EVENTS.DIALOG_DSP_FILTER_EDIT && <DialogFilterEdit item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE_TYPE && <DialogStageTypeDelete item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE && <DialogStageDelete item={item} />}
       {dialog === DIALOG_EVENTS.DIALOG_DSP_STAGE_CHANNELS && <DialogStageChannels item={item} />}

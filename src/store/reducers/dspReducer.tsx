@@ -1,7 +1,7 @@
 import { EVENTS } from "@/constants/events";
 
 interface DspState {
-  config: Object | null;
+  config: any | null;
 }
 
 const initialDspState: DspState = {

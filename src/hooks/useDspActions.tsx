@@ -4,20 +4,17 @@ import { useDspService } from "@/services/dsp";
 import { DIALOG_EVENTS, INTERNAL_EVENTS } from "@/store/constants";
 import { STAGE_TYPE } from "@/views/Dsp/types";
 import { EVENTS } from "@/constants/events";
-import { calculateChannels } from "@/util";
 
 const DEFAULT_STAGE_VALUES: Record<string, any> = {
   [STAGE_TYPE.MIXER]: {
     type: STAGE_TYPE.MIXER,
-    channels: null,
-    name: null,
+    name: "",
     description: null,
     bypassed: true,
   },
   [STAGE_TYPE.PROCESSOR]: {
     type: STAGE_TYPE.PROCESSOR,
-    channels: null,
-    name: null,
+    name: "",
     description: null,
     bypassed: true,
   },
@@ -91,44 +88,21 @@ export const useDspActions = () => {
   };
   const bypassStage = async (index: number, bypassed: boolean) => {
     setLoading(true);
+    const stage = config.pipeline[index];
 
     try {
-      const thisStage = config.pipeline[index];
-      const thisStageType = thisStage.type;
-      let allowBypass = false;
-
-      if (thisStageType === STAGE_TYPE.MIXER || thisStageType === STAGE_TYPE.PROCESSOR) {
-        if (thisStage.name !== null) {
-          const { channelsInMatch, channelsOutMatch } = useChannelValidation(config, index, thisStageType, thisStage.name);
-          if (channelsInMatch && channelsOutMatch) {
-            allowBypass = true;
-          }
-        }
-      }
-
-      if (thisStageType === STAGE_TYPE.FILTER) {
-        if (thisStage.names.length > 0) {
-          allowBypass = true;
-        }
-      }
-
-      let updatedStage: any = null;
-
       const configUpdated = {
         ...config,
-        pipeline: (config.pipeline ?? []).map((stage: any, i: number) => {
-          if (i !== index) return stage;
-
-          updatedStage = { ...thisStage, bypassed: allowBypass ? bypassed : true };
-          return updatedStage;
-        }),
+        pipeline: (config.pipeline ?? []).map((stage: any, i: number) => (i === index ? { ...stage, bypassed } : stage)),
       };
-      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
 
-      if (allowBypass) {
-        dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_UPDATED });
-        await setDspConfig(configUpdated);
+      if (stage.type === STAGE_TYPE.FILTER) {
+        dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
       }
+
+      await setDspConfig(configUpdated);
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_UPDATED });
     } catch (error) {
       throw error;
     } finally {
@@ -155,38 +129,7 @@ export const useDspActions = () => {
         }),
       };
 
-      const canUpdate =
-        updatedStage.type === STAGE_TYPE.MIXER || updatedStage.type === STAGE_TYPE.PROCESSOR
-          ? updatedStage.name !== null
-          : updatedStage.type === STAGE_TYPE.FILTER
-            ? updatedStage.names.length > 0
-            : false;
-
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
-
-      if (canUpdate) {
-        dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_UPDATED });
-        await setDspConfig(configUpdated);
-      }
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const deleteStage = async (index: number) => {
-    setLoading(true);
-
-    try {
-      const configUpdated = {
-        ...config,
-        pipeline: config.pipeline.filter((_stage: any, i: number) => i !== index),
-      };
-
-      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
-      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
-      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_DELETED });
       await setDspConfig(configUpdated);
     } catch (error) {
       throw error;
@@ -204,7 +147,45 @@ export const useDspActions = () => {
       };
 
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
-      // await setDspConfig(configUpdated);
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const moveStage = async (pipeline: any[]) => {
+    setLoading(true);
+
+    try {
+      const configUpdated = {
+        ...config,
+        pipeline,
+      };
+
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      await setDspConfig(configUpdated);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteStage = async (index: number) => {
+    setLoading(true);
+
+    try {
+      const configUpdated = {
+        ...config,
+        pipeline: config.pipeline.filter((_stage: any, i: number) => i !== index),
+      };
+
+      await setDspConfig(configUpdated);
+      dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_DELETED });
     } catch (error) {
       throw error;
     } finally {
@@ -213,11 +194,11 @@ export const useDspActions = () => {
   };
 
   const addStageType = async (index: number, type: string, items: string[]) => {
+    if (!items.length) return;
     setLoading(true);
 
     try {
       const currentStage = config.pipeline[index];
-
       const updatedStage = {
         ...currentStage,
         type,
@@ -237,20 +218,10 @@ export const useDspActions = () => {
         ...config,
         pipeline: config.pipeline.map((stage: any, i: number) => (i === index ? updatedStage : stage)),
       };
-
+      await setDspConfig(configUpdated);
       dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
-
-      if (type === (STAGE_TYPE.MIXER || STAGE_TYPE.PROCESSOR)) {
-        const { channelsInMatch, channelsOutMatch } = useChannelValidation(config, index, type, items[0]);
-        if (channelsInMatch && channelsOutMatch) {
-          await setDspConfig(configUpdated);
-        }
-      }
-
-      if (type === STAGE_TYPE.FILTER) {
-        await setDspConfig(configUpdated);
-      }
+      dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_UPDATED });
     } catch (error) {
       throw error;
     } finally {
@@ -271,10 +242,10 @@ export const useDspActions = () => {
             }
           : {
               ...currentStage,
-              name: null,
+              name: "",
             };
 
-      if (stageType === STAGE_TYPE.FILTER ? updatedStage.names.length === 0 : updatedStage.name === null) {
+      if (stageType === STAGE_TYPE.FILTER ? updatedStage.names.length === 0 : updatedStage.name === "") {
         updatedStage.bypassed = true;
       }
 
@@ -283,20 +254,32 @@ export const useDspActions = () => {
         pipeline: config.pipeline.map((stage: any, i: number) => (i === stageIndex ? updatedStage : stage)),
       };
 
+      await setDspConfig(configUpdated);
       dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
       dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_TYPE_DELETED, payload: { stageType, typeName } });
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      if (stageType === (STAGE_TYPE.MIXER || STAGE_TYPE.PROCESSOR)) {
-        const { channelsInMatch, channelsOutMatch } = useChannelValidation(config, stageIndex, stageType, typeName);
-        if (channelsInMatch && channelsOutMatch) {
-          await setDspConfig(configUpdated);
-        }
-      }
+  const moveStageType = async (stageIndex: number, names: string[]) => {
+    setLoading(true);
 
-      if (stageType === STAGE_TYPE.FILTER) {
-        await setDspConfig(configUpdated);
-      }
+    try {
+      const stage = config.pipeline[stageIndex];
+      const updatedStage = { ...stage, names };
+      const pipeline = config.pipeline.map((s: any, i: number) => (i === stageIndex ? updatedStage : s));
+
+      const configUpdated = {
+        ...config,
+        pipeline,
+      };
+
+      await setDspConfig(configUpdated);
+      dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
     } catch (error) {
       throw error;
     } finally {
@@ -318,11 +301,10 @@ export const useDspActions = () => {
         pipeline: config.pipeline.map((stage: any, i: number) => (i === stageIndex ? updatedStage : stage)),
       };
 
+      await setDspConfig(configUpdated);
       dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE });
       dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config: configUpdated } });
       dispatch({ type: INTERNAL_EVENTS.DSP_STAGE_CHANNEL_UPDATED });
-
-      await setDspConfig(configUpdated);
     } catch (error) {
       throw error;
     } finally {
@@ -330,35 +312,18 @@ export const useDspActions = () => {
     }
   };
 
-  return { saveFilter, deleteFilter, addStage, deleteStage, changeStage, bypassStage, addStageType, deleteStageType, updateStageChannels, loading };
-};
-
-export const useChannelValidation = (config: any, stageIndex: number, stageType: string, typeName: string) => {
-  const channelsInAllowed = calculateChannels(config, stageIndex);
-  const channelsOutAllowed = config.devices.playback.channels;
-
-  let channelsIn: number;
-  let channelsOut: number;
-
-  if (stageType === STAGE_TYPE.MIXER) {
-    const mixer = config?.mixers?.[typeName];
-    channelsIn = mixer.channels.in;
-    channelsOut = mixer.channels.out;
-  } else if (stageType === STAGE_TYPE.PROCESSOR) {
-    const processor = config?.processors?.[typeName];
-    channelsIn = processor.parameters.channels;
-    channelsOut = processor.parameters.channels;
-  } else {
-    channelsIn = 0;
-    channelsOut = 0;
-  }
-
   return {
-    channelsInAllowed,
-    channelsInMatch: channelsInAllowed === channelsIn,
-    channelsOutAllowed,
-    channelsOutMatch: channelsOutAllowed === channelsOut,
-    channelsIn,
-    channelsOut,
+    saveFilter,
+    deleteFilter,
+    addStage,
+    deleteStage,
+    changeStage,
+    moveStage,
+    bypassStage,
+    addStageType,
+    deleteStageType,
+    moveStageType,
+    updateStageChannels,
+    loading,
   };
 };
