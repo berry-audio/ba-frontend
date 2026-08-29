@@ -163,6 +163,9 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
       break;
 
     // DSP Notifications
+    case INTERNAL_EVENTS.DSP_UPDATED:
+      toast.custom((id) => <ToastContent id={id} title={`Config updated`} variant="success" />);
+      break;
     case INTERNAL_EVENTS.DSP_FILTER_SAVE:
       toast.custom((id) => <ToastContent id={id} title={`Filter ${payload.name} updated`} variant="success" />);
       break;

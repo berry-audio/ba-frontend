@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDspService } from "@/services/dsp";
 import { ArrowsClockwiseIcon } from "@phosphor-icons/react";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
+import { INTERNAL_EVENTS } from "@/store/constants";
 import { EVENTS } from "@/constants/events";
 
 import ButtonIcon from "@/components/Button/ButtonIcon";
@@ -17,6 +18,7 @@ const ButtonDspRefresh = () => {
     setIsLoading(true);
     const config = await getDspConfig();
     dispatch({ type: EVENTS.DSP_STATE_CHANGED, payload: { config } });
+    dispatch({ type: INTERNAL_EVENTS.DSP_UPDATED });
     setIsLoading(false);
   };
 
