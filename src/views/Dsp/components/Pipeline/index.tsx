@@ -3,20 +3,13 @@ import { useDspActions } from "@/hooks/useDspActions";
 import { DisplayChannel } from "../Mixers/Mixer";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { calculateInChannels } from "@/util";
+import { RootState } from "@/store/reducers";
 
 import Stage from "./Stage";
 import ButtonStageAdd from "@/components/Button/ButtonStageAdd";
 
-interface DspState {
-  dsp: {
-    config?: {
-      pipeline?: any[];
-    };
-  };
-}
-
 const Pipeline = () => {
-  const { config } = useSelector((state: DspState) => state.dsp);
+  const { config } = useSelector((state: RootState) => state.dsp);
   const { moveStage } = useDspActions();
 
   const onDragEnd = async (result: any) => {

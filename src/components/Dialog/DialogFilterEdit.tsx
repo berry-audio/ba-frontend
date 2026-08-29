@@ -25,7 +25,7 @@ const DialogFilterEdit = ({ item }: DialogFilterEditType) => {
 
   const { saveFilter, loading } = useDspActions();
 
-  const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
+  const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
 
   const filter = item.filter;
   const filterName = item.name;

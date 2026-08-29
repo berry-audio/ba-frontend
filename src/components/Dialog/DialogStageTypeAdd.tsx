@@ -9,8 +9,8 @@ import Filter from "@/views/Dsp/components/Filters/Filter";
 import Mixer from "@/views/Dsp/components/Mixers/Mixer";
 import ItemWrapper from "../Wrapper/ItemWrapper";
 import NoItems from "../Item/NoItems";
-import Modal from "../Modal";
 import Processor from "@/views/Dsp/components/Processors/Processor";
+import Modal from "../Modal";
 
 type DialogStageType = {
   item: {

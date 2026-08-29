@@ -16,13 +16,15 @@ const Filters = () => {
         {[...filters]
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([name, filter]) => (
-            <div key={name} className="col-span-2 md:col-span-1 ">
+            <div key={name} className="col-span-2 md:col-span-1">
               <ItemWrapper key={name}>
-                <div className="flex-1">
-                  <Filter name={name} filter={filter} />
-                </div>
-                <div className="flex">
-                  <ButtonFilterDelete name={name} />
+                <div className="flex flex-1 px-2">
+                  <div className="flex-1">
+                    <Filter name={name} filter={filter} />
+                  </div>
+                  <div className="flex">
+                    <ButtonFilterDelete name={name} />
+                  </div>
                 </div>
               </ItemWrapper>
             </div>

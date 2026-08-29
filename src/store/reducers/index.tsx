@@ -32,3 +32,5 @@ export const rootReducer = combineReducers({
   config: configReducer,
   dsp: dspReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>;

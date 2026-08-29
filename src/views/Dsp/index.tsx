@@ -36,7 +36,7 @@ const Dsp = () => {
   return (
     <Page
       backButton
-      title="Digital Signal Processor"
+      title="DSP Manager"
       rightComponent={
         <div className="flex">
           <div className="mr-4">
@@ -45,18 +45,18 @@ const Dsp = () => {
         </div>
       }
     >
-      <div className="py-4 md:px-4">
-        <div className="mb-8">
+      <div className="py-4 ">
+        <div className="mb-5 px-5">
           <Tabs activeTab={view} onTabChange={onTabChange} items={directory} />
         </div>
 
         {view === "dashboard" && (
           <>
-            <div className="pb-8">
+            <div className="pb-8 px-6">
               <Status />
             </div>
 
-            <div className="pb-8">
+            <div className="pb-8 px-6">
               <VuMeter />
             </div>
           </>
