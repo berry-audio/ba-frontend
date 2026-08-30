@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import ButtonIcon from "../Button/ButtonIcon";
 import Button from "../Button";
+
 interface ModalProps {
   buttonShow?: boolean;
   buttonText?: string;
@@ -15,6 +16,7 @@ interface ModalProps {
   padding?: boolean;
   size?: string;
 }
+
 const Modal: React.FC<ModalProps> = ({
   buttonShow = true,
   buttonText,
@@ -29,15 +31,48 @@ const Modal: React.FC<ModalProps> = ({
   padding = false,
   size = "w-130",
 }) => {
-  if (!isOpen) return null;
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      const raf = requestAnimationFrame(() => setIsVisible(true));
+      return () => cancelAnimationFrame(raf);
+    } else {
+      setIsVisible(false);
+    }
+  }, [isOpen]);
+
+  const closeDialog = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setShouldRender(false);
+      onClose();
+    }, 300);
+  };
+
+  if (!shouldRender) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center  backdrop-blur-md bg-overlay ">
-      <div className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 animate-fadeIn overflow-hidden z-250 relative md:px-3`}>
+    <div
+      className={`fixed inset-0 z-1000 flex items-center justify-center backdrop-blur-md bg-overlay transition-opacity duration-300 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) closeDialog();
+      }}
+    >
+      <div
+        className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 overflow-hidden z-250 relative md:px-3 transition-all duration-300 ${
+          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
+      >
         {/* Header */}
         <div className="flex justify-between items-center px-5 py-6">
           {title && <h2 className="text-2xl font-light">{title}</h2>}
           {!hideClose && (
-            <ButtonIcon className="-right-4" onClick={onClose}>
+            <ButtonIcon className="-right-4" onClick={closeDialog}>
               ✕
             </ButtonIcon>
           )}
@@ -58,4 +93,5 @@ const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
+
 export default Modal;

@@ -46,7 +46,7 @@ const Status = () => {
               {desc} {hires && <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">Hi-Res</span>}
               {hd && <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">HQ</span>}
             </div>
-            <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
+            <div className="w-full bg-input rounded-full h-1 mt-3 mb-1">
               <div className="bg-primary h-1 rounded-full" style={{ width: `${percent}%` }}></div>
             </div>
           </div>

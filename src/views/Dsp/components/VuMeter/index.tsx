@@ -91,7 +91,7 @@ function MeterRow({ label, rms, peak }: MeterRowProps) {
           }}
         />
         <div
-          className="absolute right-0 top-0 bottom-0 bg-foreground transition-[width] duration-70 ease-linear"
+          className="absolute right-0 top-0 bottom-0 bg-input transition-[width] duration-70 ease-linear"
           style={{
             width: `${maskWidth}%`,
           }}

@@ -89,7 +89,7 @@ const Player = () => {
                 <ButtonWebRtc />
               </div>
               <div className="flex items-center gap-3 w-50 max-w-xs mr-5">
-                <VolumeSlider classname="volume-slider " />
+                <VolumeSlider />
               </div>
               <div className="flex items-center">
                 <div className="mr-2"></div>

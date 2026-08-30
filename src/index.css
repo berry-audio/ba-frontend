@@ -34,18 +34,19 @@
   --primary-text-hover: #ffffff;
 
   --background: #fcfcfc;
+  --background-secondary: #ffffff;
   --background-invert: #000000;
   --background-foreground: #f1f1f1;
 
   --background-cover: #e6e4e4;
 
-  --background-dialog: #ffffff;
+  --background-dialog: #fcfcfc;
   --background-overlay: #e0e0e0;
 
   --background-dropdown: #ffffff;
   --background-dropdown-hover: #f1f1f1;
 
-  --background-input: #f4f4f4;
+  --background-input: #ededed;
 
   --background-hover: #f1f1f1;
   --background-selected: rgba(0, 0, 0, 0.08);
@@ -62,25 +63,26 @@
   --primary-text-hover: #ffffff;
 
   --background: #212121;
+  --background-secondary: #181818;
   --background-invert: #ffffff;
   --background-foreground: #3e3e3e;
 
-  --background-cover: #000000;
+  --background-cover: #131313;
 
-  --background-dialog: #121212;
-  --background-overlay: #3e3e3e;
+  --background-dialog: #1b1b1b;
+  --background-overlay: #000000;
 
   --background-dropdown: #282828;
   --background-dropdown-hover: #3e3e3e;
 
-  --background-input: #282828;
+  --background-input: #131313;
 
   --background-hover: #3e3e3e;
   --background-selected: rgba(0, 0, 0, 0.5);
 
   --text-color: #ffffff;
   --text-color-secondary: var(--color-neutral-400);
-  --text-color-disabled: #606060;
+  --text-color-disabled: #535353;
   --text-color-invert: #000000;
 }
 
@@ -147,6 +149,10 @@
 
   .bg-invert {
     background-color: var(--background-invert);
+  }
+
+  .bg-secondary {
+    background-color: var(--background-secondary);
   }
 
   .bg-dialog {

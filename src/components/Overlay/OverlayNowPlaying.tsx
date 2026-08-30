@@ -154,7 +154,7 @@ const OverlayNowPlaying = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-center mt-2 w-full ">
+          <div className="flex items-center justify-center mt-2 w-full h-20">
             <div className="mt-6 max-w-800 w-100">
               {isTuner ? (
                 <div className="-mb-7 -mt-9">

@@ -51,7 +51,7 @@ function Slider({
 
   function getRangeWidth(percentage: number) {
     const clamped = Math.max(0, Math.min(100, percentage));
-    const maxBuffer = 4;
+    const maxBuffer = 0;
     const fadeEnd = 100;
 
     if (clamped >= fadeEnd) return clamped;
@@ -89,7 +89,7 @@ function Slider({
       >
         <SliderPrimitive.Track
           data-slot="slider-track"
-          className={`relative bg-input w-full h-${height} transition-all duration-200 ${hoveredIndex === 0 && "h-5"} cursor-pointer relative grow rounded-full`}
+          className={`relative bg-input w-full h-${height} transition-all duration-200 ${hoveredIndex === 0 && !props.disabled && "h-5"} cursor-pointer relative grow rounded-full`}
           onMouseEnter={() => setHoveredIndex(0)}
           onMouseLeave={() => setHoveredIndex(null)}
           onPointerEnter={() => setHoveredIndex(0)}
@@ -97,37 +97,41 @@ function Slider({
           onPointerDown={() => setHoveredIndex(0)}
           onPointerUp={() => setHoveredIndex(null)}
         >
-          <div
-            data-slot="slider-range"
-            className={`relative h-full ${rounded ? "rounded-full" : "rounded-tl-none rounded-bl-none rounded-tr-full rounded-br-full"} pointer-events-none bg-primary`}
-            style={{
-              width: `${getRangeWidth(percentages[0] + 1)}%`,
-            }}
-            onMouseEnter={() => setHoveredIndex(0)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onPointerEnter={() => setHoveredIndex(0)}
-            onPointerLeave={() => setHoveredIndex(null)}
-            onPointerDown={() => setHoveredIndex(0)}
-            onPointerUp={() => setHoveredIndex(null)}
-          >
+          {!props.disabled && value !== 0 && (
             <div
-              className={cn(
-                "w-5 h-5 bg-white! border-3 border-primary! absolute right-0 rounded-full transition-al",
-                hoveredIndex === 0 || height === 5 ? "opacity-100 scale-100 duration-1000" : "opacity-0 scale-75 pointer-events-none duration-100",
-              )}
+              data-slot="slider-range"
+              className={`relative h-full ${rounded ? "rounded-full" : "rounded-tl-none rounded-bl-none rounded-tr-full rounded-br-full"} pointer-events-none bg-primary`}
+              style={{
+                width: `max(20px, calc(${getRangeWidth(percentages[0])}% + 2px ))`,
+              }}
+              onMouseEnter={() => setHoveredIndex(0)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onPointerEnter={() => setHoveredIndex(0)}
+              onPointerLeave={() => setHoveredIndex(null)}
+              onPointerDown={() => setHoveredIndex(0)}
+              onPointerUp={() => setHoveredIndex(null)}
             >
-              {showTooltip && hoveredIndex === 0 && (
-                <span
-                  data-slot="slider-tooltip"
-                  className="bg-text text-background pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded px-1.5 py-0.5 text-sm whitespace-nowrap shadow-sm z-50"
-                >
-                  {_values[0]}
-                  {unit}
-                  <span className="bg-text absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45" />
-                </span>
-              )}
+              <div
+                className={cn(
+                  "w-5 h-5 bg-white! border-3 border-primary! absolute right-0 rounded-full transition-all",
+                  (hoveredIndex === 0 && !props.disabled) || height === 5
+                    ? "opacity-100 scale-100 duration-1000"
+                    : "opacity-0 scale-75 pointer-events-none duration-100",
+                )}
+              >
+                {showTooltip && hoveredIndex === 0 && (
+                  <span
+                    data-slot="slider-tooltip"
+                    className="bg-text text-background pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded px-1.5 py-0.5 text-sm whitespace-nowrap shadow-sm z-50"
+                  >
+                    {_values[0]}
+                    {unit}
+                    <span className="bg-text absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45" />
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </SliderPrimitive.Track>
 
         {Array.from({ length: _values.length }, (_, index) => (

@@ -11,7 +11,7 @@ import ButtonMuteToggle from "./ButtonMuteToggle";
  * `VolumeSlider` is a UI component for displaying and controlling the mixer's volume level.
  * It initializes volume when the WebSocket connects, listens to volume change events, and syncs changes to the backend.
  */
-const VolumeSlider = ({ classname, onValueChange }: { classname?: string; onValueChange?: (value: number) => void }) => {
+const VolumeSlider = ({ onValueChange, height = 2 }: { onValueChange?: (value: number) => void; height?: number }) => {
   const dispatch = useDispatch();
   const { volume } = useSelector((state: any) => state.player, shallowEqual);
   const { setMixerVolume } = useMixerService();
@@ -37,7 +37,6 @@ const VolumeSlider = ({ classname, onValueChange }: { classname?: string; onValu
     onValueChange?.(value);
   };
 
-
   useEffect(() => {
     setMxVolumeSlider(volume);
   }, [volume]);
@@ -49,9 +48,10 @@ const VolumeSlider = ({ classname, onValueChange }: { classname?: string; onValu
       </div>
       <Slider
         value={[mxVolumeSlider as number]}
+        min={0}
         max={100}
+        height={height}
         step={1}
-        className={`w-full rounded-full ${classname ? classname : ""}`}
         onValueChange={onChangeVolume}
         onValueCommit={onCommittedVolume}
         disabled={mxVolumeSlider === null}

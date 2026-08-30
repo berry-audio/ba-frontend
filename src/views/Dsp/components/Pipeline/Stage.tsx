@@ -238,7 +238,7 @@ const Stage = ({
   };
 
   return (
-    <div className="bg-dialog w-full mb-4 py-5 shadow-sm lg:rounded-md">
+    <div className="bg-secondary w-full mb-4 py-5 shadow-sm lg:rounded-md">
       <Form {...form}>
         <div {...dragHandleProps} className="flex justify-between md:mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-5">
           <div className="flex items-center">
