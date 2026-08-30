@@ -5,7 +5,7 @@ export const DisplayChannel = ({ text, count }: { text: string; count: number })
   return (
     <div className="rounded-[5px] overflow-hidden mt-1 flex shrink-0">
       <div className="bg-cover text-primary px-2 py-1">{count}CH</div>
-      <div className="bg-foreground px-2 py-1">{text}</div>
+      <div className="bg-input px-2 py-1">{text}</div>
     </div>
   );
 };

@@ -47,7 +47,7 @@ function SelectComboBox({ items, placeholder, value, onChange, disabled = false,
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-full justify-between h-12 border-0 bg-foreground hover:border-ring hover:ring-ring hover:ring-[3px]"
+            className="w-full justify-between h-12 border-0 bg-input hover:border-ring hover:ring-ring hover:ring-[3px]"
             disabled={disabled}
           >
             {selected ? selected.label : placeholder}

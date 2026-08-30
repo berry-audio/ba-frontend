@@ -13,7 +13,7 @@ interface ModalProps {
   title?: string;
   children?: ReactNode;
   padding?: boolean;
-  size?:string; 
+  size?: string;
 }
 const Modal: React.FC<ModalProps> = ({
   buttonShow = true,
@@ -27,15 +27,14 @@ const Modal: React.FC<ModalProps> = ({
   title,
   children,
   padding = false,
-  size = "w-130"
-
+  size = "w-130",
 }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center  backdrop-blur-xs bg-foreground/20">
-      <div className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 animate-fadeIn overflow-hidden p-1 z-250 relative`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center  backdrop-blur-md bg-overlay ">
+      <div className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 animate-fadeIn overflow-hidden z-250 relative md:px-3`}>
         {/* Header */}
-        <div className="flex justify-between items-center p-5">
+        <div className="flex justify-between items-center px-5 py-6">
           {title && <h2 className="text-2xl font-light">{title}</h2>}
           {!hideClose && (
             <ButtonIcon className="-right-4" onClick={onClose}>

@@ -37,7 +37,7 @@ export function InputNumber({ value, min = 1, max = 10000, step = 1, onChange, d
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex">
-        <Button type="button" onClick={() => updateValue(safeValue - step)} className="rounded-r-none h-full px-3" disabled={disabled}>
+        <Button type="button" onClick={() => updateValue(safeValue - step)} className="rounded-r-none h-full px-3 bg-input" disabled={disabled}>
           −
         </Button>
         <Input
@@ -50,10 +50,10 @@ export function InputNumber({ value, min = 1, max = 10000, step = 1, onChange, d
             if (!isNaN(val)) updateValue(val);
             else setText(safeValue.toFixed(decimals));
           }}
-          className="flex-1 min-w-0 text-center rounded-none appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:m-0"
+          className="flex-1 bg-input min-w-0 text-center rounded-none appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:m-0"
           disabled={disabled}
         />
-        <Button type="button" onClick={() => updateValue(safeValue + step)} className="rounded-l-none h-full px-3" disabled={disabled}>
+        <Button type="button" onClick={() => updateValue(safeValue + step)} className="rounded-l-none h-full px-3 bg-input" disabled={disabled}>
           +
         </Button>
       </div>

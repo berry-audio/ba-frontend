@@ -33,7 +33,7 @@ const SettingsLinein = () => {
       title="Line In"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>
@@ -49,7 +49,9 @@ const SettingsLinein = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base block">Input device</FormLabel>
-                    <div className="pb-4 text-secondary text-md">Audio will be captured from the following available device. Works on souncards with ADC. </div>
+                    <div className="pb-4 text-secondary text-md">
+                      Audio will be captured from the following available device. Works on souncards with ADC.{" "}
+                    </div>
                     <FormControl>
                       <SelectAlsaDevices placeholder="Select Device" {...field} cmd="arecord" />
                     </FormControl>

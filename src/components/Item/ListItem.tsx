@@ -28,7 +28,7 @@ interface ListItem {
 
 const ListItem = ({ no, item: _item, selected = false, onClick, selectable = false, showFavourite = false }: ListItem) => {
   const action = useSelector((state: any) => state.event);
-  
+
   const { handlePlayNow } = usePlayNow();
   const { itemsMenu } = useMenuActions();
   const { toggleFavourite, loading: loadingFavourite } = useFavourites();
@@ -136,9 +136,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
         </div>
       </div>
       {selectable ? (
-        <div className="pr-4">
-          {selected ? <CheckCircleIcon weight="fill" size={ICON_SM} className="text-primary" /> : <CircleIcon size={25} className="opacity-50" />}
-        </div>
+        <div className="pr-4">{selected ? <CheckCircleIcon weight="fill" size={ICON_SM} /> : <CircleIcon size={25} className="opacity-50" />}</div>
       ) : (
         itemsMenu(item).length > 0 && (
           <div className="pr-2" onClick={(e) => e.stopPropagation()}>

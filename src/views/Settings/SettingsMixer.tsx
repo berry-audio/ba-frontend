@@ -41,7 +41,7 @@ const SettingsMixer = () => {
       title="Mixer"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>

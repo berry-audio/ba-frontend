@@ -149,9 +149,9 @@ const Start = () => {
       }
     >
       <LayoutHeightWrapper>
-        <div className="px-4 flex items-center">
+        <div className="px-5 pr-0 flex items-center">
           <div className="w-full">
-            <h1 className="text-left text-2xl mb-2">Source</h1>
+            <h1 className="text-left text-xl lg:text-2xl mb-2">Source</h1>
             <Swiper
               modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
               spaceBetween={5}
@@ -210,13 +210,13 @@ const Start = () => {
           </div>
         </div>
 
-        <div className="m-5">
+        <div className="p-5 pr-0">
           <Collection type={REF.RECENT} limit={10} />
         </div>
-        <div className="m-5">
+        <div className="p-5 pr-0">
           <Collection type={REF.TOP100} limit={10} />
         </div>
-        <div className="m-5 mb-7">
+        <div className="p-5 pr-0 mb-7">
           <Collection type={REF.FAVOURITE} limit={10} />
         </div>
       </LayoutHeightWrapper>

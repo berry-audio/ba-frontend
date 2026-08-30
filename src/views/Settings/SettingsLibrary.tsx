@@ -24,7 +24,7 @@ const SettingsLocal = () => {
       title="Library Folders"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonScanLibrary disabled={!paths.length} />
           </div>
           <div className="mr-4">

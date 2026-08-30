@@ -39,41 +39,27 @@ const Dsp = () => {
       title="DSP Manager"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonDspRefresh />
           </div>
         </div>
       }
     >
-      <div className="py-4 ">
-        <div className="mb-5 px-5">
-          <Tabs activeTab={view} onTabChange={onTabChange} items={directory} />
-        </div>
-
-        {view === "dashboard" && (
-          <>
-            <div className="pb-8 px-6">
-              <Status />
-            </div>
-
-            <div className="pb-8 px-6">
-              <VuMeter />
-            </div>
-          </>
-        )}
-
-        {view === "filters" && (
-          <div className="pb-8">
-            <Filters />
-          </div>
-        )}
-
-        {view === "pipeline" && (
-          <div className="pb-8">
-            <Pipeline />
-          </div>
-        )}
+      <div className="px-3 pb-3">
+        <Tabs activeTab={view} onTabChange={onTabChange} items={directory} />
       </div>
+
+      {view === "dashboard" && (
+        <>
+          <Status />
+          <div className="py-3 px-5">
+            <VuMeter />
+          </div>
+        </>
+      )}
+
+      {view === "filters" && <Filters />}
+      {view === "pipeline" && <Pipeline />}
     </Page>
   );
 };

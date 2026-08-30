@@ -11,7 +11,7 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  * `PlayPauseButton` component that controls the playback state.
  * - Calls the `play()` or `pause()` method from the playback service.
  */
-const PlayPauseButton = () => {
+const PlayPauseButton = ({ className }: { className?: string }) => {
   const { source, playback_state } = useSelector((state: any) => state.player);
   const { play, pause } = usePlaybackService();
 
@@ -24,15 +24,11 @@ const PlayPauseButton = () => {
   };
 
   return (
-    <ButtonIcon
-      className="w-16 h-16  bg-neutral-700 hover:bg-black! dark:bg-black dark:hover:bg-neutral-700! text-white"
-      onClick={onClickPlayPause}
-      disabled={!source?.controls?.includes("play")}
-    >
+    <ButtonIcon className={`w-16 h-16 ${className ?? ""}`} onClick={onClickPlayPause} disabled={!source?.controls?.includes("play")}>
       {playback_state === PLAYBACK_STATE.PLAYING ? (
         <PauseIcon size={ICON_SM + 7} weight={ICON_WEIGHT} />
       ) : (
-         <PlayIcon size={ICON_SM + 7} weight={ICON_WEIGHT} />
+        <PlayIcon size={ICON_SM + 7} weight={ICON_WEIGHT} />
       )}
     </ButtonIcon>
   );

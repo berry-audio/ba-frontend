@@ -100,7 +100,7 @@ const Player = () => {
         </div>
 
         {/* Mini Player  */}
-        <div className="lg:hidden flex items-center justify-between relative bg-neutral-950 text-white">
+        <div className="lg:hidden flex items-center justify-between relative bg-neutral-900 ">
           <div className="flex items-center p-2 w-4/6 z-20 relative">
             {current_track && (
               <button onClick={openNowPlayingOverlay} className="w-full cursor-pointer text-left">
@@ -119,9 +119,11 @@ const Player = () => {
             )}
           </div>
 
-          <div className="flex items-center w-2/6 justify-end z-20 relative text-white">
-            <div className="mr-2"><ButtonWebRtc /></div>
-            <PlayPauseButton />
+          <div className="flex items-center w-2/6 justify-end z-20 relative">
+            <div className="mr-2">
+              <ButtonWebRtc className="text-white" />
+            </div>
+            <PlayPauseButton className="text-white" />
           </div>
         </div>
       </div>

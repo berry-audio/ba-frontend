@@ -130,14 +130,14 @@ const OverlaySearch = () => {
     setQuery("");
     setResults({});
     setFilteredResults([]);
-    setActiveTab(REF.ALL)
+    setActiveTab(REF.ALL);
     setIsLoading(false);
   };
 
   return (
     <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_SEARCH} zindex={10} style={{ zIndex: 100 }} hideplayer>
       <Page title="Search" backButtonOnClick={() => dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE })} backButton>
-        <div className="px-4 mb-4">
+        <div className="px-4 my-4">
           <Input type="text" placeholder="Search Albums, Artists, Tracks, Radio..." value={query} onChange={onChangeField} onClickClear={onClear} />
         </div>
         {hasResults && (

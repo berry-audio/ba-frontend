@@ -149,7 +149,7 @@ const SettingsNetwork = () => {
       title="Network"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonWifiScan />
           </div>
         </div>

@@ -29,23 +29,30 @@
 }
 
 :root {
-  --font-family: "Inter", sans-serif;
   --radius: 0.625rem;
   --primary: #db462b;
   --primary-text-hover: #ffffff;
 
-  --background: #ffffff;
+  --background: #fcfcfc;
   --background-invert: #000000;
-  --background-foreground: rgb(241, 241, 241);
-  --background-cover: var(--color-neutral-200);
-  --background-dialog: var(--color-white);
+  --background-foreground: #f1f1f1;
 
-  --background-hover: rgb(241, 241, 241);
-  --background-selected: rgba(189, 189, 189, 0.153);
+  --background-cover: #e6e4e4;
 
-  --text-color: oklch(0.145 0 0);
-  --text-color-secondary: #424242;
-  --text-color-disabled: rgba(0, 0, 0, 0.5);
+  --background-dialog: #ffffff;
+  --background-overlay: #e0e0e0;
+
+  --background-dropdown: #ffffff;
+  --background-dropdown-hover: #f1f1f1;
+
+  --background-input: #f4f4f4;
+
+  --background-hover: #f1f1f1;
+  --background-selected: rgba(0, 0, 0, 0.08);
+
+  --text-color: #000000;
+  --text-color-secondary: var(--color-neutral-500);
+  --text-color-disabled: rgba(0, 0, 0, 0.4);
   --text-color-invert: #ffffff;
 }
 
@@ -54,13 +61,21 @@
   --primary: #db462b;
   --primary-text-hover: #ffffff;
 
-  --background: #1f1f1f;
+  --background: #212121;
   --background-invert: #ffffff;
-  --background-foreground: #242424;
-  --background-cover: var(--color-neutral-800);
-  --background-dialog: var(--color-neutral-950);
+  --background-foreground: #3e3e3e;
 
-  --background-hover: #323232;
+  --background-cover: #000000;
+
+  --background-dialog: #121212;
+  --background-overlay: #3e3e3e;
+
+  --background-dropdown: #282828;
+  --background-dropdown-hover: #3e3e3e;
+
+  --background-input: #282828;
+
+  --background-hover: #3e3e3e;
   --background-selected: rgba(0, 0, 0, 0.5);
 
   --text-color: #ffffff;
@@ -138,13 +153,25 @@
     background-color: var(--background-dialog);
   }
 
+  .bg-dropdown {
+    background-color: var(--background-dropdown);
+  }
+
+  .bg-dropdown-hover {
+    background-color: var(--background-dropdown-hover);
+  }
+
   .bg-input {
-    background-color: var(--background-foreground);
+    background-color: var(--background-input);
   }
 
   .bg-loader {
     border-color: var(--text-color);
     border-top-color: transparent;
+  }
+
+  .bg-overlay {
+    background-color: color-mix(in srgb, var(--background-overlay) 40%, transparent);
   }
 
   .bg-text {
@@ -175,6 +202,23 @@
   #root {
     overflow: hidden;
     height: 100%;
+  }
+
+  html,
+  body,
+  #root {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .draggable {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: none;
   }
 
   body {

@@ -22,6 +22,7 @@ import ButtonStageDelete from "@/components/Button/ButtonStageDelete";
 import ButtonStageChannels from "@/components/Button/ButtonStageChannels";
 import Filter from "../Filters/Filter";
 import Processor from "../Processors/Processor";
+import ButtonIcon from "@/components/Button/ButtonIcon";
 
 const OPTIONS_TYPE = [
   { value: STAGE_TYPE.MIXER, label: STAGE_TYPE.MIXER },
@@ -152,14 +153,12 @@ const ListItemFilter = ({
       <div className="flex-1">
         <Filter name={typeName} filter={filter} />
       </div>
-      <div className="flex">
-        <Button
-          type="ghost"
+      <div className="flex items-center pr-1">
+        <ButtonIcon
           onClick={() => dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_STAGE_DELETE_TYPE, payload: { stageIndex, stageType, typeIndex, typeName } })}
-          className="w-auto"
         >
           <TrashIcon weight={ICON_WEIGHT} size={ICON_SM} />
-        </Button>
+        </ButtonIcon>
       </div>
     </div>
   );
@@ -239,9 +238,9 @@ const Stage = ({
   };
 
   return (
-    <div className="bg-dialog rounded-md w-full mb-4 py-5 shadow-sm">
+    <div className="bg-dialog w-full mb-4 py-5 shadow-sm lg:rounded-md">
       <Form {...form}>
-        <div {...dragHandleProps} className="flex justify-between md:mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-5 md:px-3">
+        <div {...dragHandleProps} className="flex justify-between md:mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-5">
           <div className="flex items-center">
             <DotsSixVerticalIcon weight={ICON_WEIGHT} size={ICON_SM} className="mr-2 ml-2" />
             <div className="w-32 mr-2">

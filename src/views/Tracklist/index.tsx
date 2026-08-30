@@ -41,29 +41,29 @@ const Tracklist = () => {
       title="Now Playing"
       rightComponent={
         <div className="flex">
-          <div className="mr-2">
+          <div className="mr-3">
             <ButtonQueueClear />
           </div>
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonPlaylistCreate fromQueue={true} />
           </div>
         </div>
       }
     >
-      <div className="mt-4">
-      {loading &&
-        Array.from({ length: 6 }).map((_, i) => (
-          <div className="ml-3" key={i}>
-            <ListItemSkeleton key={i} />
-          </div>
-        ))}
-      {!loading && tl_tracks?.length ? (
-        <SortableList tracks={tl_tracks} onMoveCallback={moveTrack} />
-      ) : (
-        <LayoutHeightWrapper>
-          <NoItems title="No tracks in queue" desc={"Add some music"} icon={<QueueIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
-        </LayoutHeightWrapper>
-      )}
+      <div className="mt-5">
+        {loading &&
+          Array.from({ length: 6 }).map((_, i) => (
+            <div className="ml-3" key={i}>
+              <ListItemSkeleton key={i} />
+            </div>
+          ))}
+        {!loading && tl_tracks?.length ? (
+          <SortableList tracks={tl_tracks} onMoveCallback={moveTrack} />
+        ) : (
+          <LayoutHeightWrapper>
+            <NoItems title="No tracks in queue" desc={"Add some music"} icon={<QueueIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
+          </LayoutHeightWrapper>
+        )}
       </div>
     </Page>
   );

@@ -1,3 +1,4 @@
+import ItemPadding from "@/components/Wrapper/ItemPadding";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { fetchJsonRpc, getSampleRate } from "@/util";
 import { CpuIcon, HardDriveIcon, WaveformIcon, WaveSineIcon } from "@phosphor-icons/react";
@@ -37,29 +38,26 @@ const Status = () => {
     hd?: boolean;
   }) => {
     return (
-      <div>
-        <div className="flex items-center">{title}</div>
-        <div className="w-full">
-          <div className="mb-1 text-secondary text-md mt-1">
-            {desc}{" "}
-            {hires && (
-              <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">Hi-Res</span>
-            )}
-            {hd && (
-              <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">HQ</span>
-            )}
-          </div>
-          <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
-            <div className="bg-primary h-1 rounded-full" style={{ width: `${percent}%` }}></div>
+      <ItemPadding>
+        <div className="flex-none w-full">
+          <div className="flex items-center">{title}</div>
+          <div className="w-full">
+            <div className="mb-1 text-secondary text-md mt-1">
+              {desc} {hires && <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">Hi-Res</span>}
+              {hd && <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">HQ</span>}
+            </div>
+            <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
+              <div className="bg-primary h-1 rounded-full" style={{ width: `${percent}%` }}></div>
+            </div>
           </div>
         </div>
-      </div>
+      </ItemPadding>
     );
   };
 
   return (
     <div>
-      <div className="grid grid-cols-12 gap-5">
+      <div className="grid grid-cols-12">
         <div className="col-span-6 md:col-span-3">
           <ListUsageItem
             title={

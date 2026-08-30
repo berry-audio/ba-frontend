@@ -21,21 +21,17 @@ const ListMenu = ({
 }) => {
   return (
     <ItemWrapper>
-      <button
-        className="flex w-full justify-between cursor-pointer disabled:opacity-50"
-        onClick={onClick}
-        disabled={disabled}
-      >
-          <ItemPadding>
-            <div className="flex items-center">
-              <span className="mr-4 ">{icon}</span>
-              <span>{name}</span>
-            </div>
-            <div className="flex items-center">
-              {loading && <Spinner />}
-              <CaretRightIcon weight={ICON_WEIGHT} size={ICON_SM} />
-            </div>
-          </ItemPadding>
+      <button className="flex w-full justify-between cursor-pointer disabled:opacity-50" onClick={onClick} disabled={disabled}>
+        <ItemPadding>
+          <div className="flex items-center">
+            <span className="mr-4">{icon}</span>
+            <span>{name}</span>
+          </div>
+          <div className="flex items-center">
+            {loading && <Spinner />}
+            <CaretRightIcon weight={ICON_WEIGHT} size={ICON_SM} />
+          </div>
+        </ItemPadding>
       </button>
     </ItemWrapper>
   );

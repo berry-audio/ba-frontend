@@ -37,6 +37,7 @@ const DialogStageChannels = ({
       buttonText="Apply"
       buttonLoading={loading}
       buttonOnClick={() => updateStageChannels(item.index, selectedChannels, item.channelsCount)}
+      padding
     >
       {allChannels.map((index) => (
         <div key={index} className="col-span-2 md:col-span-1">
@@ -44,7 +45,7 @@ const DialogStageChannels = ({
             <div className="flex flex-1">
               <div
                 onClick={() => setSelectedChannels((prev) => (prev.includes(index) ? prev.filter((item) => item !== index) : [...prev, index]))}
-                className="py-4 px-4 flex items-center flex-1"
+                className="py-4 px-5 flex items-center flex-1"
               >
                 <SpeakerSimpleLowIcon weight="fill" size={ICON_SM} className="mr-2" />
                 {getLabelForChannel(channelLabels, index, true, false)}

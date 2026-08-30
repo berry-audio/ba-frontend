@@ -27,8 +27,8 @@ const Radio = () => {
       backButtonOnClick={() => navigate("/")}
       backButton
     >
-      {layout === "list" && <List uri={REF.RADIO} getDirectory={getDirectory} alphabets favourite/>}
-      {layout === "grid" && <Grid uri={REF.RADIO} getDirectory={getDirectory} alphabets favourite/>}
+      {layout === "list" && <List uri={REF.RADIO} getDirectory={getDirectory} alphabets favourite />}
+      {layout === "grid" && <Grid uri={REF.RADIO} getDirectory={getDirectory} alphabets favourite />}
     </Page>
   );
 };

@@ -33,7 +33,7 @@ const SettingsMultiroom = () => {
       title="Multiroom"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>
@@ -70,7 +70,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Codec</FormLabel>
                     <FormControl>
-                      <SelectCodec placeholder="Select Codec" {...field} disabled={!isEnabled}/>
+                      <SelectCodec placeholder="Select Codec" {...field} disabled={!isEnabled} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -86,7 +86,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Chunk (ms)</FormLabel>
                     <FormControl>
-                      <InputNumber {...field} disabled={!isEnabled}/>
+                      <InputNumber {...field} disabled={!isEnabled} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -102,7 +102,7 @@ const SettingsMultiroom = () => {
                   <FormItem>
                     <FormLabel className="text-base block">Buffer</FormLabel>
                     <FormControl>
-                      <InputNumber {...field} disabled={!isEnabled}/>
+                      <InputNumber {...field} disabled={!isEnabled} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

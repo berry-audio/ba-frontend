@@ -59,9 +59,9 @@ const Local = () => {
   };
 
   useEffect(() => {
-      if (!view) return;
-      setActiveTab(view);
-    }, [view]);
+    if (!view) return;
+    setActiveTab(view);
+  }, [view]);
 
   if (!view) return null;
 

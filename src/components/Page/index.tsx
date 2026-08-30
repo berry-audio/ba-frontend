@@ -34,18 +34,20 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
   return (
     <div className="h-full overflow-auto">
       <div className="flex justify-between h-12 items-center ">
-        <div className="pl-4 flex items-center flex-1 min-w-0">
+        <div className="pl-3 flex items-center flex-1 min-w-0">
           {backButton && (
             <ButtonIcon onClick={backButtonOnClick ? backButtonOnClick : () => navigate(-1)}>
               <CaretLeftIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           )}
-          {title && <h1 className={`text-2xl ${backButton && "ml-2"} font-light overflow-hidden text-ellipsis whitespace-nowrap`}>{title}</h1>}
+          {title && (
+            <h1 className={`text-xl lg:text-2xl ${backButton && "ml-1"} font-light overflow-hidden text-ellipsis whitespace-nowrap pr-4`}>{title}</h1>
+          )}
         </div>
         {rightComponent && <div className="flex justify-end items-center shrink-0">{rightComponent}</div>}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center pt-3">
         <div className={`${!wfull && "lg:max-w-200"} w-full`}>{children}</div>
       </div>
     </div>

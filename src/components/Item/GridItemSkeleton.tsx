@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 
 const GridItemSkeleton = ({ style }: { style?: CSSProperties }) => {
   return (
-    <div style={style} className="relative p-2 lg:p-3 pb-6 rounded-md animate-pulse">
+    <div style={style} className="relative p-2 lg:p-3 pb-6 rounded-md animate-pulse opacity-50">
       <div className="w-full">
         <div className="w-full aspect-square rounded-md bg-cover" />
         <div className="flex justify-between mt-2">

@@ -58,7 +58,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
     itemCount: Math.ceil(items.length / columns),
     itemSize: itemSize,
     useIsScrolling: true,
-    overscanCount: (loadMoreCount  * columns) * 2,
+    overscanCount: loadMoreCount * columns * 2,
     loadMoreCount: loadMoreCount,
     loadMore: async ({ startIndex }) => {
       const currentOffset = startIndex * columns;
@@ -106,7 +106,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
 
   const onClickAlphabet = async (alphabet: string) => {
     setIsLoading(true);
-    
+
     try {
       setSelectedAlpha(alphabet);
       selectedAlphaRef.current = alphabet;
@@ -136,9 +136,9 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
         </div>
       )}
 
-      <div ref={outerRef} className="flex-1 overflow-y-auto overflow-x-hidden">
+      <div ref={outerRef} className="flex-1 overflow-y-auto overflow-x-hidden pr-4 -ml-3">
         {isLoading && (
-          <div className={`${!alphabets && "pl-3"} pr-3 -ml-1`}>
+          <div className={`${!alphabets && "pl-3"}`}>
             <div className="flex items-start flex-wrap">
               {Array.from({ length: columns * 3 }).map((_, i) => (
                 <GridItemSkeleton key={i} style={{ width: `${100 / columns}%` }} />
@@ -156,7 +156,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
         ) : null}
 
         {!isLoading && (
-          <div ref={innerRef} className={`${!alphabets && "pl-3"} pr-3 -ml-1`}>
+          <div ref={innerRef} className={`${!alphabets && "pl-3"}`}>
             {virtualRows.map(({ index }) => {
               const start = index * columns;
               const rowItems = items.slice(start, start + columns);

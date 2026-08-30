@@ -65,7 +65,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
       <button
         key={idx}
         onClick={() => handleAction(idx, item.action as any)}
-        className={`flex w-full items-center gap-2 px-4 py-3 md:py-2 text-left cursor-pointer hover:bg-primary hover:text-primary-foreground bg-foreground ${
+        className={`flex w-full items-center gap-2 px-4 py-3 md:py-2 text-left cursor-pointer hover:bg-primary hover:text-primary-foreground ${
           item.disabled ? "text-disabled! hover:bg-background-hover disabled:opacity-50" : ""
         }`}
         disabled={item.disabled}
@@ -92,7 +92,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
           createPortal(
             <div
               ref={dropdownMenuRef}
-              className="fixed z-50 overflow-auto max-h-60 w-48 bg-foreground shadow-lg rounded-md"
+              className="fixed z-50 overflow-auto max-h-60 w-48  bg-dropdown shadow-lg rounded-md"
               style={{
                 top: dropdownPosition.top,
                 left: dropdownPosition.left,

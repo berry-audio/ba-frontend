@@ -13,7 +13,7 @@ import SelectTuner from "@/components/Form/SelectTuner";
 
 export const formSchema = z.object({
   tuner: z.object({
-    hw_device:z.string().nullable(),
+    hw_device: z.string().nullable(),
     input_device: z.string().nullable(),
     sample_rate: z.number({
       error: () => "Sample rate is required",
@@ -35,7 +35,7 @@ const SettingsTuner = () => {
       title="Tuner"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>

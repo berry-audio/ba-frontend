@@ -18,11 +18,11 @@ const Filters = () => {
           .map(([name, filter]) => (
             <div key={name} className="col-span-2 md:col-span-1">
               <ItemWrapper key={name}>
-                <div className="flex flex-1 px-2">
+                <div className="flex flex-1 items-center">
                   <div className="flex-1">
                     <Filter name={name} filter={filter} />
                   </div>
-                  <div className="flex">
+                  <div className="flex mr-2">
                     <ButtonFilterDelete name={name} />
                   </div>
                 </div>
@@ -31,7 +31,7 @@ const Filters = () => {
           ))}
       </div>
 
-      <div className="col-span-2 flex items-center justify-center mt-8">
+      <div className="col-span-2 flex items-center justify-center my-5">
         <ButtonFilterAdd />
       </div>
     </>

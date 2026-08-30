@@ -35,7 +35,7 @@ const SettingsUsbdac = () => {
       title="USB DAC"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>
@@ -90,7 +90,7 @@ const SettingsUsbdac = () => {
                     <FormItem>
                       <FormLabel className="text-base block">Gain (dB)</FormLabel>
                       <FormControl>
-                        <InputNumber {...field} max={20} min={-20} disabled={!isEnabled} step={1}/>
+                        <InputNumber {...field} max={20} min={-20} disabled={!isEnabled} step={1} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

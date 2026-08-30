@@ -72,7 +72,7 @@ const DialogStageTypeAdd = ({ item }: DialogStageType) => {
 
                     <div className="pr-4">
                       {selectedItems.includes(name) ? (
-                        <CheckCircleIcon weight="fill" size={ICON_SM} className="text-primary" />
+                        <CheckCircleIcon weight="fill" size={ICON_SM} />
                       ) : (
                         <CircleIcon size={25} className="opacity-50" />
                       )}

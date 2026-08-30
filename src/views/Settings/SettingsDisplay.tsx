@@ -29,7 +29,7 @@ const SettingsDisplay = () => {
       title="Display"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>
@@ -38,7 +38,6 @@ const SettingsDisplay = () => {
       <Form {...form}>
         <form onSubmit={onSubmitHandler} className="space-y-6 max-w-md text-base">
           <div className="lg:px-0 px-6 py-3 lg:w-90">
-          
             <div className="mb-6">
               <FormField
                 control={form.control}

@@ -1,6 +1,7 @@
 import { DIALOG_EVENTS } from "@/store/constants";
 import { FilterParameterType, FILTER_TYPE, FILTER_TYPE_SHORT } from "../../types";
 import { useDispatch } from "react-redux";
+import ItemPadding from "@/components/Wrapper/ItemPadding";
 
 export interface FilterProps {
   name: string;
@@ -39,18 +40,20 @@ export const Filter = ({ name, filter, onClick }: FilterProps) => {
   const dispatch = useDispatch();
 
   return (
-    <div
-      className="flex items-center w-full cursor-pointer justify-between relative group py-3 px-4 "
-      onClick={() => (onClick ? onClick(name) : dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_FILTER_EDIT, payload: { name, filter } }))}
-    >
-      <div className="flex items-center">
-        <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">{getFilterAlphabet(filter)}</div>
-        <div>
-          {name}
-          <div className="text-secondary text-md">{filter.type}</div>
+    <ItemPadding>
+      <div
+        className="flex items-center w-full cursor-pointer justify-between relative group"
+        onClick={() => (onClick ? onClick(name) : dispatch({ type: DIALOG_EVENTS.DIALOG_DSP_FILTER_EDIT, payload: { name, filter } }))}
+      >
+        <div className="flex items-center">
+          <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">{getFilterAlphabet(filter)}</div>
+          <div>
+            {name}
+            <div className="text-secondary text-md">{filter.type}</div>
+          </div>
         </div>
       </div>
-    </div>
+    </ItemPadding>
   );
 };
 

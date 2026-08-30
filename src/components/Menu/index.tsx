@@ -22,7 +22,7 @@ export function Menu() {
   };
 
   return (
-    <div className="rounded-none px-4 h-12 flex justify-between items-center shadow-none relative text-md">
+    <div className="rounded-none px-3 h-12 flex justify-between items-center shadow-none relative text-md">
       <div className="flex items-center ">
         <ButtonIcon onClick={onClickMenuHandler}>
           <HouseIcon size={ICON_SM} weight={ICON_WEIGHT} />
@@ -34,7 +34,7 @@ export function Menu() {
 
       <div className="flex items-center">
         <BluetoothStatus />
-        <SourceStatus/>
+        <SourceStatus />
         <ButtonSearch />
         <ButtonVolume />
       </div>

@@ -14,7 +14,6 @@ import type { Swiper as SwiperType } from "swiper";
 import GridItem from "@/components/Item/GridItem";
 import GridItemSkeleton from "../Item/GridItemSkeleton";
 import ButtonIcon from "../Button/ButtonIcon";
-import Button from "../Button";
 import NoItems from "../Item/NoItems";
 
 const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit: number; navigation?: boolean }) => {
@@ -62,8 +61,8 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-2">
-        <h1 className="text-left text-2xl">
+      <div className="flex justify-between items-center mb-2 pr-5">
+        <h1 className="text-left text-xl lg:text-2xl">
           <Header />
         </h1>
 
@@ -80,9 +79,9 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
             </>
           )}
 
-          <Button type="ghost" size="sm" onClick={() => navigate(`/collection/${type}`)}>
-            Show All
-          </Button>
+          <ButtonIcon onClick={() => navigate(`/collection/${type}`)}>
+            <CaretRightIcon weight={ICON_WEIGHT} size={ICON_SM} />
+          </ButtonIcon>
         </div>
       </div>
 
@@ -129,7 +128,7 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
           ) : items.length > 0 ? (
             items.map((item: Track) => (
               <SwiperSlide>
-                <GridItem item={item} onClick={onClickItem} showFavourite/>
+                <GridItem item={item} onClick={onClickItem} showFavourite />
               </SwiperSlide>
             ))
           ) : (

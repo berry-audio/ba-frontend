@@ -29,7 +29,7 @@ const SettingsDsp = () => {
       title="DSP"
       rightComponent={
         <div className="flex">
-          <div className="mr-4">
+          <div className="mr-3">
             <ButtonSave onClick={onSubmitHandler} isLoading={loading} />
           </div>
         </div>
@@ -49,7 +49,7 @@ const SettingsDsp = () => {
                       Default gain applied to all sources. <br></br>Use this to control clipping globally.
                     </div>
                     <FormControl>
-                      <InputNumber {...field} max={20} min={-20} value={field.value ?? 0} step={1}/>
+                      <InputNumber {...field} max={20} min={-20} value={field.value ?? 0} step={1} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -70,7 +70,7 @@ const SettingsDsp = () => {
                       before enabling.
                     </div>
                     <FormControl>
-                      <SelectSampleRate placeholder="No Resampling" {...field} value={field.value ?? null}/>
+                      <SelectSampleRate placeholder="No Resampling" {...field} value={field.value ?? null} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

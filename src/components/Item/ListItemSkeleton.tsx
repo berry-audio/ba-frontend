@@ -2,7 +2,7 @@ import ListImageWrapper from "../Wrapper/ListImageWrapper";
 
 const ListItemSkeleton = () => {
   return (
-    <div className="flex items-center w-full justify-between relative animate-pulse">
+    <div className="flex items-center w-full justify-between relative animate-pulse opacity-50">
       <div className="py-3 px-4 flex justify-between w-full items-center">
         <div className="flex items-center w-full">
           <ListImageWrapper>
