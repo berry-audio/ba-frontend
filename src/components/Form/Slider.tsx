@@ -19,6 +19,7 @@ function Slider({
   rounded = true,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
+  value: number[];
   showTicks?: boolean;
   showLabels?: boolean;
   showTooltip?: boolean;
@@ -97,7 +98,7 @@ function Slider({
           onPointerDown={() => setHoveredIndex(0)}
           onPointerUp={() => setHoveredIndex(null)}
         >
-          {!props.disabled && value !== 0 && (
+          {!props.disabled && value.length > 0 && (
             <div
               data-slot="slider-range"
               className={`relative h-full ${rounded ? "rounded-full" : "rounded-tl-none rounded-bl-none rounded-tr-full rounded-br-full"} pointer-events-none bg-primary`}
