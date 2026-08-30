@@ -26,7 +26,7 @@ export function Switch({ value = false, onChange, disabled, inverted = false }: 
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          "bg-white data-[state=checked]:bg-white dark:data-[state=unchecked]:bg-foreground pointer-events-none block h-6 w-6 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
+          "bg-white data-[state=checked]:bg-white dark:data-[state=unchecked]:bg-foreground pointer-events-none block h-5 w-5 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%+4px)] data-[state=unchecked]:translate-x-0.5",
         )}
       />
     </SwitchPrimitive.Root>

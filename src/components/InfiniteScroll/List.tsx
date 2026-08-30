@@ -107,7 +107,7 @@ const List = forwardRef<{ refresh: () => void }, List>(
     return (
       <LayoutHeightWrapper className="flex overflow-hidden">
         {alphabets && (
-          <div className="flex flex-col px-3 sticky h-full overflow-y-auto">
+          <div className="flex flex-col px-3 sticky h-full overflow-y-auto overflow-x-hidden">
             {ALPHABETS.map((alphabet) => (
               <ButtonIcon
                 key={alphabet}

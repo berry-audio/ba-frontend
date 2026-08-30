@@ -26,7 +26,7 @@ const Pipeline = () => {
 
   return (
     <>
-      <div className="bg-dialog md:rounded-md w-full mb-4 py-5 px-6 shadow-sm">
+      <div className="bg-dialog lg:rounded-md w-full mb-4 py-5 px-6 shadow-sm">
         <div className="flex justify-between items-center">
           <div className="flex items-center min-w-0">
             <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3 shrink-0">IN</div>

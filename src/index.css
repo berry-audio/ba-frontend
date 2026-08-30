@@ -80,7 +80,7 @@
 
   --text-color: #ffffff;
   --text-color-secondary: var(--color-neutral-400);
-  --text-color-disabled: rgba(0, 0, 0, 0.5);
+  --text-color-disabled: #606060;
   --text-color-invert: #000000;
 }
 

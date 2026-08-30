@@ -80,9 +80,9 @@ const OverlayNowPlaying = () => {
         {/* Start Vertical Layout */}
         <ButtonCollapse />
         <div className="h-600-hide -mt-7.5 px-6 relative z-50">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center overflow-hidden relative">
             <div
-              className={`left-5 aspect-square h-67.5 w-67.5 md:h-87.5 md:w-87.5 h-600-img h-800-400-img lg:mr-10 relative transition-all duration-500 ease-in-out transform ${
+              className={`left-2 aspect-square h-65 w-65 md:h-87.5 md:w-87.5 h-600-img h-800-400-img lg:mr-10 relative transition-all duration-500 ease-in-out transform ${
                 playback_state === PLAYBACK_STATE.PLAYING ? "mr-10" : "mr-5"
               }`}
             >

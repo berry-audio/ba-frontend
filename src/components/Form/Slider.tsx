@@ -15,6 +15,8 @@ function Slider({
   showTooltip = true,
   tickInterval,
   unit = "",
+  height = 5,
+  rounded = true,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
   showTicks?: boolean;
@@ -22,14 +24,16 @@ function Slider({
   showTooltip?: boolean;
   tickInterval?: number;
   unit?: string;
+  height?: number;
+  rounded?: boolean;
 }) {
   const [internalValues, setInternalValues] = useState<number[]>(
     Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max],
   );
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const _values = useMemo(() => (Array.isArray(value) ? value : internalValues), [value, internalValues]);
+  const _values = Array.isArray(value) ? value : internalValues;
+  const percentages = _values.map((v) => ((v - min) / (max - min)) * 100);
 
   const ticks = useMemo(() => {
     const interval = tickInterval ?? step;
@@ -45,6 +49,17 @@ function Slider({
     return result;
   }, [showTicks, showLabels, min, max, step, tickInterval]);
 
+  function getRangeWidth(percentage: number) {
+    const clamped = Math.max(0, Math.min(100, percentage));
+    const maxBuffer = 4;
+    const fadeEnd = 100;
+
+    if (clamped >= fadeEnd) return clamped;
+
+    const buffer = maxBuffer * (1 - Math.log(clamped + 1) / Math.log(fadeEnd + 1));
+    return clamped + buffer;
+  }
+
   return (
     <div className="w-full">
       <SliderPrimitive.Root
@@ -59,63 +74,101 @@ function Slider({
           props.onValueChange?.(v);
         }}
         className={cn(
-          "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
+          "relative flex w-full touch-none items-center select-none",
+          "[-webkit-touch-callout:none] [-webkit-user-select:none] [-webkit-tap-highlight-color:transparent]",
+          "data-disabled:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
           className,
         )}
+        onMouseEnter={() => setHoveredIndex(0)}
+        onMouseLeave={() => setHoveredIndex(null)}
+        onPointerEnter={() => setHoveredIndex(0)}
+        onPointerLeave={() => setHoveredIndex(null)}
+        onPointerDown={() => setHoveredIndex(0)}
+        onPointerUp={() => setHoveredIndex(null)}
         {...props}
       >
-        <SliderPrimitive.Track data-slot="slider-track" className={"bg-foreground cursor-pointer relative grow overflow-hidden h-1.5 rounded-full"}>
-          <SliderPrimitive.Range
+        <SliderPrimitive.Track
+          data-slot="slider-track"
+          className={`relative bg-input w-full h-${height} transition-all duration-200 ${hoveredIndex === 0 && "h-5"} cursor-pointer relative grow rounded-full`}
+          onMouseEnter={() => setHoveredIndex(0)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          onPointerEnter={() => setHoveredIndex(0)}
+          onPointerLeave={() => setHoveredIndex(null)}
+          onPointerDown={() => setHoveredIndex(0)}
+          onPointerUp={() => setHoveredIndex(null)}
+        >
+          <div
             data-slot="slider-range"
-            className={cn("bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full")}
-          />
+            className={`relative h-full ${rounded ? "rounded-full" : "rounded-tl-none rounded-bl-none rounded-tr-full rounded-br-full"} pointer-events-none bg-primary`}
+            style={{
+              width: `${getRangeWidth(percentages[0] + 1)}%`,
+            }}
+            onMouseEnter={() => setHoveredIndex(0)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onPointerEnter={() => setHoveredIndex(0)}
+            onPointerLeave={() => setHoveredIndex(null)}
+            onPointerDown={() => setHoveredIndex(0)}
+            onPointerUp={() => setHoveredIndex(null)}
+          >
+            <div
+              className={cn(
+                "w-5 h-5 bg-white! border-3 border-primary! absolute right-0 rounded-full transition-al",
+                hoveredIndex === 0 || height === 5 ? "opacity-100 scale-100 duration-1000" : "opacity-0 scale-75 pointer-events-none duration-100",
+              )}
+            >
+              {showTooltip && hoveredIndex === 0 && (
+                <span
+                  data-slot="slider-tooltip"
+                  className="bg-text text-background pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded px-1.5 py-0.5 text-sm whitespace-nowrap shadow-sm z-50"
+                >
+                  {_values[0]}
+                  {unit}
+                  <span className="bg-text absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45" />
+                </span>
+              )}
+            </div>
+          </div>
         </SliderPrimitive.Track>
+
         {Array.from({ length: _values.length }, (_, index) => (
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="border-primary bg-background ring-ring/50 relative block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
-            onPointerEnter={() => setHoveredIndex(index)}
+            className="relative outline-none block"
+            onMouseEnter={() => setHoveredIndex(0)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onPointerEnter={() => setHoveredIndex(0)}
             onPointerLeave={() => setHoveredIndex(null)}
-            onPointerDown={() => setActiveIndex(index)}
-            onPointerUp={() => setActiveIndex(null)}
+            onPointerDown={() => setHoveredIndex(0)}
+            onPointerUp={() => setHoveredIndex(null)}
           >
-            {showTooltip && (activeIndex === index || hoveredIndex === index) && (
-              <span
-                data-slot="slider-tooltip"
-                className="bg-text text-background pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 rounded px-1.5 py-0.5 text-sm whitespace-nowrap shadow-sm"
-              >
-                {_values[index]}
-                {unit}
-                <span className="bg-text absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45" />
-              </span>
-            )}
+            {/* invisible bigger hit area */}
+            <span className="absolute -inset-4 z-50 " />
           </SliderPrimitive.Thumb>
         ))}
       </SliderPrimitive.Root>
 
       {showTicks && ticks.length > 0 && (
-        <div className="px-2">
-          <div className="relative mt-3 h-1 w-full">
-            {ticks.map((tick) => {
-              const percent = ((tick - min) / (max - min)) * 100;
-              return <span key={tick} data-slot="slider-tick" className="bg-text absolute top-0 h-1 w-px" style={{ left: `${percent}%` }} />;
-            })}
-          </div>
+        <div className="relative mt-3 h-1 w-full">
+          {ticks.map((tick) => {
+            const percent = ((tick - min) / (max - min)) * 100;
+            const adjustedPercent = tick === min ? 0 : getRangeWidth(percent) - 2;
+            return <span key={tick} data-slot="slider-tick" className="bg-text absolute top-0 h-1 w-px" style={{ left: `${adjustedPercent}%` }} />;
+          })}
         </div>
       )}
 
       {showLabels && ticks.length > 0 && (
-        <div className="relative mt-0.5 h-4 w-full text-xs ml-px">
+        <div className="relative mt-0.5 h-4 w-full text-xs">
           {ticks.map((tick) => {
             const percent = ((tick - min) / (max - min)) * 100;
-            const translate = percent <= 0 ? "translate-x-0" : percent >= 100 ? "-translate-x-full" : "-translate-x-1/2";
+            const adjustedPercent = tick === min ? 0 : getRangeWidth(percent) - 2;
             return (
               <span
                 key={tick}
                 data-slot="slider-tick-label"
-                className={cn("absolute top-0 whitespace-nowrap", translate)}
-                style={{ left: `${percent}%` }}
+                className="absolute top-0 whitespace-nowrap -translate-x-1/2"
+                style={{ left: `${adjustedPercent}%` }}
               >
                 {tick}
                 {unit}

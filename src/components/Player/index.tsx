@@ -52,8 +52,8 @@ const Player = () => {
 
   return (
     <>
-      <div className="seek-slider seek-slider-mini relative z-10">
-        <PositionSlider className="h-1" />
+      <div>
+        <PositionSlider rounded={false} />
       </div>
       <div className="relative z-0">
         <div className="lg:flex hidden px-4 py-2 items-center ">

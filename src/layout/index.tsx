@@ -20,7 +20,6 @@ import OverlayNowPlaying from "@/components/Overlay/OverlayNowPlaying";
 import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
-import OverlayVolume from "@/components/Overlay/OverlayVolume";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
 import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
 
@@ -147,7 +146,6 @@ export default function Layout({ children }: { children: any }) {
       <OverlayNowPlaying />
       <OverlayStandby />
       <OverlayOffline />
-      <OverlayVolume />
     </div>
   ) : (
     <Spinner />

@@ -16,9 +16,11 @@ import StreamInfo from "./StreamInfo";
 const PositionSlider = ({
   className,
   showElapsedNumber = false,
+  rounded = true,
 }: {
   className?: string;
   showElapsedNumber?: boolean;
+  rounded?: boolean;
 }) => {
   const { elapsed_ms, playback_state, current_track } = useSelector((state: any) => state.player);
   const { setSeek } = usePlaybackService();
@@ -29,7 +31,7 @@ const PositionSlider = ({
   useEffect(() => {
     let ticker: ReturnType<typeof setInterval> | null = null;
     if (playback_state === PLAYBACK_STATE.PLAYING) {
-      ticker = setInterval(() => setPlSliderPos((prev) => prev + 1000), 1000);     
+      ticker = setInterval(() => setPlSliderPos((prev) => prev + 1000), 1000);
     } else if (playback_state === PLAYBACK_STATE.STOPPED) {
       setPlSliderPos(0);
     }
@@ -42,8 +44,7 @@ const PositionSlider = ({
     setPlSliderPos(plTrackPos);
   }, [plTrackPos]);
 
-
-   useEffect(() => {
+  useEffect(() => {
     setPlSliderPos(elapsed_ms);
   }, [elapsed_ms]);
 
@@ -69,6 +70,9 @@ const PositionSlider = ({
         onValueChange={([value]) => setPlSliderPos(value)}
         onValueCommit={([value]) => setPosition(value)}
         className={className}
+        showTooltip={false}
+        height={1.5}
+        rounded={rounded}
       />
       {showElapsedNumber && (
         <div className="flex mt-4 items-center">
@@ -76,9 +80,7 @@ const PositionSlider = ({
           <div className="opacity-50 text-center w-8/12">
             <StreamInfo />
           </div>
-          <div className="text-right w-2/12">
-              {getTotalDuration(current_track?.track.length)}
-          </div>
+          <div className="text-right w-2/12">{getTotalDuration(current_track?.track.length)}</div>
         </div>
       )}
     </>
