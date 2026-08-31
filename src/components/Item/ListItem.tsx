@@ -103,17 +103,21 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                       <TruncateText>{subtitle as string}</TruncateText>
                     </div>
                   )}
-                  {usage && (
+                  {usage ? (
                     <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
-                      {usage.used && usage.total && (
+                      {usage.used && usage.total ? (
                         <div
                           className={`${mounted ? "bg-primary" : ""} h-1 rounded-full`}
                           style={{
                             width: `${(usage.used / usage.total) * 100}%`,
                           }}
-                        />
+                        ></div>
+                      ) : (
+                        ""
                       )}
                     </div>
+                  ) : (
+                    <></>
                   )}
                 </div>
                 {duration && <div className="mr-4 text-secondary text-sm ">{duration}</div>}

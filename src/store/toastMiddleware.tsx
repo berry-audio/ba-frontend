@@ -74,6 +74,13 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
       break;
 
     // Storage Notifications
+    case EVENTS.STORAGE_MOUNTED:
+      console.log(payload.storage.name);
+      toast.custom((id) => <ToastContent id={id} title={`Storage ${payload.storage.name} Mounted`} variant="success" />);
+      break;
+    case EVENTS.STORAGE_UNMOUNTED:
+      toast.custom((id) => <ToastContent id={id} title={`Storage ${payload.storage.name} Unmounted`} variant="warning" />);
+      break;
     case INTERNAL_EVENTS.STORAGE_MOUNTED:
       toast.custom((id) => <ToastContent id={id} title={`Storage ${payload.name} Mounted`} variant="success" />);
       break;

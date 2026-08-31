@@ -61,8 +61,8 @@ const DialogAddSmb = () => {
               <div className="pt-2 pb-4 text-secondary px-5">
                 Found {smbResponse.shares.length} items. Select the items you want to add and they will appear in your Storage section.
               </div>
-              {smbResponse.shares.map((item: Storage) => (
-                <ItemWrapper key={item.uri}>
+              {smbResponse.shares.map((item: Storage, index: number) => (
+                <ItemWrapper key={index}>
                   <ListItem item={item} selected={selectedItems.some((i) => i.dev === item.dev)} onClick={() => onClickSelectSmbs(item)} selectable />
                 </ItemWrapper>
               ))}

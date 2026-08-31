@@ -201,7 +201,8 @@ export interface Storage {
   dev: string;
   shared: boolean;
   fstype: string;
-  status: "mounted" | "unmounted";
+  status: "mounted" | "unmounted" | "error";
+  message: string | undefined;
   usage: StorageUsage | null;
   read_only: boolean | null;
   guest_allowed: boolean | null;

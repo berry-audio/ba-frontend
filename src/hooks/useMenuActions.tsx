@@ -55,7 +55,7 @@ export const useMenuActions = () => {
     switch (item.__model__) {
       case MODEL.STORAGE:
         return [
-          ...(item.status !== "mounted"
+          ...(item.status === "unmounted"
             ? [
                 {
                   name: "Mount",
@@ -73,7 +73,7 @@ export const useMenuActions = () => {
                 },
               ]
             : []),
-          ...(item.status !== "unmounted" && item.icon !== "removable" && item.icon !== "internal"
+          ...((item.status === "mounted" || item.status === "error") && item.icon !== "removable" && item.icon !== "internal"
             ? [
                 {
                   name: "Unmount",
@@ -257,7 +257,7 @@ export const useMenuActions = () => {
                 },
               ]
             : []),
-           {
+          {
             name: item?.track.favourite ? "Unfavourite" : "Favourite",
             icon: <HeartIcon size={ICON_XS} weight={ICON_WEIGHT} />,
             action: () => toggleFavourite(item),

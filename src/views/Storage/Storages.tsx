@@ -16,11 +16,11 @@ import NoItems from "@/components/Item/NoItems";
 const Storages = () => {
   const navigate = useNavigate();
   const listRef = useRef<ListRef>(null);
-  
+
   const { getDirectory } = useStorageService();
 
   const onClickItem = async (item: AnyItem) => {
-    if ((item as Storage).status === "unmounted") return;
+    if ((item as Storage).status !== "mounted") return;
     navigate(`/storage/${(item as Storage).uri}`);
   };
 
@@ -48,7 +48,7 @@ const Storages = () => {
       title={"Storage"}
       rightComponent={
         <div className="flex items-center">
-        <div className="mr-4">
+          <div className="mr-4">
             <ButtonIcon onClick={() => listRef.current?.refresh()}>
               <ArrowsClockwiseIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>

@@ -123,7 +123,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
   return (
     <LayoutHeightWrapper className="flex overflow-hidden">
       {alphabets && (
-        <div className="flex flex-col px-3 sticky h-full overflow-y-auto">
+        <div className="flex flex-col px-2 sticky h-full overflow-y-auto overflow-x-hidden">
           {ALPHABETS.map((alphabet) => (
             <ButtonIcon
               key={alphabet}
@@ -136,7 +136,7 @@ const Grid = ({ uri, getDirectory, onClickCallback, onEvent, emptyComponent, alp
         </div>
       )}
 
-      <div ref={outerRef} className="flex-1 overflow-y-auto overflow-x-hidden pr-4 -ml-3">
+      <div ref={outerRef} className="flex-1 overflow-y-auto overflow-x-hidden pr-4 -ml-2">
         {isLoading && (
           <div className={`${!alphabets && "pl-3"}`}>
             <div className="flex items-start flex-wrap">

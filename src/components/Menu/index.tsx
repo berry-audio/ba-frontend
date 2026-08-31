@@ -22,12 +22,12 @@ export function Menu() {
   };
 
   return (
-    <div className="rounded-none px-3 h-12 flex justify-between items-center shadow-none relative text-md">
+    <div className="px-3 h-12 flex justify-between items-center relative">
       <div className="flex items-center ">
         <ButtonIcon onClick={onClickMenuHandler}>
           <HouseIcon size={ICON_SM} weight={ICON_WEIGHT} />
         </ButtonIcon>
-        <span className="pr-4 pl-1">
+        <span className="pr-4 pl-2">
           <DateTime time />
         </span>
       </div>

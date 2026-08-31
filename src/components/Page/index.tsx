@@ -36,12 +36,20 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
       <div className="flex justify-between h-12 items-center ">
         <div className="pl-3 flex items-center flex-1 min-w-0">
           {backButton && (
-            <ButtonIcon onClick={backButtonOnClick ? backButtonOnClick : () => navigate(-1)}>
+            <ButtonIcon onClick={backButtonOnClick ? backButtonOnClick : () => navigate(-1)} className="mr-2">
               <CaretLeftIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           )}
           {title && (
-            <h1 className={`text-xl lg:text-2xl ${backButton && "ml-1"} font-light overflow-hidden text-ellipsis whitespace-nowrap pr-4`}>{title}</h1>
+            <div
+              className="text-2xl font-light overflow-hidden whitespace-nowrap pr-4"
+              style={{
+                maskImage: "linear-gradient(to right, black 85%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to right, black 85%, transparent 100%)",
+              }}
+            >
+              {title}
+            </div>
           )}
         </div>
         {rightComponent && <div className="flex justify-end items-center shrink-0">{rightComponent}</div>}
