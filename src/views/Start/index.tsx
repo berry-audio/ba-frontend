@@ -27,9 +27,7 @@ import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/free-mode.css";
 import "../../../node_modules/swiper/modules/pagination.css";
 
-import ButtonStandby from "@/components/Button/ButtonStandby";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
-import Page from "@/components/Page";
 import Spinner from "@/components/Spinner";
 import Collection from "@/components/Collection";
 
@@ -140,87 +138,84 @@ const Start = () => {
   };
 
   return (
-    <Page
-      title=""
-      rightComponent={
-        <div className="flex h-12.5 items-center mr-4">
-          <ButtonStandby />
-        </div>
-      }
-    >
-      <LayoutHeightWrapper>
-        <div className="px-5 pr-0 flex items-center">
-          <div className="w-full">
-            <h1 className="text-left text-xl lg:text-2xl mb-2">Source</h1>
-            <Swiper
-              modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
-              spaceBetween={5}
-              slidesPerView={3.5}
-              freeMode={true}
-              resistance={false}
-              touchReleaseOnEdges={true}
-              grabCursor={true}
-              direction={"horizontal"}
-              mousewheel={true}
-              pagination={{
-                el: ".custom-pagination",
-                clickable: true,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 5.5,
-                },
-                768: {
-                  slidesPerView: 6.5,
-                },
-                1024: {
-                  slidesPerView: 6.5,
-                },
-                1280: {
-                  slidesPerView: 6.5,
-                },
-              }}
-              keyboard={{
-                enabled: true,
-              }}
-            >
-              {sources.map((item) => (
-                <SwiperSlide>
-                  <button
-                    key={item.path}
-                    disabled={item.disabled}
-                    onClick={() => onClickHandler(item)}
-                    className={`touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
+    <div className="h-full overflow-auto">
+      <div className="flex justify-center pt-3">
+        <div className={`lg:max-w-200 w-full`}>
+          <LayoutHeightWrapper className="h-[calc(100dvh-140px)]! lg:h-[calc(100dvh-160px)]! ">
+            <div className="px-5 py-2 pr-0 flex items-center">
+              <div className="w-full">
+                <h1 className="text-left text-xl lg:text-2xl mb-2">Source</h1>
+                <Swiper
+                  modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
+                  spaceBetween={5}
+                  slidesPerView={3.5}
+                  freeMode={true}
+                  resistance={false}
+                  touchReleaseOnEdges={true}
+                  grabCursor={true}
+                  direction={"horizontal"}
+                  mousewheel={true}
+                  pagination={{
+                    el: ".custom-pagination",
+                    clickable: true,
+                  }}
+                  breakpoints={{
+                    640: {
+                      slidesPerView: 5.5,
+                    },
+                    768: {
+                      slidesPerView: 6.5,
+                    },
+                    1024: {
+                      slidesPerView: 6.5,
+                    },
+                    1280: {
+                      slidesPerView: 6.5,
+                    },
+                  }}
+                  keyboard={{
+                    enabled: true,
+                  }}
+                >
+                  {sources.map((item) => (
+                    <SwiperSlide>
+                      <button
+                        key={item.path}
+                        disabled={item.disabled}
+                        onClick={() => onClickHandler(item)}
+                        className={`touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
                 cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "bg-primary hover:bg-foreground dark:hover:text-black" : "hover:bg-hover"}`}
-                  >
-                    {loadingItem === item.path && (
-                      <div className="absolute bg-foreground/30 w-full h-full rounded-lg">
-                        <Spinner mode="light" />
-                      </div>
-                    )}
+                      >
+                        {loadingItem === item.path && (
+                          <div className="absolute bg-foreground/30 w-full h-full rounded-lg">
+                            <Spinner mode="light" />
+                          </div>
+                        )}
 
-                    <div className="flex flex-col items-center">
-                      <div className="mb-2">{item.icon}</div>
-                      <div className="flex">{item.name}</div>
-                    </div>
-                  </button>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
+                        <div className="flex flex-col items-center">
+                          <div className="mb-2">{item.icon}</div>
+                          <div className="flex">{item.name}</div>
+                        </div>
+                      </button>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
 
-        <div className="p-5 pr-0">
-          <Collection type={REF.RECENT} limit={10} />
+            <div className="px-5 py-2 pr-0">
+              <Collection type={REF.RECENT} limit={10} />
+            </div>
+            <div className="px-5 py-2 pr-0">
+              <Collection type={REF.TOP100} limit={10} />
+            </div>
+            <div className="px-5 py-2 pr-0">
+              <Collection type={REF.FAVOURITE} limit={10} />
+            </div>
+          </LayoutHeightWrapper>
         </div>
-        <div className="p-5 pr-0">
-          <Collection type={REF.TOP100} limit={10} />
-        </div>
-        <div className="p-5 pr-0 mb-7">
-          <Collection type={REF.FAVOURITE} limit={10} />
-        </div>
-      </LayoutHeightWrapper>
-    </Page>
+      </div>
+    </div>
   );
 };
 

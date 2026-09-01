@@ -66,6 +66,15 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
     }
   };
 
+  const onDoubleClickItem = async () => {
+    setLoadingCover(true);
+    try {
+      await handlePlayNow(item);
+    } finally {
+      setLoadingCover(false);
+    }
+  };
+
   const onClickCoverArt = async () => {
     setLoadingCover(true);
     try {
@@ -77,7 +86,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
 
   return (
     <>
-      <div onClick={onClickItem} className="flex items-center w-full cursor-pointer justify-between relative group">
+      <div onClick={onClickItem} onDoubleClick={onDoubleClickItem} className="flex items-center w-full cursor-pointer justify-between relative group">
         <div className="py-3 px-4 flex justify-between w-full items-center">
           <div className="flex items-center w-full">
             {no && <div className="-ml-1 mr-4 text-sm text-secondary w-2.5 text-center">{formatNo(no)}</div>}
@@ -104,7 +113,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                     </div>
                   )}
                   {usage ? (
-                    <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
+                    <div className="w-full bg-input rounded-full h-1 mt-3 mb-1">
                       {usage.used && usage.total ? (
                         <div
                           className={`${mounted ? "bg-primary" : ""} h-1 rounded-full`}

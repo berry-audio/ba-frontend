@@ -117,7 +117,7 @@ const SettingsSystem = () => {
         <div className="flex items-center">{title}</div>
         <div className="w-full">
           <div className="mb-1 text-secondary text-md mt-1">{desc}</div>
-          <div className="w-full bg-foreground rounded-full h-1 mt-3 mb-1">
+          <div className="w-full bg-input rounded-full h-1 mt-3 mb-1">
             <div className="bg-primary h-1 rounded-full" style={{ width: `${percent}%` }}></div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import ButtonSearch from "../Button/ButtonSearch";
 import ButtonVolume from "../Player/ButtonVolume";
 import BluetoothStatus from "../Bluetooth/BluetoothStatus";
 import SourceStatus from "../Source/SourceStatus";
+import ButtonStandby from "../Button/ButtonStandby";
 
 export function Menu() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export function Menu() {
   };
 
   return (
-    <div className="px-3 h-12 flex justify-between items-center relative">
+    <div className="px-3 h-15 flex justify-between items-center relative">
       <div className="flex items-center ">
         <ButtonIcon onClick={onClickMenuHandler}>
           <HouseIcon size={ICON_SM} weight={ICON_WEIGHT} />
@@ -37,6 +38,7 @@ export function Menu() {
         <SourceStatus />
         <ButtonSearch />
         <ButtonVolume />
+        <ButtonStandby />
       </div>
     </div>
   );

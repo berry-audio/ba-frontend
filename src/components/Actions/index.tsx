@@ -92,7 +92,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
           createPortal(
             <div
               ref={dropdownMenuRef}
-              className="fixed z-50 overflow-auto max-h-60 w-48  bg-dropdown shadow-lg rounded-md"
+              className="fixed z-90 overflow-auto max-h-60 w-48  bg-dropdown shadow-lg rounded-md"
               style={{
                 top: dropdownPosition.top,
                 left: dropdownPosition.left,
@@ -112,10 +112,10 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
 
         {createPortal(
           <>
-            {isDrawerOpen && <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setDrawerOpen(false)} />}
+            {isDrawerOpen && <div className="fixed inset-0 z-90 bg-black/80 " onClick={() => setDrawerOpen(false)} />}
 
             <div
-              className={`fixed bottom-0 left-0 right-0 z-50 transform transition-transform duration-200 ${
+              className={`fixed bottom-0 left-0 right-0 z-100 transform transition-transform duration-200 ${
                 isDrawerOpen ? "translate-y-0" : "translate-y-full"
               }`}
             >

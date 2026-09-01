@@ -36,8 +36,8 @@ const DialogPowerOptions = () => {
   };
 
   return (
-    <Modal title="System" onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })} isOpen={true} buttonShow={false}>
-      <div className="flex justify-between px-10">
+    <Modal title="Power" onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })} isOpen={true} buttonShow={false} size="w-100">
+      <div className="flex justify-between px-5">
         <div className="flex flex-col items-center">
           <ButtonIcon onClick={onClickStandbyHandler}>
             {isLoading === "standby" ? <Spinner /> : <PowerIcon weight={ICON_WEIGHT} size={ICON_SM} />}

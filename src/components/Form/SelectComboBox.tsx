@@ -55,7 +55,7 @@ function SelectComboBox({ items, placeholder, value, onChange, disabled = false,
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="p-0 w-(--radix-popover-trigger-width)" align="start">
+        <PopoverContent className="p-0 w-(--radix-popover-trigger-width) relative z-80" align="start">
           <Command>
             <CommandInput placeholder="Search..." />
             <CommandList>

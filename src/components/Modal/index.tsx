@@ -56,7 +56,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-1000 flex items-center justify-center backdrop-blur-md bg-overlay transition-opacity duration-300 ${
+      className={`fixed inset-0 z-80 flex items-center justify-center backdrop-blur-md bg-overlay transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onClick={(e) => {
@@ -64,7 +64,7 @@ const Modal: React.FC<ModalProps> = ({
       }}
     >
       <div
-        className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 overflow-hidden z-250 relative md:px-3 transition-all duration-300 ${
+        className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 overflow-hidden z-250 relative md:px-3 transition-all duration-300 ease-in-out ${
           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
@@ -79,7 +79,11 @@ const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className={`overflow-auto relative z-50 max-h-[50vh] ${!padding ? "px-5" : ""}`}>{children}</div>
+        <div
+          className={`overflow-auto relative z-50 ${buttonShow ? "max-h-[50vh] md:max-h-[80vh]" : "max-h-[60vh] md:max-h-[90vh]"} ${!padding ? "px-5" : ""}`}
+        >
+          {children}
+        </div>
 
         {/* Footer */}
         <div className="flex justify-end p-5">

@@ -1,31 +1,25 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchService } from "@/services/search";
+import { RootState } from "@/store";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/Form/Input";
 import { AnyItem, Artist, Album, Category } from "@/types";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
 import { DRAWER_EVENTS, OVERLAY_EVENTS } from "@/store/constants";
+import { DIALOG_EVENTS } from "@/store/constants";
 import { MODEL, REF } from "@/constants/refs";
 
-import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import ListItemSkeleton from "../Item/ListItemSkeleton";
 import VirtualScroll from "../VirtualScroll";
 import NoItems from "@/components/Item/NoItems";
-import Overlay from "@/components/Overlay";
-import Page from "@/components/Page";
+import Modal from "../Modal";
 import Tabs from "../ui/tabs";
 
-interface RootState {
-  overlay: {
-    overlay: string;
-  };
-}
-
-const OverlaySearch = () => {
+const DialogSearch = () => {
+  const { dialog } = useSelector((state: RootState) => state.dialog);
   const dispatch = useDispatch();
 
-  const { overlay } = useSelector((state: RootState) => state.overlay);
   const { getSearch } = useSearchService();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -113,7 +107,6 @@ const OverlaySearch = () => {
 
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    setIsLoading(true);
   };
 
   const onTabChange = (tab: REF) => {
@@ -135,33 +128,42 @@ const OverlaySearch = () => {
   };
 
   return (
-    <Overlay show={overlay === OVERLAY_EVENTS.OVERLAY_SEARCH} zindex={10} style={{ zIndex: 100 }} hideplayer>
-      <Page title="Search" backButtonOnClick={() => dispatch({ type: OVERLAY_EVENTS.OVERLAY_CLOSE })} backButton>
-        <div className="px-4 my-4">
-          <Input type="text" placeholder="Search Albums, Artists, Tracks, Radio..." value={query} onChange={onChangeField} onClickClear={onClear} />
+    <Modal
+      title="Search"
+      onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
+      isOpen={dialog === DIALOG_EVENTS.DIALOG_SEARCH}
+      buttonShow={false}
+      size="w-150"
+    >
+      <div>
+        <Input
+          type="text"
+          placeholder="Albums, Artists, Tracks, Radio..."
+          value={query}
+          onChange={onChangeField}
+          onClickClear={onClear}
+          className="my-1"
+        />
+      </div>
+      {hasResults && (
+        <div className="my-4">
+          <Tabs activeTab={activeTab} onTabChange={onTabChange} items={directory} />
         </div>
-        {hasResults && (
-          <div className="px-4 mb-4">
-            <Tabs activeTab={activeTab} onTabChange={onTabChange} items={directory} />
+      )}
+
+      <div className="-mx-5">
+        {isLoading && Array.from({ length: 2 }).map((_, i) => <ListItemSkeleton key={i} />)}
+
+        {!isLoading && query.trim() !== "" && !hasResults && (
+          <div className="pb-10 pt-15">
+            <NoItems title="No Results" desc="Try with a different keyword" icon={<MagnifyingGlassIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
           </div>
         )}
 
-        <div>
-          {isLoading && Array.from({ length: 6 }).map((_, i) => <ListItemSkeleton key={i} />)}
-
-          {!isLoading && query.trim() !== "" && !hasResults && (
-            <LayoutHeightWrapper>
-              <NoItems title="No Results" desc="Try with a different keyword" icon={<MagnifyingGlassIcon weight={ICON_WEIGHT} size={ICON_SM} />} />
-            </LayoutHeightWrapper>
-          )}
-
-          {!isLoading && hasResults && (
-            <VirtualScroll items={filteredResults} onClickItem={onClickItem} className="lg:h-[calc(100dvh-260px)]! h-[calc(100dvh-220px)]!" />
-          )}
-        </div>
-      </Page>
-    </Overlay>
+        {!isLoading && hasResults && <VirtualScroll items={filteredResults} onClickItem={onClickItem} className="h-[40vh]!" />}
+      </div>
+    </Modal>
   );
 };
 
-export default OverlaySearch;
+export default DialogSearch;

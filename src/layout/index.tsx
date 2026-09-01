@@ -15,13 +15,13 @@ import { EVENTS } from "@/constants/events";
 
 import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
-import OverlaySearch from "@/components/Overlay/OverlaySearch";
 import OverlayNowPlaying from "@/components/Overlay/OverlayNowPlaying";
 import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
 import DrawerLocalDetail from "@/components/Drawer/DrawerLocalDetail";
+import DialogSearch from "@/components/Dialog/DialogSearch";
 
 export default function Layout({ children }: { children: any }) {
   const dispatch = useDispatch();
@@ -140,9 +140,9 @@ export default function Layout({ children }: { children: any }) {
       <div className="flex-1 overflow-hidden">{children}</div>
       <Player />
       <Dialog />
+      <DialogSearch />
       <DrawerLocalDetail />
       <DrawerTracklist />
-      <OverlaySearch />
       <OverlayNowPlaying />
       <OverlayStandby />
       <OverlayOffline />

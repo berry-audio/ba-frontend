@@ -80,7 +80,7 @@ const Multiroom = () => {
           <div className="flex items-center">
             <div>
               <div className="w-full flex mt-1 ">
-                <div className={`overflow-hidden rounded-sm mr-3 min-w-13 w-13 h-13  ${item?.connected ? "text-primary" : ""}`}>
+                <div className={`overflow-hidden rounded-md mr-3 min-w-13 w-13 h-13  ${item?.connected ? "text-primary" : ""}`}>
                   <Placeholder item={{ __model__: MODEL.ROOM } as Room} variant={item?.connected ? "primary" : ""} />
                 </div>
                 <div>

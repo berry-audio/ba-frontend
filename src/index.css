@@ -62,22 +62,22 @@
   --primary: #db462b;
   --primary-text-hover: #ffffff;
 
-  --background: #212121;
-  --background-secondary: #181818;
+  --background: #18191b;
+  --background-secondary: #131315;
   --background-invert: #ffffff;
   --background-foreground: #3e3e3e;
 
-  --background-cover: #131313;
+  --background-cover: #0d0e0f;
 
-  --background-dialog: #1b1b1b;
+  --background-dialog: #1a1a1d;
   --background-overlay: #000000;
 
-  --background-dropdown: #282828;
+  --background-dropdown: #0d0e0f;
   --background-dropdown-hover: #3e3e3e;
 
-  --background-input: #131313;
+  --background-input: #0d0e0f;
 
-  --background-hover: #3e3e3e;
+  --background-hover: #28292c;
   --background-selected: rgba(0, 0, 0, 0.5);
 
   --text-color: #ffffff;

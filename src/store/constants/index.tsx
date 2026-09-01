@@ -89,6 +89,7 @@ export enum DIALOG_EVENTS {
   DIALOG_DSP_STAGE_DELETE = "dialog/dsp/stage/delete",
   DIALOG_DSP_STAGE_CHANNELS = "dialog/dsp/stage/channels",
   DIALOG_VOLUME = "dialog/volume",
+  DIALOG_SEARCH = "dialog/search",
 }
 
 export enum OVERLAY_EVENTS {
