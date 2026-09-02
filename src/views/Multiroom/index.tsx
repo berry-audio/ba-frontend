@@ -3,203 +3,145 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useMultiroomService } from "@/services/multiroom";
 import { useMultiroomActions } from "@/hooks/useMultiroomActions";
-import { Room } from "@/types";
-import { timeAgo } from "@/util";
 import { Slider } from "@/components/Form/Slider";
-import {
-  GearIcon,
-  HardDriveIcon,
-  SpeakerHifiIcon,
-  SpeakerHighIcon,
-  SpeakerSimpleXIcon,
-  SpeakerSlashIcon,
-  WarningCircleIcon,
-} from "@phosphor-icons/react";
+import { Room } from "@/types";
+import { GearIcon, HardDriveIcon, SpeakerHifiIcon, SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react";
 import { EVENTS } from "@/constants/events";
 import { INTERNAL_EVENTS } from "@/store/constants";
 import { MODEL } from "@/constants/refs";
-import { ICON_SM, ICON_WEIGHT, ICON_XS, LOCAL_IP } from "@/constants";
+import { ICON_SM, ICON_WEIGHT, LOCAL_IP } from "@/constants";
 
 import Page from "@/components/Page";
-import ActionMenu from "@/components/Actions";
-import ItemWrapper from "@/components/Wrapper/ItemWrapper";
 import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
-import Spinner from "@/components/Spinner";
 import NoItems from "@/components/Item/NoItems";
 import ButtonMulitroomScan from "@/components/Button/ButtonMultiroomScan";
 import ButtonIcon from "@/components/Button/ButtonIcon";
-import Placeholder from "@/components/CoverArt/Placeholder";
+import ListItem from "@/components/Item/ListItem";
+import ListItemSkeleton from "@/components/Item/ListItemSkeleton";
+
+const ListClient = ({ client, item }: { client: any; item: any }) => {
+  const dispatch = useDispatch();
+  const { setVolume } = useMultiroomService();
+
+  const { id, config } = client;
+  const { percent, muted } = config?.volume;
+
+  const [volumeLevel, setvolumeLevel] = useState<any>(percent);
+  const [mute, setMute] = useState<boolean>(muted ?? false);
+
+  const onClickToggleMuteHandler = async () => {
+    const response = await setVolume(item.ip, id, percent, !mute);
+    setMute(response.volume.muted);
+  };
+
+  const onCommittedVolume = async ([value]: number[]) => {
+    try {
+      dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: false });
+      dispatch({
+        type: EVENTS.MULTIROOM_NOTIFICATION,
+        payload: {
+          method: "Client.OnVolumeChanged",
+          params: {
+            id,
+            volume: {
+              percent: value,
+              muted: muted,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const onChangeVolume = ([value]: number[]) => {
+    dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: true });
+    setvolumeLevel(value);
+    setVolume(item.ip, id, value);
+  };
+
+  useEffect(() => {
+    setvolumeLevel(percent);
+  }, [percent]);
+
+  return (
+    <div className="pt-3 md:pt-0">
+      <ListItem item={{ __model__: MODEL.ROOM_DEVICE, ...client }} />
+      <div className="flex items-center my-3 mx-5">
+        <div className="mr-4">
+          <ButtonIcon onClick={onClickToggleMuteHandler}>
+            {mute ? (
+              <SpeakerSlashIcon size={ICON_SM} weight={ICON_WEIGHT} className="text-disabled" />
+            ) : (
+              <SpeakerHighIcon size={ICON_SM} weight={ICON_WEIGHT} />
+            )}
+          </ButtonIcon>
+        </div>
+        <Slider
+          value={[volumeLevel]}
+          max={100}
+          step={1}
+          className="w-full md:w-80"
+          onValueChange={onChangeVolume}
+          onValueCommit={onCommittedVolume}
+          disabled={false}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ListServer = ({ item }: { item: Room }) => {
+  const { getStatus } = useMultiroomService();
+
+  const [status, setStatus] = useState<any>();
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      const result = await getStatus(item.ip);
+      setStatus(result);
+    };
+    if (item.status !== "unavailable") fetchStatus();
+  }, [item.ip]);
+
+  if (!status) return;
+
+  const connectedClients = status.server?.groups?.flatMap((group: any) => group.clients?.filter((client: any) => client.connected) ?? []) ?? [];
+
+  return (
+    <div className="bg-secondary mb-4 py-2 shadow-sm lg:rounded-md">
+      <div className="flex justify-between border-b border-neutral-200 pb-2 dark:border-neutral-800 md:mb-2">
+        <ListItem item={{ __model__: MODEL.ROOM, ...item, ...status }} />
+      </div>
+
+      {connectedClients.length > 0 ? (
+        <div>
+          {connectedClients.map((client: any, index: number) => (
+            <ListClient client={client} item={item} key={client.id || index} />
+          ))}
+        </div>
+      ) : (
+        <div className="pt-4">
+          <NoItems
+            title={item.ip === LOCAL_IP ? "No devices listening" : "No devices connected"}
+            desc={item.ip === LOCAL_IP ? "Join from another device to start listening" : "Join to start listening from this room"}
+            icon={<SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Multiroom = () => {
   const navigate = useNavigate();
-  const connected = useSelector((state: any) => state.socket.connected);
-  const { servers, status } = useSelector((state: any) => state.multiroom, shallowEqual);
-
-  const { connect, disconnect, setVolume } = useMultiroomService();
-  const { fetchServers, getServerStatus, loading } = useMultiroomActions();
+  const { servers } = useSelector((state: any) => state.multiroom, shallowEqual);
+  const { fetchServers, loading } = useMultiroomActions();
 
   useEffect(() => {
-    if (!connected) return;
-
     fetchServers();
-    getServerStatus();
-  }, [connected]);
-
-  const ListServer = ({ item }: { item: Room }) => {
-    const actionItems = [
-      {
-        name: "Join Room",
-        icon: <SpeakerHighIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-        action: () => connect(item.ip),
-        hide: item?.connected,
-      },
-      {
-        name: "Leave Room",
-        icon: <SpeakerSimpleXIcon size={ICON_XS} weight={ICON_WEIGHT} />,
-        action: async () => disconnect(),
-        hide: !item?.connected,
-      },
-    ];
-
-    const RenderStatus = () => {
-      switch (item?.status) {
-        case "idle":
-          return "";
-        case "playing":
-          return <SpeakerHighIcon size={ICON_XS} weight={ICON_WEIGHT} className="ml-2 text-primary" />;
-        case "unavailable":
-          return <WarningCircleIcon size={ICON_XS} weight={ICON_WEIGHT} className="ml-2 text-red-400" />;
-        default:
-          return "";
-      }
-    };
-
-    return (
-      <div className={`w-full`}>
-        <div className="flex justify-between items-center border-b border-background py-3 px-4">
-          <div className="flex items-center">
-            <div>
-              <div className="w-full flex mt-1 ">
-                <div className={`overflow-hidden rounded-md mr-3 min-w-13 w-13 h-13  ${item?.connected ? "text-primary" : ""}`}>
-                  <Placeholder item={{ __model__: MODEL.ROOM } as Room} variant={item?.connected ? "primary" : ""} />
-                </div>
-                <div>
-                  <div className="flex items-center ">
-                    {item?.name} <RenderStatus />
-                  </div>
-                  <div className="flex items-center text-secondary text-md">
-                    {item?.ip == "127.0.0.1" && "This room - "} {item?.status}{" "}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="-mr-2">{item.ip != LOCAL_IP && <ActionMenu items={actionItems} />}</div>
-        </div>
-        {status?.server?.host?.name === item?.name && status?.groups?.length > 0 && (
-          <div className="mt-3 pb-3 px-4">
-            {status.groups.map((group: any) =>
-              group?.clients?.map((client: any, index: number) => (
-                <div className="mt-5" key={index}>
-                  <ListClient item={client} />
-                </div>
-              )),
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const ListClient = ({ item }: { item: any }) => {
-    const dispatch = useDispatch();
-    const { id, config } = item;
-    const { percent, muted } = config?.volume;
-
-    const [volumeLevel, setvolumeLevel] = useState<any>(percent);
-
-    const commitVolume = async (volume: number, muted?: boolean) => {
-      try {
-        dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: false });
-        dispatch({
-          type: EVENTS.MULTIROOM_NOTIFICATION,
-          payload: {
-            method: "Client.OnVolumeChanged",
-            params: {
-              id,
-              volume: {
-                percent: volume,
-                muted: muted,
-              },
-            },
-          },
-        });
-      } catch (error) {
-        throw error;
-      }
-    };
-
-    const onClickToggleMuteHandler = async () => {
-      await setVolume(id, percent, !muted);
-    };
-
-    const onCommittedVolume = async ([value]: number[]) => {
-      await commitVolume(value);
-    };
-
-    const onChangeVolume = ([value]: number[]) => {
-      dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: true });
-      setvolumeLevel(value);
-      setVolume(id, value);
-    };
-
-    const onMouseEnter = () => {
-      dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: true });
-    };
-
-    const onMouseLeave = () => {
-      dispatch({ type: INTERNAL_EVENTS.MULTIROOM_VOLUME_DRAGGING, payload: false });
-    };
-
-    useEffect(() => {
-      setvolumeLevel(percent);
-    }, [percent]);
-
-    return (
-      <div className="w-full">
-        <div className="flex items-center">
-          <SpeakerHifiIcon size={ICON_SM} weight={ICON_WEIGHT} className={`mr-3 ${item?.connected ? "text-primary" : ""}`} />
-          <div className="font-medium flex-1">
-            <div> {item?.host?.name}</div>
-            <div className="mb-1 text-secondary text-md text-left">Last seen {timeAgo(item?.lastSeen?.sec)}</div>
-          </div>
-        </div>
-        <div className="flex">
-          <div className="mr-2">
-            <ButtonIcon onClick={() => onClickToggleMuteHandler()}>
-              {muted ? (
-                <SpeakerSlashIcon size={ICON_SM} weight={ICON_WEIGHT} className="text-disabled" />
-              ) : (
-                <SpeakerHighIcon size={ICON_SM} weight={ICON_WEIGHT} />
-              )}
-            </ButtonIcon>
-          </div>
-          <Slider
-            value={[volumeLevel]}
-            max={100}
-            step={1}
-            className="w-full md:w-80 rounded-full volume-slider"
-            onValueChange={onChangeVolume}
-            onValueCommit={onCommittedVolume}
-            onMouseLeave={onMouseLeave}
-            onPointerLeave={onMouseLeave}
-            onMouseEnter={onMouseEnter}
-            disabled={false}
-          />
-        </div>
-      </div>
-    );
-  };
+  }, []);
 
   return (
     <Page
@@ -221,21 +163,26 @@ const Multiroom = () => {
     >
       {loading ? (
         <LayoutHeightWrapper>
-          <Spinner />
+          <div className="bg-secondary mb-4 py-2 shadow-sm lg:rounded-md">
+            <div className="flex justify-between md:mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-2">
+              <ListItemSkeleton />
+            </div>
+
+            <ListItemSkeleton />
+            <ListItemSkeleton />
+          </div>
         </LayoutHeightWrapper>
       ) : (
         <>
           {servers.length ? (
-            servers.map((item: Room, index: number) => (
-              <ItemWrapper key={index} highlight={item?.connected}>
-                <ListServer item={item} />
-              </ItemWrapper>
-            ))
+            [...servers]
+              .sort((a: Room, b: Room) => a.name.localeCompare(b.name))
+              .map((item: Room, index: number) => <ListServer key={index} item={item} />)
           ) : (
             <LayoutHeightWrapper>
               <NoItems
-                title="No rooms Found"
-                desc={"Scan for available rooms on the network"}
+                title="No rooms found"
+                desc="Scan for available rooms on the network"
                 icon={<HardDriveIcon weight={ICON_WEIGHT} size={ICON_SM} />}
               />
             </LayoutHeightWrapper>

@@ -85,7 +85,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
   };
 
   return (
-    <>
+    <div className="flex flex-1 items-center">
       <div onClick={onClickItem} onDoubleClick={onDoubleClickItem} className="flex items-center w-full cursor-pointer justify-between relative group">
         <div className="py-3 px-4 flex justify-between w-full items-center">
           <div className="flex items-center w-full">
@@ -157,7 +157,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
           </div>
         )
       )}
-    </>
+    </div>
   );
 };
 

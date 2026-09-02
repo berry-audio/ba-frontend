@@ -5,8 +5,8 @@ export const useMultiroomService = () => {
 
   return {
     getServers: (rescan?: boolean) => request("multiroom.servers", { rescan }),
-    getStatus: () => request("multiroom.get_status"),
-    setVolume: (client_id: string, volume: number, mute?: boolean) => request("multiroom.set_volume", { client_id, volume, mute }),
+    getStatus: (ip?: string) => request("multiroom.get_status", { ip }),
+    setVolume: (ip: string, client_id: string, volume: number, mute?: boolean) => request("multiroom.set_volume", { ip, client_id, volume, mute }),
     connect: (ip: string) => request("multiroom.connect", { ip }),
     disconnect: () => request("multiroom.disconnect"),
   };

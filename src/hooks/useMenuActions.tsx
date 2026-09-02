@@ -11,6 +11,8 @@ import {
   PlayIcon,
   PlaylistIcon,
   QueueIcon,
+  SpeakerHighIcon,
+  SpeakerSimpleXIcon,
   StackPlusIcon,
   TrashIcon,
   TrashSimpleIcon,
@@ -25,11 +27,12 @@ import { useStorageActions } from "./useStorageActions";
 import { usePlaylistActions } from "./usePlaylistActions";
 import { useTracklistActions } from "./useTracklistActions";
 import { AnyItem } from "@/types";
-import { ICON_WEIGHT, ICON_XS } from "@/constants";
+import { ICON_WEIGHT, ICON_XS, LOCAL_IP } from "@/constants";
 import { MODEL } from "@/constants/refs";
 import { useLibraryInfo } from "./useLibraryInfo";
 import { useBluetoothService } from "@/services/bluetooth";
 import { useFavourites } from "./useFavourites";
+import { useMultiroomService } from "@/services/multiroom";
 
 export interface MenuItem {
   name: string;
@@ -49,6 +52,7 @@ export const useMenuActions = () => {
   const { libraryPathAdd, directoryShare, directoryUnshare, storageMount, storageUnMount, storageUnMountShared } = useStorageActions();
   const { playlistAddDialog, playlistRemoveTrack, playlistRenameDialog, playlistDeleteDialog } = usePlaylistActions();
   const { removeDevice, disconnectDevice, connectDevice } = useBluetoothService();
+  const { connect, disconnect } = useMultiroomService();
   const { tracklistRemove } = useTracklistActions();
 
   const itemsMenu = (item: AnyItem): MenuItem[] => {
@@ -331,6 +335,27 @@ export const useMenuActions = () => {
             action: async () => removeDevice(item.address),
           },
         ];
+      case MODEL.ROOM:
+        return [
+          ...(item.connected
+            ? [
+                {
+                  name: "Leave Room",
+                  icon: <SpeakerSimpleXIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+                  action: async () => disconnect(),
+                },
+              ]
+            : item.ip !== LOCAL_IP
+              ? [
+                  {
+                    name: "Join Room",
+                    icon: <SpeakerHighIcon size={ICON_XS} weight={ICON_WEIGHT} />,
+                    action: () => connect(item.ip),
+                  },
+                ]
+              : []),
+        ];
+
       default:
         return [];
     }

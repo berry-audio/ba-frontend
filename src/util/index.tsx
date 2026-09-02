@@ -1,4 +1,4 @@
-import { ICON_SM, ICON_WEIGHT, SERVER_URL } from "@/constants";
+import { ICON_SM, ICON_WEIGHT, LOCAL_IP, RPC_URL, SERVER_URL } from "@/constants";
 import { MODEL } from "@/constants/refs";
 import { REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { Album, AnyItem, Artist, TlTrack, Track, Tuner } from "@/types";
@@ -310,6 +310,7 @@ export const getImage = (item: AnyItem): string | undefined => {
 
 export const getTitle = (item: AnyItem): string | undefined => {
   if (!item) return;
+
   switch (item.__model__) {
     case MODEL.ALBUM:
     case MODEL.TRACK:
@@ -322,6 +323,10 @@ export const getTitle = (item: AnyItem): string | undefined => {
     case MODEL.BLUETOOTH:
     case MODEL.STORAGE:
       return item.name;
+    case MODEL.ROOM:
+      return item.server?.server.host.name;
+    case MODEL.ROOM_DEVICE:
+      return item.host.name;
     case MODEL.TLTRACK:
       return item.track.name;
     default:
@@ -370,6 +375,10 @@ export const getSubtitle = (item: AnyItem): string | undefined => {
         return `${formatBytes(item.usage.free)} available of ${formatBytes(item.usage.total)}`;
       }
       return "";
+    case MODEL.ROOM:
+      return `${item?.ip === LOCAL_IP ? "This room - " : ""} ${item.status}`;
+    case MODEL.ROOM_DEVICE:
+      return `Last seen ${timeAgo(item?.lastSeen?.sec)}`;
     default:
       return undefined;
   }
@@ -429,7 +438,7 @@ export const getFavourite = (item: AnyItem) => {
  * @throws If the HTTP request fails or the response has no result.
  */
 export async function fetchJsonRpc<T>(method: string, id: number, params = {}): Promise<T> {
-  const res = await fetch("http://berryaudio.local/rpc", {
+  const res = await fetch(RPC_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

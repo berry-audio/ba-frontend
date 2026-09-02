@@ -34,6 +34,7 @@ export enum MODEL {
   SHAIRPORT = "Shairport",
   SPOTIFY = "Spotify",
   ROOM = "Room",
+  ROOM_DEVICE = "Client",
 }
 
 export enum BLUETOOTH_ICON {

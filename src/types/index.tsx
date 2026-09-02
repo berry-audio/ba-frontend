@@ -162,8 +162,105 @@ export interface BluetoothState {
   devices: Bluetooth[];
 }
 
+export interface Volume {
+  muted: boolean;
+  percent: number;
+}
+
+export interface ClientConfig {
+  instance: number;
+  latency: number;
+  name: string;
+  volume: Volume;
+}
+
+export interface Host {
+  arch: string;
+  ip: string;
+  mac: string;
+  name: string;
+  os: string;
+}
+
+export interface LastSeen {
+  sec: number;
+  usec: number;
+}
+
+export interface SnapClient {
+  name: string;
+  protocolVersion: number;
+  version: string;
+}
+
+export interface Client {
+  config: ClientConfig;
+  connected: boolean;
+  host: Host;
+  id: string;
+  lastSeen: LastSeen;
+  snapclient: SnapClient;
+}
+
+export interface Group {
+  clients: Client[];
+  id: string;
+  muted: boolean;
+  name: string;
+  stream_id: string;
+}
+
+export interface SnapServer {
+  host: Host;
+  snapserver: {
+    controlProtocolVersion: number;
+    name: string;
+    protocolVersion: number;
+    version: string;
+  };
+}
+
+export interface StreamProperties {
+  canControl: boolean;
+  canGoNext: boolean;
+  canGoPrevious: boolean;
+  canPause: boolean;
+  canPlay: boolean;
+  canSeek: boolean;
+}
+
+export interface StreamQuery {
+  chunk_ms: string;
+  codec: string;
+  device: string;
+  devicename: string;
+  name: string;
+  sampleformat: string;
+}
+
+export interface StreamUri {
+  fragment: string;
+  host: string;
+  path: string;
+  query: StreamQuery;
+  raw: string;
+  scheme: string;
+}
+
+export interface Stream {
+  id: string;
+  properties: StreamProperties;
+  status: string;
+  uri: StreamUri;
+}
+
+export interface RoomStatus {
+  groups: Group[];
+  server: SnapServer;
+  streams: Stream[];
+}
+
 export interface Room {
-  __model__: MODEL.ROOM;
   service_name: string;
   name: string;
   ip: string;
@@ -172,13 +269,55 @@ export interface Room {
   status: "playing" | "idle" | "unavailable";
 }
 
+export interface RoomServer {
+  __model__: MODEL.ROOM;
+  service_name: string;
+  name: string;
+  ip: string;
+  port: number;
+  connected: boolean;
+  status: "playing" | "idle" | "unavailable";
+  server: RoomStatus;
+}
+
+export interface RoomClient {
+  __model__: MODEL.ROOM_DEVICE;
+  config: {
+    instance: number;
+    latency: number;
+    name: string;
+    volume: {
+      muted: boolean;
+      percent: number;
+    };
+  };
+  connected: boolean;
+  host: {
+    arch: string;
+    ip: string;
+    mac: string;
+    name: string;
+    os: string;
+  };
+  id: string;
+  lastSeen: {
+    sec: number;
+    usec: number;
+  };
+  snapclient: {
+    name: string;
+    protocolVersion: number;
+    version: string;
+  };
+}
+
 export interface RoomState {
   status: {
     groups?: [];
     server?: {};
     streams?: [];
   };
-  servers: Room[];
+  servers: Rooms[];
   dragging: boolean;
 }
 
@@ -497,4 +636,17 @@ export interface TitleTabsProps {
   onTabChange?: (tabId: REF) => void;
 }
 
-export type AnyItem = Track | Tuner | TlTrack | Album | Artist | Category | File | Directory | Storage | Playlist | Bluetooth | Room;
+export type AnyItem =
+  | Track
+  | Tuner
+  | TlTrack
+  | Album
+  | Artist
+  | Category
+  | File
+  | Directory
+  | Storage
+  | Playlist
+  | Bluetooth
+  | RoomServer
+  | RoomClient;

@@ -1,6 +1,6 @@
 import {
   BluetoothIcon,
-  CouchIcon,
+  ChalkboardIcon,
   DeviceMobileIcon,
   FolderSimpleIcon,
   FolderSimpleUserIcon,
@@ -61,7 +61,9 @@ const Placeholder = ({
       case MODEL.PLAYLIST:
         return <PlaylistIcon weight={ICON_WEIGHT} size={ICON_SM} />;
       case MODEL.ROOM:
-        return <CouchIcon weight={ICON_WEIGHT} size={ICON_SM} />;
+        return <ChalkboardIcon weight={ICON_WEIGHT} size={ICON_SM} />;
+      case MODEL.ROOM_DEVICE:
+        return <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />;
       case MODEL.BLUETOOTH:
         switch (item.icon) {
           case BLUETOOTH_ICON.AUDIO_HEADSET:
@@ -96,9 +98,7 @@ const Placeholder = ({
   return (
     <div
       style={{ width, height }}
-      className={`bg-cover flex items-center justify-center aspect-square w-full overflow-hidden ${
-        variant === "primary" ? "text-primary" : ""
-      }`}
+      className={`bg-cover flex items-center justify-center aspect-square w-full overflow-hidden ${variant === "primary" ? "text-primary" : ""}`}
     >
       {getIconByType(item)}
     </div>

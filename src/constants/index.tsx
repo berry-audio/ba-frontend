@@ -9,8 +9,8 @@ const wsProtocol = httpProtocol === "https:" ? "wss:" : "ws:";
 export const SERVER_URL = `${httpProtocol}//${host}`;
 export const WEBSOCKET_URL = `${wsProtocol}//${host}/ws`;
 
-export const CAMILLA_DSP_URL = `${httpProtocol}//${host}:8081`;
 export const WEBRTC_URL = `${httpProtocol}//${host}:8082/stream`;
+export const RPC_URL = `${httpProtocol}//${host}/rpc`;
 
 export const STROKE_WIDTH = 1.5;
 
