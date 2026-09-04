@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMultiroomService } from "@/services/multiroom";
 import { useMultiroomActions } from "@/hooks/useMultiroomActions";
 import { Slider } from "@/components/Form/Slider";
-import { Room } from "@/types";
-import { GearIcon, HardDriveIcon, SpeakerHifiIcon, SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react";
+import { RoomServer } from "@/types";
+import { GearIcon, HardDriveIcon, NetworkSlashIcon, SpeakerHifiIcon, SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react";
 import { EVENTS } from "@/constants/events";
 import { INTERNAL_EVENTS } from "@/store/constants";
 import { MODEL } from "@/constants/refs";
@@ -50,6 +50,7 @@ const ListClient = ({ client, item }: { client: any; item: any }) => {
           },
         },
       });
+      setMute(false);
     } catch (error) {
       throw error;
     }
@@ -92,27 +93,13 @@ const ListClient = ({ client, item }: { client: any; item: any }) => {
   );
 };
 
-const ListServer = ({ item }: { item: Room }) => {
-  const { getStatus } = useMultiroomService();
-
-  const [status, setStatus] = useState<any>();
-
-  useEffect(() => {
-    const fetchStatus = async () => {
-      const result = await getStatus(item.ip);
-      setStatus(result);
-    };
-    if (item.status !== "unavailable") fetchStatus();
-  }, [item.ip]);
-
-  if (!status) return;
-
-  const connectedClients = status.server?.groups?.flatMap((group: any) => group.clients?.filter((client: any) => client.connected) ?? []) ?? [];
+const ListServer = ({ item }: { item: RoomServer }) => {
+  const connectedClients = item.status?.server?.groups?.flatMap((group: any) => group.clients?.filter((client: any) => client.connected) ?? []) ?? [];
 
   return (
     <div className="bg-secondary mb-4 py-2 shadow-sm lg:rounded-md">
       <div className="flex justify-between border-b border-neutral-200 pb-2 dark:border-neutral-800 md:mb-2">
-        <ListItem item={{ __model__: MODEL.ROOM, ...item, ...status }} />
+        <ListItem item={item} />
       </div>
 
       {connectedClients.length > 0 ? (
@@ -121,12 +108,20 @@ const ListServer = ({ item }: { item: Room }) => {
             <ListClient client={client} item={item} key={client.id || index} />
           ))}
         </div>
-      ) : (
+      ) : item.status?.server ? (
         <div className="pt-4">
           <NoItems
             title={item.ip === LOCAL_IP ? "No devices listening" : "No devices connected"}
             desc={item.ip === LOCAL_IP ? "Join from another device to start listening" : "Join to start listening from this room"}
             icon={<SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />}
+          />
+        </div>
+      ) : (
+        <div className="pt-4">
+          <NoItems
+            title={"Room is offline"}
+            desc={"Room server disabled or turned off"}
+            icon={<NetworkSlashIcon weight={ICON_WEIGHT} size={ICON_SM} />}
           />
         </div>
       )}
@@ -176,8 +171,12 @@ const Multiroom = () => {
         <>
           {servers.length ? (
             [...servers]
-              .sort((a: Room, b: Room) => a.name.localeCompare(b.name))
-              .map((item: Room, index: number) => <ListServer key={index} item={item} />)
+              .sort((a: RoomServer, b: RoomServer) => {
+                if (a.ip === LOCAL_IP) return -1;
+                if (b.ip === LOCAL_IP) return 1;
+                return a.name.localeCompare(b.name);
+              })
+              .map((item: RoomServer, index: number) => <ListServer key={index} item={item} />)
           ) : (
             <LayoutHeightWrapper>
               <NoItems

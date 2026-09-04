@@ -1,10 +1,22 @@
 import { JSX } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { ICON_SM, ICON_WEIGHT } from "@/constants";
-import { AirplayIcon, BluetoothIcon, FolderIcon, GlobeHemisphereEastIcon, RadioButtonIcon, RadioIcon, SpeakerHifiIcon, SpotifyLogoIcon, VinylRecordIcon } from "@phosphor-icons/react";
+import {
+  AirplayIcon,
+  BluetoothIcon,
+  FolderIcon,
+  GlobeHemisphereEastIcon,
+  RadioButtonIcon,
+  RadioIcon,
+  SpeakerHifiIcon,
+  SpotifyLogoIcon,
+  VinylRecordIcon,
+} from "@phosphor-icons/react";
 import ButtonIcon from "../Button/ButtonIcon";
 
 const SourceStatus = () => {
+  const navigate = useNavigate();
   const { source } = useSelector((state: any) => state.player);
 
   const sourceIcon: Record<string, JSX.Element | null> = {
@@ -19,7 +31,7 @@ const SourceStatus = () => {
     multiroom: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_SM} />,
   };
 
-  return <ButtonIcon onClick={undefined}>{sourceIcon[source.uri]}</ButtonIcon>;
+  return <ButtonIcon onClick={() => navigate(`/${source.uri}`)}>{sourceIcon[source.uri]}</ButtonIcon>;
 };
 
 export default SourceStatus;

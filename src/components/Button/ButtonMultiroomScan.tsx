@@ -9,7 +9,7 @@ const ButtonMulitroomScan = () => {
   const { fetchServers, loading } = useMultiroomActions();
 
   return (
-    <ButtonIcon onClick={() => fetchServers(true)} className="mr-1">
+    <ButtonIcon onClick={() => fetchServers()} className="mr-1" tooltip="Scan Rooms">
       {loading ? <Spinner /> : <ArrowsClockwiseIcon weight={ICON_WEIGHT} size={ICON_SM} />}
     </ButtonIcon>
   );

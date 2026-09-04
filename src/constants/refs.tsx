@@ -50,3 +50,10 @@ export enum STORAGE_ICON {
   REMOVABLE = "removable",
   NAS = "nas",
 }
+
+export const STREAM_STATUS_LABEL: Record<string, string> = {
+  idle: "Idle",
+  playing: "Playing",
+  disabled: "Disabled",
+  unknown: "Unknown",
+};

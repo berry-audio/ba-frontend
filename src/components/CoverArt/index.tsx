@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getImage, getTitle } from "@/util";
-import { Album, AnyItem, Bluetooth } from "@/types";
+import { getCoverVariant, getImage, getTitle } from "@/util";
+import { Album, AnyItem } from "@/types";
 import { PlayCircleIcon, HeartIcon } from "@phosphor-icons/react";
 import { ICON_LG, ICON_SM, ICON_XS } from "@/constants";
 import { MODEL } from "@/constants/refs";
@@ -22,7 +22,7 @@ interface CoverArt {
 
 const CoverArt = ({
   item,
-  size = 'sm',
+  size = "sm",
   shadow = false,
   loadingPlay = false,
   loadingFavourite = false,
@@ -51,7 +51,7 @@ const CoverArt = ({
             onError={() => setImgError(true)}
           />
         ) : (
-          <Placeholder item={item} variant={(item as Bluetooth).connected ? "" : "primary"} />
+          <Placeholder item={item} variant={getCoverVariant(item)} />
         )}
 
         {[MODEL.ALBUM, MODEL.ARTIST, MODEL.CATEGORY, MODEL.FILE, MODEL.TRACK, MODEL.TUNER, MODEL.TLTRACK, MODEL.PLAYLIST].includes(item.__model__) &&
@@ -60,7 +60,7 @@ const CoverArt = ({
               {onClickFavourite && favourited && (
                 <button
                   onClick={onClickFavourite}
-                  className="absolute top-2.5 right-2 cursor-pointer flex items-center justify-center z-3 text-primary hover:text-foreground w-8 h-8 rounded-full"
+                  className="absolute top-2.5 right-2 cursor-pointer flex items-center justify-center z-3 hover:text-foreground w-8 h-8 rounded-full"
                 >
                   {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight="fill" />}
                 </button>
@@ -76,7 +76,7 @@ const CoverArt = ({
                     onClick={onClickPlay}
                     className="absolute inset-0 cursor-pointer rounded-md flex items-center justify-center z-3 text-white"
                   >
-                    {loadingPlay ? <Spinner mode="light" /> : <PlayCircleIcon size={size === 'sm' ? ICON_SM : ICON_LG} weight="fill" />}
+                    {loadingPlay ? <Spinner mode="light" /> : <PlayCircleIcon size={size === "sm" ? ICON_SM : ICON_LG} weight="fill" />}
                   </button>
                 )}
 

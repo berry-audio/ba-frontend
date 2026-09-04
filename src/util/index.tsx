@@ -1,5 +1,5 @@
 import { ICON_SM, ICON_WEIGHT, LOCAL_IP, RPC_URL, SERVER_URL } from "@/constants";
-import { MODEL } from "@/constants/refs";
+import { MODEL, STREAM_STATUS_LABEL } from "@/constants/refs";
 import { REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { Album, AnyItem, Artist, TlTrack, Track, Tuner } from "@/types";
 import { STAGE_TYPE } from "@/views/Dsp/types";
@@ -308,6 +308,27 @@ export const getImage = (item: AnyItem): string | undefined => {
   }
 };
 
+export const getCoverVariant = (item: AnyItem): string | undefined => {
+  if (!item) return;
+  switch (item.__model__) {
+    case MODEL.ALBUM:
+    case MODEL.TRACK:
+    case MODEL.TUNER:
+    case MODEL.FILE:
+    case MODEL.ARTIST:
+    case MODEL.PLAYLIST:
+    case MODEL.TLTRACK:
+    case MODEL.ROOM_DEVICE:
+      return "primary";
+    case MODEL.BLUETOOTH:
+      return item.connected ? "primary" : "";
+    case MODEL.ROOM:
+      return item.status?.server ? "primary" : "";
+    default:
+      return "primary";
+  }
+};
+
 export const getTitle = (item: AnyItem): string | undefined => {
   if (!item) return;
 
@@ -324,7 +345,7 @@ export const getTitle = (item: AnyItem): string | undefined => {
     case MODEL.STORAGE:
       return item.name;
     case MODEL.ROOM:
-      return item.server?.server.host.name;
+      return `${item.name} ${item?.ip === LOCAL_IP ? " - This room" : ""} `;
     case MODEL.ROOM_DEVICE:
       return item.host.name;
     case MODEL.TLTRACK:
@@ -376,7 +397,7 @@ export const getSubtitle = (item: AnyItem): string | undefined => {
       }
       return "";
     case MODEL.ROOM:
-      return `${item?.ip === LOCAL_IP ? "This room - " : ""} ${item.status}`;
+      return `${item.status?.server ? STREAM_STATUS_LABEL[item.status?.server.streams[0].status] : "Offline"}`;
     case MODEL.ROOM_DEVICE:
       return `Last seen ${timeAgo(item?.lastSeen?.sec)}`;
     default:
@@ -388,6 +409,8 @@ export const getDuration = (item: AnyItem): string | undefined => {
   switch (item.__model__) {
     case MODEL.TRACK:
       return item.length ? convertMillisecondstoTime((item as Track).length) : undefined;
+    case MODEL.TLTRACK:
+      return (item.track as Track).length ? convertMillisecondstoTime((item.track as Track).length) : undefined;
     case MODEL.PLAYLIST:
       return `${formatDate(item?.last_modified)}`;
     default:

@@ -2,42 +2,22 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMultiroomService } from "@/services/multiroom";
 import { DIALOG_EVENTS, INTERNAL_EVENTS } from "@/store/constants";
-import { EVENTS } from "@/constants/events";
 
 export function useMultiroomActions() {
   const dispatch = useDispatch();
-  const { getServers, getStatus } = useMultiroomService();
+  const { getServers } = useMultiroomService();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchServers = async (rescan: boolean = false) => {
+  const fetchServers = async () => {
     setLoading(true);
-    const response = await getServers(rescan);
-
-    if (rescan) {
-      dispatch({
-        type: INTERNAL_EVENTS.MULTIROOM_SCAN_COMPLETED,
-        payload: response,
-      });
-    } else {
-      dispatch({
-        type: INTERNAL_EVENTS.MULTIROOM_LIST,
-        payload: response,
-      });
-    }
-
-    getServerStatus();
-    setLoading(false);
-  };
-
-  const getServerStatus = async () => {
-    setLoading(true);
-    const response = await getStatus();
+    const response = await getServers();
 
     dispatch({
-      type: EVENTS.MULTIROOM_STATE_CHANGED,
+      type: INTERNAL_EVENTS.MULTIROOM_SCAN_COMPLETED,
       payload: response,
     });
+
     setLoading(false);
   };
 
@@ -47,7 +27,6 @@ export function useMultiroomActions() {
 
   return {
     fetchServers,
-    getServerStatus,
     showServerInfo,
     loading,
   };

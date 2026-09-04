@@ -260,15 +260,6 @@ export interface RoomStatus {
   streams: Stream[];
 }
 
-export interface Room {
-  service_name: string;
-  name: string;
-  ip: string;
-  port: number;
-  connected: boolean;
-  status: "playing" | "idle" | "unavailable";
-}
-
 export interface RoomServer {
   __model__: MODEL.ROOM;
   service_name: string;
@@ -276,8 +267,9 @@ export interface RoomServer {
   ip: string;
   port: number;
   connected: boolean;
-  status: "playing" | "idle" | "unavailable";
-  server: RoomStatus;
+  status: {
+    server: RoomStatus;
+  };
 }
 
 export interface RoomClient {
@@ -312,13 +304,7 @@ export interface RoomClient {
 }
 
 export interface RoomState {
-  status: {
-    groups?: [];
-    server?: {};
-    streams?: [];
-  };
-  servers: Rooms[];
-  dragging: boolean;
+  servers: RoomServer[];
 }
 
 export interface StorageState {

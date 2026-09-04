@@ -6,8 +6,8 @@
 
 @theme inline {
   --radius-sm: 2px;
-  --radius-md: 7px;
-  --radius-lg: 10px;
+  --radius-md: 10px;
+  --radius-lg: 15px;
   --radius-4xl: 4px;
   --radius-full: calc(var(--radius) + 40px);
 
@@ -48,7 +48,7 @@
 
   --background-input: #ededed;
 
-  --background-hover: #f1f1f1;
+  --background-hover: #ececec;
   --background-selected: rgba(0, 0, 0, 0.08);
 
   --text-color: #000000;

@@ -17,7 +17,7 @@ import Modal from "../Modal";
 import Tabs from "../ui/tabs";
 
 const DialogSearch = () => {
-  const { dialog } = useSelector((state: RootState) => state.dialog);
+  const { dialog } = useSelector((state: RootState) => state.search);
   const dispatch = useDispatch();
 
   const { getSearch } = useSearchService();
@@ -130,10 +130,12 @@ const DialogSearch = () => {
   return (
     <Modal
       title="Search"
-      onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
+      onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_SEARCH_CLOSE })}
       isOpen={dialog === DIALOG_EVENTS.DIALOG_SEARCH}
       buttonShow={false}
       size="w-150"
+      zindexOverlay={80}
+      zindexModal={80}
     >
       <div>
         <Input

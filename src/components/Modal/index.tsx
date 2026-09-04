@@ -15,6 +15,8 @@ interface ModalProps {
   children?: ReactNode;
   padding?: boolean;
   size?: string;
+  zindexOverlay?: number;
+  zindexModal?: number;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -30,6 +32,8 @@ const Modal: React.FC<ModalProps> = ({
   children,
   padding = false,
   size = "w-130",
+  zindexOverlay = 90,
+  zindexModal = 250,
 }) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
@@ -56,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-80 flex items-center justify-center backdrop-blur-md bg-overlay transition-opacity duration-300 ${
+      className={`fixed inset-0 z-${zindexOverlay} flex items-center justify-center backdrop-blur-md bg-overlay transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onClick={(e) => {
@@ -64,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({
       }}
     >
       <div
-        className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 overflow-hidden z-250 relative md:px-3 transition-all duration-300 ease-in-out ${
+        className={`bg-dialog rounded-2xl shadow-xl ${size} mx-4 overflow-hidden z-${zindexModal} relative md:px-3 transition-all duration-300 ease-in-out ${
           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >

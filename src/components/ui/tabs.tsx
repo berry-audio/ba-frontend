@@ -3,7 +3,7 @@ import { TitleTabsProps } from "@/types";
 
 const Tabs: React.FC<TitleTabsProps> = ({ items, activeTab, onTabChange }) => {
   return (
-    <div className="flex gap-1 overflow-x-auto">
+    <div className="inline-flex gap-1 overflow-x-auto bg-input rounded-full p-2">
       {Object.entries(items).map(([key, { title }]) => (
         <button
           key={key}

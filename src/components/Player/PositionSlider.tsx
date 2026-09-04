@@ -77,7 +77,7 @@ const PositionSlider = ({
       {showElapsedNumber && (
         <div className="flex mt-4 items-center">
           <div className="text-left w-2/12">{getPosition(plSliderPos)}</div>
-          <div className="opacity-50 text-center w-8/12">
+          <div className="opacity-60 text-center w-8/12">
             <StreamInfo />
           </div>
           <div className="text-right w-2/12">{getTotalDuration(current_track?.track.length)}</div>

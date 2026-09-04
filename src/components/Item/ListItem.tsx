@@ -129,7 +129,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                     <></>
                   )}
                 </div>
-                {duration && <div className="mr-4 text-secondary text-sm ">{duration}</div>}
+
                 {showFavourite && [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && (
                   <button
                     onClick={async (e) => {
@@ -137,12 +137,13 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                       await toggleFavourite(item);
                     }}
                     className={`cursor-pointer rounded-md flex items-center justify-center z-3 ${
-                      getFavourite(item) ? "text-primary opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
+                      getFavourite(item) ? "opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
                     }`}
                   >
                     {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight={getFavourite(item) ? "fill" : "regular"} />}
                   </button>
                 )}
+                {duration && <div className="ml-4 text-secondary text-sm ">{duration}</div>}
               </div>
             </div>
           </div>

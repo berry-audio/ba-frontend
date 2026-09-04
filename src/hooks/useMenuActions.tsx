@@ -335,7 +335,11 @@ export const useMenuActions = () => {
             action: async () => removeDevice(item.address),
           },
         ];
-      case MODEL.ROOM:
+      case MODEL.ROOM: {
+        if (!item.status?.server) {
+          return [];
+        }
+
         return [
           ...(item.connected
             ? [
@@ -355,6 +359,7 @@ export const useMenuActions = () => {
                 ]
               : []),
         ];
+      }
 
       default:
         return [];

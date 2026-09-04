@@ -14,11 +14,13 @@ import { dspReducer } from "./dspReducer";
 import { multiroomReducer } from "./multiroomReducer";
 import { drawerReducer } from "./drawerReducer";
 import { tunerReducer } from "./tuner";
+import { searchReducer } from "./searchReducer";
 
 export const rootReducer = combineReducers({
   socket: socketReducer,
   event: eventReducer,
   dialog: dialogReducer,
+  search: searchReducer,
   overlay: overlayReducer,
   drawer: drawerReducer,
   player: playerReducer,
