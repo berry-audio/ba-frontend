@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMultiroomService } from "@/services/multiroom";
 import { useMultiroomActions } from "@/hooks/useMultiroomActions";
 import { Slider } from "@/components/Form/Slider";
-import { RoomServer } from "@/types";
+import { Image, RoomServer } from "@/types";
+import { isHttpUrl } from "@/util";
 import { GearIcon, HardDriveIcon, NetworkSlashIcon, SpeakerHifiIcon, SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react";
 import { EVENTS } from "@/constants/events";
 import { INTERNAL_EVENTS } from "@/store/constants";
@@ -95,11 +96,25 @@ const ListClient = ({ client, item }: { client: any; item: any }) => {
 
 const ListServer = ({ item }: { item: RoomServer }) => {
   const connectedClients = item.status?.server?.groups?.flatMap((group: any) => group.clients?.filter((client: any) => client.connected) ?? []) ?? [];
+  const current_track_meta: any = item.status?.server?.streams[0]?.meta;
+  const current_tl_track: any = current_track_meta
+    ? {
+        ...current_track_meta,
+        track: {
+          ...current_track_meta.track,
+          images:
+            current_track_meta.track?.images?.map((image: Image) =>
+              image.uri ? { ...image, uri: isHttpUrl(image.uri) ? image.uri : `http://${item.name}.local/${image.uri}` } : image,
+            ) ?? [],
+        },
+      }
+    : null;
 
   return (
     <div className="bg-secondary mb-4 py-2 shadow-sm lg:rounded-md">
-      <div className="flex justify-between border-b border-neutral-200 pb-2 dark:border-neutral-800 md:mb-2">
+      <div className="border-b border-neutral-200 pb-2 dark:border-neutral-800 md:mb-2">
         <ListItem item={item} />
+        {current_tl_track && <ListItem item={current_tl_track} minimal />}
       </div>
 
       {connectedClients.length > 0 ? (

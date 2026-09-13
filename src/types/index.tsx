@@ -121,6 +121,7 @@ export interface Source {
   name?: string;
   uri?: string;
   controls?: string[];
+  enabled: boolean;
   state?: {
     connected?: boolean;
     user_name?: string;
@@ -252,6 +253,7 @@ export interface Stream {
   properties: StreamProperties;
   status: string;
   uri: StreamUri;
+  meta: TlTrack;
 }
 
 export interface RoomStatus {

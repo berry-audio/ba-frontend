@@ -2,22 +2,19 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { usePlaybackService } from "@/services/playback";
 import { usePlayerActions } from "@/hooks/usePlayerActions";
-import { getSubtitle, getTitle } from "@/util";
 import { PLAYBACK_STATE } from "@/constants/states";
 import { PLAYER_EVENTS } from "@/store/constants";
 
 import VolumeSlider from "./VolumeSlider";
 import PositionSlider from "./PositionSlider";
 import RepeatButton from "./RepeatButton";
-import ScrollingText from "../ScrollingText";
 import ShuffleButton from "./ShuffleButton";
 import NextButton from "./NextButton";
 import PreviousButton from "./PreviousButton";
 import PlayPauseButton from "./PlayPauseButton";
 import ButtonQueue from "../Button/ButtonQueue";
-import SourceDevice from "../Source/SourceDevice";
-import CoverArt from "../CoverArt";
 import ButtonWebRtc from "../Button/ButtonWebRtc";
+import MetaDisplay from "./MetaDisplay";
 
 const Player = () => {
   const dispatch = useDispatch();
@@ -25,11 +22,7 @@ const Player = () => {
   const { getCurrentTrackPos } = usePlaybackService();
   const { openNowPlayingOverlay } = usePlayerActions();
 
-  const { source } = useSelector((state: any) => state.player);
-  const { current_track, playback_state } = useSelector((state: any) => state.player);
-
-  const title = getTitle(current_track?.track);
-  const subtitle = getSubtitle(current_track?.track);
+  const { playback_state } = useSelector((state: any) => state.player);
 
   const fetch_pos = async () => {
     const elapsed_ms = await getCurrentTrackPos();
@@ -58,21 +51,7 @@ const Player = () => {
       <div className="relative z-0">
         <div className="lg:flex hidden px-4 py-2 items-center ">
           <div className="w-3/8">
-            {current_track && (
-              <button onClick={openNowPlayingOverlay} className="flex items-center cursor-pointer w-full  text-left">
-                <div className="flex items-center grow">
-                  <div className="overflow-hidden flex-none rounded-sm mr-3 w-12.5  min-w-12.5">
-                    <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
-                  </div>
-                  {source.uri && (
-                    <div className="overflow-hidden max-w-80">
-                      <h2 className="tracking-tight ">{title ? <ScrollingText text={title} /> : source.name}</h2>
-                      <div className="text-secondary overflow-hidden text-md">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
-                    </div>
-                  )}
-                </div>
-              </button>
-            )}
+            <MetaDisplay size="md" onClick={openNowPlayingOverlay} />
           </div>
 
           <div className="w-2/8 flex items-center justify-center">
@@ -101,23 +80,7 @@ const Player = () => {
 
         {/* Mini Player  */}
         <div className="lg:hidden flex items-center justify-between relative bg-neutral-900 ">
-          <div className="flex items-center p-2 w-4/6 z-20 relative">
-            {current_track && (
-              <button onClick={openNowPlayingOverlay} className="w-full cursor-pointer text-left">
-                <div className="flex items-center">
-                  <div className={`overflow-hidden rounded-sm mr-3 min-w-10 w-10`}>
-                    <CoverArt item={current_track?.track} loadingPlay={current_track ? false : true} disable />
-                  </div>
-                  {source.uri && (
-                    <div className="text-left overflow-hidden">
-                      <h2 className={`tracking-tight text-white`}>{title ? <ScrollingText text={title} /> : source.name}</h2>
-                      <div className=" text-secondary mt-0 lg:-mt-1 text-sm">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
-                    </div>
-                  )}
-                </div>
-              </button>
-            )}
-          </div>
+          <MetaDisplay size="sm" onClick={openNowPlayingOverlay} />
 
           <div className="flex items-center w-2/6 justify-end z-20 relative">
             <div className="mr-2">

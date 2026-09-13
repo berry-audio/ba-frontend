@@ -16,6 +16,7 @@ export interface SystemInfo {
   version: string;
   camilladsp: string;
   shairport_sync: string;
+  nqptp: string;
   librespot: string;
   snapcast_server: string;
   snapcast_client: string;
@@ -49,6 +50,7 @@ const defaultSystemInfo: SystemInfo = {
   version: "unknown",
   camilladsp: "unknown",
   shairport_sync: "unknown",
+  nqptp: "unknown",
   librespot: "unknown",
   snapcast_server: "unknown",
   snapcast_client: "unknown",
@@ -168,7 +170,7 @@ const SettingsSystem = () => {
           </div>
 
           <div className="mt-6">
-            <div className="text-lg mb-2">Hardware</div>
+            <div className="text-lg mb-2">Information</div>
             <ListHardwareItem title="Model" desc={systemInfo?.model} />
             <ListHardwareItem title="OS" desc={systemInfo?.os} />
             <ListHardwareItem title="OS Version" desc={systemInfo?.os_version} />
@@ -176,6 +178,7 @@ const SettingsSystem = () => {
             <ListHardwareItem title="Version" desc={systemInfo?.version} />
             <ListHardwareItem title="CamillaDsp" desc={systemInfo?.camilladsp} />
             <ListHardwareItem title="Shairport Sync" desc={systemInfo?.shairport_sync} />
+            <ListHardwareItem title="NQPTP" desc={systemInfo?.nqptp} />
             <ListHardwareItem title="Librespot" desc={systemInfo?.librespot} />
             <ListHardwareItem title="Snapcast Server" desc={systemInfo?.snapcast_server} />
             <ListHardwareItem title="Snapcast Client" desc={systemInfo?.snapcast_client} />

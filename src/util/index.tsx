@@ -99,6 +99,7 @@ export const getCodecName = (format: string) => {
     | "MPEG-2 AAC"
     | "Free Lossless Audio Codec (FLAC)"
     | "Opus (low-latency lossy audio codec)"
+    | "opus"
     | "Ogg Opus (Opus audio in Ogg container)"
     | "Ogg Vorbis (lossy audio codec)";
 
@@ -112,6 +113,7 @@ export const getCodecName = (format: string) => {
     "MPEG-2 AAC": "AAC",
     "Free Lossless Audio Codec (FLAC)": "FLAC",
     "Opus (low-latency lossy audio codec)": "OPUS",
+    opus: "OPUS",
     "Ogg Opus (Opus audio in Ogg container)": "OPUS",
     "Ogg Vorbis (lossy audio codec)": "OGG",
   };

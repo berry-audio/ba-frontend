@@ -17,7 +17,9 @@ const DrawerTracklist = () => {
 
   return (
     <Drawer open={drawer === DRAWER_EVENTS.DRAWER_TRACKLIST} onClick={onClickHandler}>
-      <Tracklist />
+      <div className="py-5 px-3">
+        <Tracklist />
+      </div>
     </Drawer>
   );
 };

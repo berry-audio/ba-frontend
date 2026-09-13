@@ -9,15 +9,20 @@ export function useMultiroomActions() {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchServers = async () => {
+  const fetchServers = async (scan: boolean = false) => {
     setLoading(true);
     const response = await getServers();
 
+    scan &&
+      dispatch({
+        type: INTERNAL_EVENTS.MULTIROOM_SCAN_COMPLETED,
+        payload: response,
+      });
+
     dispatch({
-      type: INTERNAL_EVENTS.MULTIROOM_SCAN_COMPLETED,
+      type: INTERNAL_EVENTS.MULTIROOM_LIST,
       payload: response,
     });
-
     setLoading(false);
   };
 

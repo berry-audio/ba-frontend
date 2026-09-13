@@ -8,6 +8,7 @@ const initialSource: Source = {
   type: undefined,
   name: undefined,
   uri: undefined,
+  enabled: false,
   controls: [],
   state: { connected: false },
 };

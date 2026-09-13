@@ -85,7 +85,7 @@ const GridItem = ({ item: _item, shadow = false, onClick, style, onMeasure, show
 
   return (
     <div
-      className="cursor-pointer relative p-2 lg:p-3 pb-6 hover:bg-hover rounded-md transition-all duration-200"
+      className="cursor-pointer relative p-3 lg:p-3 pb-6 hover:bg-hover rounded-md transition-all duration-200"
       onClick={onClickItem}
       ref={divRef}
       style={style}
@@ -107,7 +107,7 @@ const GridItem = ({ item: _item, shadow = false, onClick, style, onMeasure, show
               [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && {
                 onClickFavourite: async (e: React.MouseEvent<HTMLElement>) => {
                   e.stopPropagation();
-                 await toggleFavourite(item)
+                  await toggleFavourite(item);
                 },
               })}
           />

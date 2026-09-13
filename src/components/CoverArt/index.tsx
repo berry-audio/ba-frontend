@@ -16,6 +16,7 @@ interface CoverArt {
   loadingFavourite?: boolean;
   favourited?: boolean;
   disable?: boolean;
+  detail?: boolean;
   onClickPlay?: (e: React.MouseEvent<HTMLElement>) => void;
   onClickFavourite?: (e: React.MouseEvent<HTMLElement>) => void;
 }
@@ -28,6 +29,7 @@ const CoverArt = ({
   loadingFavourite = false,
   disable = false,
   favourited = false,
+  detail = false,
   onClickPlay,
   onClickFavourite,
 }: CoverArt) => {
@@ -44,12 +46,18 @@ const CoverArt = ({
     <div className="w-full relative">
       <div className={`overflow-hidden rounded-md transition-all ${shadow ?? "shadow-[1px_14px_21px_-6px_rgba(0,0,0,0.9)]"}`}>
         {src && !imgError ? (
-          <img
-            src={src}
-            alt={title}
-            className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101"
-            onError={() => setImgError(true)}
-          />
+          detail && item.__model__ === MODEL.ALBUM ? (
+            <img src={src} alt={title} className="w-full blur-2xl scale-150" onError={() => setImgError(true)} />
+          ) : (
+            <img
+              src={src}
+              alt={title}
+              className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101"
+              onError={() => setImgError(true)}
+            />
+          )
+        ) : detail ? (
+          <div className="bg-hover w-full h-100"></div>
         ) : (
           <Placeholder item={item} variant={getCoverVariant(item)} />
         )}

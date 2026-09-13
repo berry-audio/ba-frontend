@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { VinylRecordIcon } from "@phosphor-icons/react";
-import { ICON_WEIGHT, ICON_XS } from "@/constants";
+import { GearIcon, VinylRecordIcon } from "@phosphor-icons/react";
+import { ICON_SM, ICON_WEIGHT, ICON_XS } from "@/constants";
 
 import Page from "@/components/Page";
 import Tabs from "@/components/ui/tabs";
@@ -9,6 +9,7 @@ import VuMeter from "./components/VuMeter";
 import Filters from "./components/Filters";
 import Pipeline from "./components/Pipeline";
 import ButtonDspRefresh from "@/components/Button/ButtonDspRefresh";
+import ButtonIcon from "@/components/Button/ButtonIcon";
 
 const Dsp = () => {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const Dsp = () => {
         <div className="flex">
           <div className="mr-3">
             <ButtonDspRefresh />
+          </div>
+          <div className="mr-4">
+            <ButtonIcon onClick={() => navigate("/settings/dsp")}>
+              <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
+            </ButtonIcon>
           </div>
         </div>
       }

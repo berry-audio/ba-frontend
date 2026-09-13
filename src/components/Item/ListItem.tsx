@@ -24,9 +24,10 @@ interface ListItem {
   onClick?: () => void;
   selectable?: boolean;
   showFavourite?: boolean;
+  minimal?: boolean;
 }
 
-const ListItem = ({ no, item: _item, selected = false, onClick, selectable = false, showFavourite = false }: ListItem) => {
+const ListItem = ({ no, item: _item, selected = false, onClick, selectable = false, showFavourite = false, minimal = false }: ListItem) => {
   const action = useSelector((state: any) => state.event);
 
   const { handlePlayNow } = usePlayNow();
@@ -129,35 +130,40 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                     <></>
                   )}
                 </div>
-
-                {showFavourite && [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && (
-                  <button
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      await toggleFavourite(item);
-                    }}
-                    className={`cursor-pointer rounded-md flex items-center justify-center z-3 ${
-                      getFavourite(item) ? "opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
-                    }`}
-                  >
-                    {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight={getFavourite(item) ? "fill" : "regular"} />}
-                  </button>
-                )}
-                {duration && <div className="ml-4 text-secondary text-sm ">{duration}</div>}
+                {!minimal ? (
+                  <>
+                    {showFavourite && [MODEL.ARTIST, MODEL.ALBUM, MODEL.TRACK, MODEL.TLTRACK].includes(item.__model__) && (
+                      <button
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          await toggleFavourite(item);
+                        }}
+                        className={`cursor-pointer rounded-md flex items-center justify-center z-3 ${
+                          getFavourite(item) ? "opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
+                        }`}
+                      >
+                        {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight={getFavourite(item) ? "fill" : "regular"} />}
+                      </button>
+                    )}
+                    {duration && <div className="ml-4 text-secondary text-sm ">{duration}</div>}
+                  </>
+                ) : null}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {selectable ? (
-        <div className="pr-4">{selected ? <CheckCircleIcon weight="fill" size={ICON_SM} /> : <CircleIcon size={25} className="opacity-50" />}</div>
-      ) : (
-        itemsMenu(item).length > 0 && (
-          <div className="pr-2" onClick={(e) => e.stopPropagation()}>
-            <ActionMenu items={itemsMenu(item)} />
-          </div>
+      {!minimal ? (
+        selectable ? (
+          <div className="pr-4">{selected ? <CheckCircleIcon weight="fill" size={ICON_SM} /> : <CircleIcon size={25} className="opacity-50" />}</div>
+        ) : (
+          itemsMenu(item).length > 0 && (
+            <div className="pr-2" onClick={(e) => e.stopPropagation()}>
+              <ActionMenu items={itemsMenu(item)} />
+            </div>
+          )
         )
-      )}
+      ) : null}
     </div>
   );
 };

@@ -7,12 +7,7 @@ interface ScrollingTextProps {
   className?: string;
 }
 
-const ScrollingText: React.FC<ScrollingTextProps> = ({
-  text,
-  speed = 1,
-  pause = 3000,
-  className = "",
-}) => {
+const ScrollingText: React.FC<ScrollingTextProps> = ({ text, speed = 1, pause = 3000, className = "" }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +24,7 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
     const startScroll = () => {
       const isOverflowing = textEl.scrollWidth > container.clientWidth;
       if (!isOverflowing) return;
-      
+
       let x = 0;
 
       const scroll = () => {
@@ -65,11 +60,8 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
   }, [text, speed, pause]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`overflow-hidden whitespace-nowrap w-full ${className}`}
-    >
-      <div ref={textRef} className="inline-block transform translate-x-0">
+    <div ref={containerRef} className={`overflow-hidden whitespace-nowrap w-full ${className}`}>
+      <div ref={textRef} className="inline-block transform translate-x-0 ">
         {text}
       </div>
     </div>

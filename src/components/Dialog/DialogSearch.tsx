@@ -83,6 +83,7 @@ const DialogSearch = () => {
       } finally {
         if (isActive) {
           setIsLoading(false);
+          setActiveTab(REF.ALL);
         }
       }
     }, 500);
