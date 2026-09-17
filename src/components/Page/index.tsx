@@ -42,7 +42,7 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
           )}
           {title && (
             <div
-              className="text-2xl font-light overflow-hidden whitespace-nowrap pr-4 pt-1
+              className="text-2xl font-bold overflow-hidden whitespace-nowrap pr-4
     [mask-image:linear-gradient(to_right,black_85%,transparent_100%)]
     [-webkit-mask-image:linear-gradient(to_right,black_85%,transparent_100%)]
     md:[mask-image:none] md:[-webkit-mask-image:none] overflow-x-auto"

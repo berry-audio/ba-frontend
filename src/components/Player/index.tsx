@@ -79,10 +79,10 @@ const Player = () => {
         </div>
 
         {/* Mini Player  */}
-        <div className="lg:hidden flex items-center justify-between relative bg-neutral-900 ">
+        <div className="lg:hidden flex items-center justify-between relative bg-neutral-950 ">
           <MetaDisplay size="sm" onClick={openNowPlayingOverlay} />
 
-          <div className="flex items-center w-2/6 justify-end z-20 relative">
+          <div className="flex items-center justify-end z-20 relative ml-auto">
             <div className="mr-2">
               <ButtonWebRtc className="text-white" />
             </div>

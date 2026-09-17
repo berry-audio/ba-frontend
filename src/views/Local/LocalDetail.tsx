@@ -57,7 +57,7 @@ const LocalDetail = ({ ext, view, id }: { ext: string; view: REF; id: string }) 
           </div>
 
           <div
-            className="absolute bottom-18 lg:bottom-0 left-0 right-0 h-125"
+            className="absolute bottom-17 lg:bottom-0 left-0 right-0 h-125"
             style={{
               background: "linear-gradient(to top, var(--background-secondary) 10%, transparent 60%)",
             }}

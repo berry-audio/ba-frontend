@@ -61,8 +61,8 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
 
   return (
     <div>
-      <div className="flex items-center mb-2 pr-5">
-        <h1 className="text-left text-xl lg:text-2xl cursor-pointer" onClick={() => navigate(`/collection/${type}`)}>
+      <div className="flex items-center pr-5">
+        <h1 className="text-left font-bold text-xl lg:text-2xl cursor-pointer" onClick={() => navigate(`/collection/${type}`)}>
           <Header />
         </h1>
 
@@ -85,7 +85,7 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
         </div>
       </div>
 
-      <div className="-mx-2 lg:-mx-3">
+      <div className="-mx-3 lg:-mx-3">
         <Swiper
           modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
           onSwiper={setSwiper}

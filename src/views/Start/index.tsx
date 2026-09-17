@@ -144,7 +144,7 @@ const Start = () => {
           <LayoutHeightWrapper className="h-[calc(100dvh-145px)]! lg:h-[calc(100dvh-160px)]! ">
             <div className="px-5 py-2 pr-0 flex items-center">
               <div className="w-full">
-                <h1 className="text-left text-xl lg:text-2xl mb-2">Source</h1>
+                <h1 className="text-left font-bold text-xl lg:text-2xl mb-2">Source</h1>
                 <Swiper
                   modules={[FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar]}
                   spaceBetween={5}

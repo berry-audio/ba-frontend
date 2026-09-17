@@ -19,7 +19,6 @@ const DateTime: React.FC<DateTimeProps> = ({ time, weekday }) => {
 
   const weekdayDateString = _datetime?.toLocaleDateString("en-US", {
     weekday: "long",
-    year: "numeric",
     month: "short",
     day: "numeric",
   });

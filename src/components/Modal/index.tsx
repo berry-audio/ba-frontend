@@ -74,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         {/* Header */}
         <div className="flex justify-between items-center px-5 py-6">
-          {title && <h2 className="text-2xl font-light">{title}</h2>}
+          {title && <h2 className="text-2xl font-bold">{title}</h2>}
           {!hideClose && (
             <ButtonIcon className="-right-4" onClick={closeDialog}>
               ✕
