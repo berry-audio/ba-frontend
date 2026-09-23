@@ -151,7 +151,7 @@ export const toastMiddleware = () => (next: any) => (action: any) => {
       const title_buf = `Buffering ${payload.percent}%`;
       toast.custom((id) => <ToastContent id={id} title={title_buf} variant="info" hideIcon hideClose autoWidth />, {
         id: "playback-buffering",
-        duration: payload.percent >= 100 ? 2000 : Infinity,
+        duration: 2000,
       });
       break;
     case EVENTS.MIXER_MUTE:

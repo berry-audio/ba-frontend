@@ -34,7 +34,7 @@ const OverlayNowPlaying = () => {
 
   const { setChannel } = useTunerService();
   const { overlay } = useSelector((state: any) => state.overlay);
-  const { source } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
   const { config } = useSelector((state: any) => state.config);
   const { channel } = useSelector((state: any) => state.tuner);
   const { current_track, playback_state } = useSelector((state: any) => state.player);

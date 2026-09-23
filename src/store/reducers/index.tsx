@@ -15,9 +15,11 @@ import { multiroomReducer } from "./multiroomReducer";
 import { drawerReducer } from "./drawerReducer";
 import { tunerReducer } from "./tuner";
 import { searchReducer } from "./searchReducer";
+import { sourceReducer } from "./sourceReducer";
 
 export const rootReducer = combineReducers({
   socket: socketReducer,
+  source: sourceReducer,
   event: eventReducer,
   dialog: dialogReducer,
   search: searchReducer,

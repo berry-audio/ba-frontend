@@ -5,7 +5,7 @@ export const useSourceService = () => {
 
   return {
     getSource: () => request("source.get"),
-    getDirectory: () => request("source.directory"),
+    getSourceDirectory: () => request("source.directory"),
     setSource: (uri: string) => request("source.set", { uri }),
   };
 };

@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: any }) {
   const { getSystemTime, getPowerState } = useSystemService();
   const { getChannel } = useTunerService();
   const { getDevices } = useNetworkService();
-  const { getSource } = useSourceService();
+  const { getSourceDirectory } = useSourceService();
   const { getConfig } = useConfigService();
   const { getDspConfig } = useDspService();
 
@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: any }) {
           _getNetworkDevices,
           _getPowerState,
           _getState,
-          _getAudioSource,
+          _getSourceDir,
           _getChannel,
           _tl_track,
           _value,
@@ -61,7 +61,7 @@ export default function Layout({ children }: { children: any }) {
           getDevices(),
           getPowerState(),
           getState(),
-          getSource(),
+          getSourceDirectory(),
           getChannel(),
           getCurrentTlTrack(),
           getSystemTime(),
@@ -98,8 +98,8 @@ export default function Layout({ children }: { children: any }) {
         });
 
         dispatch({
-          type: INTERNAL_EVENTS.SOURCE_STATE,
-          payload: { source: _getAudioSource },
+          type: INTERNAL_EVENTS.SOURCE_DIR,
+          payload: { directory: _getSourceDir },
         });
 
         dispatch({

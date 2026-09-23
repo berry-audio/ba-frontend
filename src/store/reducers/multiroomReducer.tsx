@@ -21,7 +21,6 @@ export const multiroomReducer = (state = initialState, action: any): RoomState =
     case EVENTS.MULTIROOM_SERVER_UPDATED:
     case EVENTS.MULITROOM_SERVER_CONNECTED:
     case EVENTS.MULITROOM_SERVER_DISCONNECTED:
-      console.log(type, payload);
       return {
         ...state,
         servers: [...state.servers.filter((server) => server?.service_name !== payload.server?.service_name), payload.server],

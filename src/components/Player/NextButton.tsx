@@ -11,7 +11,7 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  * - Calls the `next()` method from the playback service.
  */
 const NextButton = () => {
-  const { source } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
   const { next } = usePlaybackService();
 
   /**
@@ -26,12 +26,8 @@ const NextButton = () => {
   };
 
   return (
-    <ButtonIcon
-      className="w-12 h-12"
-      onClick={onClickNext}
-      disabled={!source?.controls?.includes("next")}
-    > 
-    <SkipForwardIcon size={ICON_SM + 6} weight={ICON_WEIGHT}/>
+    <ButtonIcon className="w-12 h-12" onClick={onClickNext} disabled={!source?.controls?.includes("next")}>
+      <SkipForwardIcon size={ICON_SM + 6} weight={ICON_WEIGHT} />
     </ButtonIcon>
   );
 };

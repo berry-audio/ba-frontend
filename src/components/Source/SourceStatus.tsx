@@ -17,7 +17,7 @@ import ButtonIcon from "../Button/ButtonIcon";
 
 const SourceStatus = () => {
   const navigate = useNavigate();
-  const { source } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
 
   const sourceIcon: Record<string, JSX.Element | null> = {
     local: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_SM} />,

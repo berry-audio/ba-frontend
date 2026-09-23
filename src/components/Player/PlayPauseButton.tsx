@@ -12,7 +12,8 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  * - Calls the `play()` or `pause()` method from the playback service.
  */
 const PlayPauseButton = ({ className }: { className?: string }) => {
-  const { source, playback_state } = useSelector((state: any) => state.player);
+  const { playback_state } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
   const { play, pause } = usePlaybackService();
 
   const onClickPlayPause = async () => {

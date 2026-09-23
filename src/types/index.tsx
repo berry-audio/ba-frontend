@@ -106,7 +106,6 @@ export interface PlTrack {
 }
 
 export interface MediaPlayer {
-  source: Source;
   playback_state: PLAYBACK_STATE;
   current_track: TlTrack | undefined;
   elapsed_ms: number;
@@ -119,9 +118,12 @@ export interface MediaPlayer {
 export interface Source {
   type?: string;
   name?: string;
-  uri?: string;
+  uri: string;
   controls?: string[];
+  active: boolean;
   enabled: boolean;
+  index: number;
+  browsable: boolean;
   state?: {
     connected?: boolean;
     user_name?: string;
@@ -307,6 +309,11 @@ export interface RoomClient {
 
 export interface RoomState {
   servers: RoomServer[];
+}
+
+export interface SourceState {
+  directory: Source[];
+  source: Source;
 }
 
 export interface StorageState {

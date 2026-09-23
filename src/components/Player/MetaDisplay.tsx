@@ -7,7 +7,8 @@ import ScrollingText from "../ScrollingText";
 import SourceDevice from "../Source/SourceDevice";
 
 const MetaDisplay = ({ size = "sm", onClick }: { size?: "sm" | "md"; onClick?: () => void }) => {
-  const { source, current_track } = useSelector((state: RootState) => state.player);
+  const { current_track } = useSelector((state: RootState) => state.player);
+  const { source } = useSelector((state: any) => state.source);
 
   if (!current_track) {
     return null;

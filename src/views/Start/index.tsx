@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSourceService } from "@/services/source";
@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Keyboard, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
+import { Source } from "@/types";
 import { ICON_MD, ICON_WEIGHT } from "@/constants";
 import { REF } from "@/constants/refs";
 
@@ -31,109 +32,43 @@ import LayoutHeightWrapper from "@/components/Wrapper/LayoutHeightWrapper";
 import Spinner from "@/components/Spinner";
 import Collection from "@/components/Collection";
 
-type SourceItem = {
-  name: string;
-  icon: ReactElement;
-  path: string;
-  url?: string;
-  disabled?: boolean;
-  render?: boolean;
-  type?: string;
-};
-
 const Start = () => {
   const navigate = useNavigate();
 
   const { setSource } = useSourceService();
-  const { source } = useSelector((state: any) => state.player);
-  const { config } = useSelector((state: any) => state.config);
+  const { directory } = useSelector((state: any) => state.source);
 
   const [loadingItem, setLoadingItem] = useState<string | undefined>(undefined);
 
-  const sources: SourceItem[] = [
-    {
-      name: "Playlists",
-      icon: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "playlist",
-    },
-    {
-      name: "Collection",
-      icon: <StackIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "collection",
-    },
+  const SOURCE_ICONS: Record<string, React.ReactNode> = {
+    playlist: <PlaylistIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    collection: <StackIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    storage: <FolderIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    local: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    radio: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    tuner: <RadioIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    usbdac: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    linein: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    bluetooth: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    spotify: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    shairportsync: <AirplayIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    multiroom: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    dsp: <FadersIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+    config: <GearIcon weight={ICON_WEIGHT} size={ICON_MD} />,
+  };
 
-    {
-      name: "Storage",
-      icon: <FolderIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "storage",
-    },
-    {
-      name: "Library",
-      icon: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "local",
-    },
-    {
-      name: "Radio",
-      icon: <GlobeHemisphereWestIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "radio",
-    },
-    {
-      name: "FM Tuner",
-      icon: <RadioIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "tuner",
-    },
-    {
-      name: "USB DAC",
-      icon: <WaveSineIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "usbdac",
-      disabled: config.system.hardware !== "PI_ZERO_2W",
-    },
-    {
-      name: "Line In",
-      icon: <RadioButtonIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "linein",
-    },
-    {
-      name: "Bluetooth",
-      icon: <BluetoothIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "bluetooth",
-    },
-    {
-      name: "Spotify",
-      icon: <SpotifyLogoIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "spotify",
-    },
-    {
-      name: "Airplay",
-      icon: <AirplayIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "shairportsync",
-    },
-    {
-      name: "Multiroom",
-      icon: <SpeakerHifiIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "multiroom",
-    },
-    {
-      name: "DSP",
-      icon: <FadersIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "dsp",
-    },
-    {
-      name: "Settings",
-      icon: <GearIcon weight={ICON_WEIGHT} size={ICON_MD} />,
-      path: "settings",
-    },
-  ];
-  const onClickHandler = async (item: SourceItem) => {
-    setLoadingItem(item.path);
-    if (["spotify", "shairportsync", "linein", "usbdac", "tuner"].includes(item.path)) {
-      const response = await setSource(item.path);
+  const onClickHandler = async (item: Source) => {
+    setLoadingItem(item.uri);
+
+    if (!item.browsable) {
+      const response = await setSource(item.uri);
       if (!response) {
         setLoadingItem(undefined);
         return;
       }
     }
-    navigate(`/${item.path}`);
+
+    navigate(`/${item.uri}`);
     setLoadingItem(undefined);
   };
 
@@ -177,23 +112,23 @@ const Start = () => {
                     enabled: true,
                   }}
                 >
-                  {sources.map((item) => (
+                  {directory.map((item: Source) => (
                     <SwiperSlide>
                       <button
-                        key={item.path}
-                        disabled={item.disabled}
+                        key={item.uri}
+                        disabled={!item.enabled}
                         onClick={() => onClickHandler(item)}
                         className={`touch-pan-x rounded-lg flex items-center justify-center aspect-square overflow-hidden w-full transition-all duration-200 text-base
-                cursor-pointer ${item.disabled ? "opacity-30" : source.uri === item.path ? "bg-primary hover:bg-foreground dark:hover:text-black" : "hover:bg-hover"}`}
+                cursor-pointer ${!item.enabled ? "opacity-30" : item.active ? "bg-primary hover:bg-foreground dark:hover:text-black" : "hover:bg-hover"}`}
                       >
-                        {loadingItem === item.path && (
+                        {loadingItem === item.uri && (
                           <div className="absolute bg-foreground/30 w-full h-full rounded-lg">
                             <Spinner mode="light" />
                           </div>
                         )}
 
                         <div className="flex flex-col items-center">
-                          <div className="mb-2">{item.icon}</div>
+                          <div className="mb-2">{SOURCE_ICONS[item.uri]}</div>
                           <div className="flex">{item.name}</div>
                         </div>
                       </button>

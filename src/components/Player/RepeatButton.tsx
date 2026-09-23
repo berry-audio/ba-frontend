@@ -14,9 +14,10 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  * Syncs state from backend and updates via WebSocket events.
  */
 const RepeatButton = () => {
-  const { source, repeat_mode } = useSelector((state: any) => state.player);
+  const { repeat_mode } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
   const { setRepeat, setSingle } = useTracklistService();
-  
+
   const [repeatMode, setRepeatMode] = useState(REPEAT_MODE.REPEAT_OFF);
 
   useEffect(() => {
@@ -55,8 +56,7 @@ const RepeatButton = () => {
    * Renders appropriate icon based on current repeat mode.
    */
   const RenderRepeat = () => {
-    const iconClass =
-      repeatMode === REPEAT_MODE.REPEAT_OFF ? "" : "text-primary";
+    const iconClass = repeatMode === REPEAT_MODE.REPEAT_OFF ? "" : "text-primary";
 
     return (
       <span className={iconClass}>
@@ -70,11 +70,7 @@ const RepeatButton = () => {
   };
 
   return (
-    <ButtonIcon
-      className="w-12 h-12"
-      onClick={onClickRepeat}
-      disabled={!source.controls?.includes("repeat")}
-    >
+    <ButtonIcon className="w-12 h-12" onClick={onClickRepeat} disabled={!source.controls?.includes("repeat")}>
       <RenderRepeat />
     </ButtonIcon>
   );

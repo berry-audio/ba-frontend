@@ -83,20 +83,20 @@ const App = () => {
                 <Route path="/storage/*" element={<StorageDirectory />} />
                 <Route path="/dsp/" element={<Navigate to="/dsp/dashboard" replace />} />
                 <Route path="/dsp/:view?/" element={<Dsp />} />
-                <Route path="/settings/" element={<Settings />} />
-                <Route path="/settings/system/" element={<SettingsSystem />} />
-                <Route path="/settings/general/" element={<SettingsGeneral />} />
-                <Route path="/settings/mixer/" element={<SettingsMixer />} />
-                <Route path="/settings/usbdac/" element={<SettingsUsbdac />} />
-                <Route path="/settings/local/" element={<SettingsLocal />} />
-                <Route path="/settings/network/" element={<SettingsNetwork />} />
-                <Route path="/settings/storage/" element={<SettingsStorage />} />
-                <Route path="/settings/linein/" element={<SettingsLinein />} />
-                <Route path="/settings/dsp/" element={<SettingsDsp />} />
-                <Route path="/settings/tuner/" element={<SettingsTuner />} />
-                <Route path="/settings/display/" element={<SettingsDisplay />} />
-                <Route path="/settings/multiroom/" element={<SettingsMultiroom />} />
-                <Route path="/settings/support/" element={<SettingsSupport />} />
+                <Route path="/config/" element={<Settings />} />
+                <Route path="/config/system/" element={<SettingsSystem />} />
+                <Route path="/config/general/" element={<SettingsGeneral />} />
+                <Route path="/config/mixer/" element={<SettingsMixer />} />
+                <Route path="/config/usbdac/" element={<SettingsUsbdac />} />
+                <Route path="/config/local/" element={<SettingsLocal />} />
+                <Route path="/config/network/" element={<SettingsNetwork />} />
+                <Route path="/config/storage/" element={<SettingsStorage />} />
+                <Route path="/config/linein/" element={<SettingsLinein />} />
+                <Route path="/config/dsp/" element={<SettingsDsp />} />
+                <Route path="/config/tuner/" element={<SettingsTuner />} />
+                <Route path="/config/display/" element={<SettingsDisplay />} />
+                <Route path="/config/multiroom/" element={<SettingsMultiroom />} />
+                <Route path="/config/support/" element={<SettingsSupport />} />
               </Routes>
             </Suspense>
           </Layout>

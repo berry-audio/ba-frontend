@@ -3,7 +3,7 @@ import { OVERLAY_EVENTS } from "@/store/constants";
 
 export function usePlayerActions() {
   const dispatch = useDispatch();
-  const { source } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
 
   const openNowPlayingOverlay = () => {
     if (!source.uri) return;

@@ -10,6 +10,9 @@ export enum PLAYER_EVENTS {
 }
 
 export enum INTERNAL_EVENTS {
+  // Sources
+  SOURCE_DIR = "event/source/dir",
+
   // Favourite
   FAVOURITE_ADDED = "event/favourite/add",
   FAVOURITE_REMOVED = "event/favourite/remove",

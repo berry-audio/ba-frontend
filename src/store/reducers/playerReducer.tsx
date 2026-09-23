@@ -1,20 +1,10 @@
 import { INTERNAL_EVENTS, PLAYER_EVENTS } from "../constants";
 import { PLAYBACK_STATE, REPEAT_MODE, SHUFFLE_MODE } from "@/constants/states";
 import { EVENTS } from "@/constants/events";
-import { MediaPlayer, Source } from "@/types";
+import { MediaPlayer } from "@/types";
 import { getRepeatMode, getShuffleMode } from "@/util";
 
-const initialSource: Source = {
-  type: undefined,
-  name: undefined,
-  uri: undefined,
-  enabled: false,
-  controls: [],
-  state: { connected: false },
-};
-
 const initialMediaPlayer: MediaPlayer = {
-  source: initialSource,
   playback_state: PLAYBACK_STATE.STOPPED,
   current_track: undefined,
   elapsed_ms: 0,
@@ -33,13 +23,6 @@ export const playerReducer = (state = initialMediaPlayer, action: any): MediaPla
         ...state,
         elapsed_ms: payload,
       };
-
-    case INTERNAL_EVENTS.SOURCE_STATE:
-    case EVENTS.SOURCE_CHANGED:
-      return { ...state, source: { ...payload.source } };
-
-    case EVENTS.SOURCE_UPDATED:
-      return { ...state, source: { ...payload.source } };
 
     case EVENTS.TRACK_META_UPDATED:
       return { ...state, current_track: payload?.tl_track };

@@ -11,7 +11,7 @@ import ButtonIcon from "@/components/Button/ButtonIcon";
  * - Calls the `prev()` method from the playback service.
  */
 const PreviousButton = () => {
-  const { source } = useSelector((state: any) => state.player);
+  const { source } = useSelector((state: any) => state.source);
   const { prev } = usePlaybackService();
 
   /**
@@ -26,11 +26,7 @@ const PreviousButton = () => {
   };
 
   return (
-    <ButtonIcon
-      className="w-12 h-12"
-      onClick={onClickPrev}
-      disabled={!source.controls?.includes("previous")}
-    >
+    <ButtonIcon className="w-12 h-12" onClick={onClickPrev} disabled={!source.controls?.includes("previous")}>
       <SkipBackIcon size={ICON_SM + 6} weight={ICON_WEIGHT} />
     </ButtonIcon>
   );
