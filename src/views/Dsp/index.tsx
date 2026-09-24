@@ -44,7 +44,7 @@ const Dsp = () => {
             <ButtonDspRefresh />
           </div>
           <div className="mr-4">
-            <ButtonIcon onClick={() => navigate("/settings/dsp")}>
+            <ButtonIcon onClick={() => navigate("/config/dsp")}>
               <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           </div>

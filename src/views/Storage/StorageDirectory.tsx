@@ -59,7 +59,7 @@ const StorageDirectory = () => {
             </div>
           )}
           <div className="mr-4">
-            <ButtonIcon onClick={() => navigate("/settings/storage")}>
+            <ButtonIcon onClick={() => navigate("/config/storage")}>
               <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           </div>

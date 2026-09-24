@@ -14,9 +14,9 @@ const DialogNoBluetooth = () => {
       onClose={() => dispatch({ type: DIALOG_EVENTS.DIALOG_CLOSE })}
       isOpen={true}
       buttonText="Connect"
-      buttonOnClick={()=>navigate('/settings/bluetooth')}
+      buttonOnClick={() => navigate("/config/bluetooth")}
     >
-    <span className="text-secondary"> To play music, please connect to a Bluetooth device.</span>
+      <span className="text-secondary"> To play music, please connect to a Bluetooth device.</span>
     </Modal>
   );
 };

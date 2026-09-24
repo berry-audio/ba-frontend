@@ -164,7 +164,7 @@ const Multiroom = () => {
           </div>
 
           <div className="mr-4">
-            <ButtonIcon onClick={() => navigate("/settings/multiroom")}>
+            <ButtonIcon onClick={() => navigate("/config/multiroom")}>
               <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           </div>

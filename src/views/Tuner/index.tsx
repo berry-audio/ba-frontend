@@ -12,7 +12,6 @@ import Grid from "@/components/InfiniteScroll/Grid";
 import Page from "@/components/Page";
 import ButtonIcon from "@/components/Button/ButtonIcon";
 
-
 const Tuner = () => {
   const navigate = useNavigate();
 
@@ -29,7 +28,7 @@ const Tuner = () => {
             <ButtonLayoutToggle setLayoutype={setLayout} layoutType={layout} />
           </div>
           <div className="mr-4">
-            <ButtonIcon onClick={() => navigate("/settings/tuner")}>
+            <ButtonIcon onClick={() => navigate("/config/tuner")}>
               <GearIcon weight={ICON_WEIGHT} size={ICON_SM} />
             </ButtonIcon>
           </div>
