@@ -19,7 +19,7 @@ const ButtonQueue = () => {
   };
 
   return (
-    <ButtonIcon onClick={onClickHandler}>
+    <ButtonIcon onClick={onClickHandler} tooltip="Queue">
       <QueueIcon weight={ICON_WEIGHT} size={ICON_SM} />
     </ButtonIcon>
   );

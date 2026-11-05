@@ -70,7 +70,7 @@ const RepeatButton = () => {
   };
 
   return (
-    <ButtonIcon className="w-12 h-12" onClick={onClickRepeat} disabled={!source.controls?.includes("repeat")}>
+    <ButtonIcon className="w-12 h-12" onClick={onClickRepeat} disabled={!source?.controls?.includes("repeat")}>
       <RenderRepeat />
     </ButtonIcon>
   );

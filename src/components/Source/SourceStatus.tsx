@@ -19,6 +19,8 @@ const SourceStatus = () => {
   const navigate = useNavigate();
   const { source } = useSelector((state: any) => state.source);
 
+  if (!source) return;
+
   const sourceIcon: Record<string, JSX.Element | null> = {
     local: <VinylRecordIcon weight={ICON_WEIGHT} size={ICON_SM} />,
     storage: <FolderIcon weight={ICON_WEIGHT} size={ICON_SM} />,

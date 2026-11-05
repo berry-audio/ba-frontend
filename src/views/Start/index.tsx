@@ -112,6 +112,7 @@ const Start = () => {
                     enabled: true,
                   }}
                 >
+                  {!directory.length && <Spinner />}
                   {directory.map((item: Source) => (
                     <SwiperSlide>
                       <button
@@ -123,13 +124,13 @@ const Start = () => {
                       >
                         {loadingItem === item.uri && (
                           <div className="absolute bg-foreground/30 w-full h-full rounded-lg">
-                            <Spinner mode="light" />
+                            <Spinner />
                           </div>
                         )}
 
                         <div className="flex flex-col items-center">
                           <div className="mb-2">{SOURCE_ICONS[item.uri]}</div>
-                          <div className="flex">{item.name}</div>
+                          <div className="flex font-medium">{item.name}</div>
                         </div>
                       </button>
                     </SwiperSlide>

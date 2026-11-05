@@ -16,7 +16,6 @@ import ListItemSkeleton from "@/components/Item/ListItemSkeleton";
 
 const BluetoothView = () => {
   const { devices } = useSelector((state: any) => state.bluetooth);
-
   const { fetchDevices, loading } = useBluetoothActions();
 
   useEffect(() => {

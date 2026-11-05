@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { getCoverVariant, getImage, getTitle } from "@/util";
 import { Album, AnyItem } from "@/types";
-import { PlayCircleIcon, HeartIcon } from "@phosphor-icons/react";
-import { ICON_LG, ICON_SM, ICON_XS } from "@/constants";
+import { HeartIcon, PlayIcon } from "@phosphor-icons/react";
+import { ICON_SM, ICON_XL, ICON_XS } from "@/constants";
 import { MODEL } from "@/constants/refs";
 
 import Placeholder from "./Placeholder";
 import Spinner from "../Spinner";
 
 interface CoverArt {
-  item: AnyItem;
+  item?: AnyItem;
   size?: "sm" | "lg";
   shadow?: boolean;
   loadingPlay?: boolean;
@@ -33,14 +33,13 @@ const CoverArt = ({
   onClickPlay,
   onClickFavourite,
 }: CoverArt) => {
-  const title = getTitle(item);
-  const src = getImage(item);
-
-  const [imgError, setImgError] = useState(false);
-
   if (!item) {
     return <Placeholder item={{ __model__: MODEL.ALBUM } as Album} />;
   }
+
+  const title = getTitle(item);
+  const src = getImage(item);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className="w-full relative">
@@ -52,7 +51,7 @@ const CoverArt = ({
             <img
               src={src}
               alt={title}
-              className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101"
+              className="object-cover w-full h-full aspect-square grayscale-20 inline-block scale-101 bg-cover"
               onError={() => setImgError(true)}
             />
           )
@@ -70,7 +69,7 @@ const CoverArt = ({
                   onClick={onClickFavourite}
                   className="absolute top-2.5 right-2 cursor-pointer flex items-center justify-center z-3 hover:text-foreground w-8 h-8 rounded-full"
                 >
-                  {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight="fill" />}
+                  {loadingFavourite ? <Spinner /> : <HeartIcon size={ICON_XS} weight="fill" />}
                 </button>
               )}
 
@@ -82,9 +81,19 @@ const CoverArt = ({
                 {onClickPlay && (
                   <button
                     onClick={onClickPlay}
-                    className="absolute inset-0 cursor-pointer rounded-md flex items-center justify-center z-3 text-white"
+                    className="absolute inset-0 cursor-pointer rounded-md flex items-center justify-center z-3 dark:text-white text-neutral-950"
                   >
-                    {loadingPlay ? <Spinner mode="light" /> : <PlayCircleIcon size={size === "sm" ? ICON_SM : ICON_LG} weight="fill" />}
+                    {loadingPlay ? (
+                      <span className={`bg-cover inline-block rounded-full ${size === "sm" ? "p-1" : "p-3"}`}>
+                        <Spinner size={size === "sm" ? "sm" : "xl"} />
+                      </span>
+                    ) : (
+                      <PlayIcon
+                        size={size === "sm" ? ICON_SM : ICON_XL}
+                        weight="fill"
+                        className={`bg-cover rounded-full ${size === "sm" ? "p-1.5" : "p-4"}`}
+                      />
+                    )}
                   </button>
                 )}
 
@@ -93,7 +102,7 @@ const CoverArt = ({
                     onClick={onClickFavourite}
                     className="absolute top-2.5 right-2 cursor-pointer flex items-center justify-center z-3  hover:text-primary w-8 h-8 rounded-full"
                   >
-                    {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight="regular" />}
+                    {loadingFavourite ? <Spinner /> : <HeartIcon size={ICON_XS} weight="regular" />}
                   </button>
                 )}
               </div>

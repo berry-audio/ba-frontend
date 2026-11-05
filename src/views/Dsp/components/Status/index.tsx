@@ -40,7 +40,7 @@ const Status = () => {
     return (
       <ItemPadding>
         <div className="flex-none w-full">
-          <div className="flex items-center">{title}</div>
+          <div className="flex items-center font-medium">{title}</div>
           <div className="w-full">
             <div className="mb-1 text-secondary text-md mt-1">
               {desc} {hires && <span className="rounded-sm bg-text px-1 py-0.5 text-xxs font-black text-invert ml-1 relative -top-0.5">Hi-Res</span>}

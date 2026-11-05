@@ -29,7 +29,7 @@ const FavouriteButton = () => {
       className={` ${favourited ? "text-primary " : "hover:text-primary"}`}
       disabled={!source?.controls?.includes("favourite")}
     >
-      {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_SM} weight={favourited ? "fill" : "regular"} />}
+      {loadingFavourite ? <Spinner /> : <HeartIcon size={ICON_SM} weight={favourited ? "fill" : "regular"} />}
     </ButtonIcon>
   );
 };

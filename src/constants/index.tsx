@@ -16,6 +16,7 @@ export const STROKE_WIDTH = 1.5;
 
 export const ICON_WEIGHT = "light";
 export const ICON_FILL = "fill";
+export const ICON_XL = 70;
 export const ICON_LG = 40;
 export const ICON_MD = 30;
 export const ICON_SM = 25;

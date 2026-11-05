@@ -11,6 +11,7 @@ const initialState: State = {
     system: {
       hostname: "",
       timezone: "",
+      standby_clock: false,
     },
     spotify: {
       bitrate: 0,
@@ -37,7 +38,7 @@ const initialState: State = {
       gain: 0,
     },
     tuner: {
-      hw_device:"",
+      hw_device: "",
       input_device: "",
       sample_rate: 0,
       bit_depth: "",
@@ -68,7 +69,9 @@ const initialState: State = {
     },
     web: {},
     radio: {},
-    source: {},
+    source: {
+      restore_source: false,
+    },
     shairportsync: {},
     bluetooth: {},
     local: {
@@ -85,11 +88,7 @@ const deepMerge = (base: any, update: any) => {
   const result = { ...base };
   for (const key in update) {
     result[key] =
-      update[key] !== null &&
-      typeof update[key] === "object" &&
-      !Array.isArray(update[key])
-        ? deepMerge(base[key] ?? {}, update[key])
-        : update[key];
+      update[key] !== null && typeof update[key] === "object" && !Array.isArray(update[key]) ? deepMerge(base[key] ?? {}, update[key]) : update[key];
   }
   return result;
 };

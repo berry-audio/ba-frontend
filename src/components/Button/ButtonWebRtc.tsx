@@ -14,6 +14,7 @@ const ButtonWebRtc = ({ className }: { className?: string }) => {
         onClick={toggleStream}
         disabled={status === "connecting"}
         className={`${status === "connected" && "text-primary"} ${className ?? ""}`}
+        tooltip="Output in Browser"
       >
         {status === "connecting" ? <Spinner /> : <MonitorPlayIcon weight={ICON_WEIGHT} size={ICON_SM} />}
       </ButtonIcon>

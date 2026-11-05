@@ -4,15 +4,7 @@ import { EVENTS } from "@/constants/events";
 
 const initialState: SourceState = {
   directory: [],
-  source: {
-    uri: "",
-    controls: [],
-    active: false,
-    enabled: false,
-    index: 0,
-    browsable: false,
-    state: {},
-  },
+  source: undefined,
 };
 
 export const sourceReducer = (state = initialState, action: any): SourceState => {
@@ -31,7 +23,7 @@ export const sourceReducer = (state = initialState, action: any): SourceState =>
       return {
         ...state,
         directory: state.directory.map((item: Source) =>
-          item.uri === payload.source.uri ? { ...payload.source, active: true } : { ...item, active: false },
+          item.uri === payload.source?.uri ? { ...payload.source, active: true } : { ...item, active: false },
         ),
         source: payload.source,
       };

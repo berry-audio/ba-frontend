@@ -26,7 +26,7 @@ const PreviousButton = () => {
   };
 
   return (
-    <ButtonIcon className="w-12 h-12" onClick={onClickPrev} disabled={!source.controls?.includes("previous")}>
+    <ButtonIcon className="w-12 h-12" onClick={onClickPrev} disabled={!source?.controls?.includes("previous")}>
       <SkipBackIcon size={ICON_SM + 6} weight={ICON_WEIGHT} />
     </ButtonIcon>
   );

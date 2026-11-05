@@ -313,7 +313,7 @@ export interface RoomState {
 
 export interface SourceState {
   directory: Source[];
-  source: Source;
+  source?: Source;
 }
 
 export interface StorageState {
@@ -523,6 +523,7 @@ export type Nullable<T> = T | null;
 export interface SystemConfig {
   hostname: string;
   timezone: string;
+  standby_clock: boolean;
 }
 
 export interface SpotifyConfig {
@@ -545,6 +546,10 @@ export interface StorageConfig {
 
 export interface NetworkConfig {
   apmode_password: string;
+}
+
+export interface SourceConfig {
+  restore_source: boolean;
 }
 
 export interface DisplayConfig {
@@ -608,7 +613,7 @@ export interface Config {
   playback: PlaybackConfig;
   web: Record<string, never>;
   radio: Record<string, never>;
-  source: Record<string, never>;
+  source: SourceConfig;
   shairportsync: Record<string, never>;
   bluetooth: Record<string, never>;
   local: { library_path: string[] };

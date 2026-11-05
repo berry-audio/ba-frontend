@@ -70,7 +70,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
         }`}
         disabled={item.disabled}
       >
-        <div className="mr-2">{loading.has(idx) ? <Spinner mode="light" /> : item.icon}</div>
+        <div className="mr-2">{loading.has(idx) ? <Spinner /> : item.icon}</div>
         <div>{item.name}</div>
       </button>
     );

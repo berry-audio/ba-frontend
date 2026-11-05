@@ -15,6 +15,8 @@ import PlayPauseButton from "./PlayPauseButton";
 import ButtonQueue from "../Button/ButtonQueue";
 import ButtonWebRtc from "../Button/ButtonWebRtc";
 import MetaDisplay from "./MetaDisplay";
+import SourceDisplay from "./SourceDisplay";
+import ButtonDsp from "../Button/ButtonDsp";
 
 const Player = () => {
   const dispatch = useDispatch();
@@ -51,6 +53,7 @@ const Player = () => {
       <div className="relative z-0">
         <div className="lg:flex hidden px-4 py-2 items-center ">
           <div className="w-3/8">
+            <SourceDisplay />
             <MetaDisplay size="md" onClick={openNowPlayingOverlay} />
           </div>
 
@@ -64,14 +67,16 @@ const Player = () => {
 
           <div className="w-3/8 text-right">
             <div className="flex justify-end text-right items-center">
-              <div className="mr-5">
+              <div className="mr-3">
                 <ButtonWebRtc />
               </div>
               <div className="flex items-center gap-3 w-50 max-w-xs mr-5">
                 <VolumeSlider />
               </div>
               <div className="flex items-center">
-                <div className="mr-2"></div>
+                <div className="mr-2">
+                  <ButtonDsp />
+                </div>
                 <ButtonQueue />
               </div>
             </div>
@@ -79,13 +84,20 @@ const Player = () => {
         </div>
 
         {/* Mini Player  */}
-        <div className="lg:hidden flex items-center justify-between relative bg-neutral-950 ">
-          <MetaDisplay size="sm" onClick={openNowPlayingOverlay} />
+        <div className="lg:hidden flex items-center relative bg-neutral-950">
+          {/* Takes only the remaining available space */}
+          <div className="flex-1 min-w-0 p-2">
+            <SourceDisplay />
+            <MetaDisplay size="sm" onClick={openNowPlayingOverlay} />
+          </div>
 
-          <div className="flex items-center justify-end z-20 relative ml-auto">
+          {/* Always keeps its natural width */}
+          <div className="flex shrink-0 items-center justify-end relative z-20">
             <div className="mr-2">
               <ButtonWebRtc className="text-white" />
             </div>
+            <ButtonDsp />
+            <ButtonQueue />
             <PlayPauseButton className="text-white" />
           </div>
         </div>

@@ -1,19 +1,20 @@
 import { useSelector } from "react-redux";
+import { useSystemService } from "@/services/system";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 import Overlay from ".";
 import DateTime from "../DateTime";
 import ButtonWake from "../Button/ButtonWake";
-import { useSystemService } from "@/services/system";
-import { useTheme } from "@/contexts/ThemeProvider";
 
 const OverlayStandby = () => {
   const { theme } = useTheme();
   const { setStandby } = useSystemService();
 
   const { power_state } = useSelector((state: any) => state.system);
+  const { config } = useSelector((state: any) => state.config);
 
   return (
-    <Overlay zindex={100} show={power_state === "standby"} overlay onClick={async () => await setStandby()}>
+    <Overlay zindex={100} show={power_state === "standby" && config.system.standby_clock} overlay onClick={async () => await setStandby()}>
       <div className="top-5 right-5 absolute" onClick={async () => await setStandby()}>
         <ButtonWake />
       </div>
@@ -31,8 +32,8 @@ const OverlayStandby = () => {
         </div>
       </div>
 
-      <div className="glow-outer absolute left-1/2 bottom-0 w-[3000px] aspect-square -translate-x-1/2 translate-y-[75%] z-0 blur-[2px]"></div>
-      <div className="glow-core absolute left-1/2 bottom-0 w-[1000px] aspect-square -translate-x-1/2 translate-y-[75%] z-0 opacity-90 mix-blend-screen"></div>
+      <div className="glow-outer absolute left-1/2 bottom-0 w-750 aspect-square -translate-x-1/2 translate-y-[75%] z-0 blur-[2px]"></div>
+      <div className="glow-core absolute left-1/2 bottom-0 w-250 aspect-square -translate-x-1/2 translate-y-[75%] z-0 opacity-90 mix-blend-screen"></div>
     </Overlay>
   );
 };

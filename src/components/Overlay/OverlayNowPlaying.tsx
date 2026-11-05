@@ -39,6 +39,8 @@ const OverlayNowPlaying = () => {
   const { channel } = useSelector((state: any) => state.tuner);
   const { current_track, playback_state } = useSelector((state: any) => state.player);
 
+  if (!source) return;
+
   const image = getImage(current_track);
   const isTuner = ["tuner"].includes(source.uri);
   const isRenderer = ["bluetooth", "spotify", "shairportsync", "usbdac", "multiroom"].includes(source.uri);

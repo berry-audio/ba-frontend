@@ -11,7 +11,7 @@ const ButtonPlayAll = ({ item }: { item: AnyItem }) => {
 
   return (
     <Button type="primary" size="sm" onClick={() => handlePlayNow(item)}>
-      {loading ? <Spinner mode="light" /> : <PlayIcon weight={"bold"} size={ICON_XS} />} <div className="ml-2"> Play All</div>
+      {loading ? <Spinner /> : <PlayIcon weight={"bold"} size={ICON_XS} />} <div className="ml-2"> Play All</div>
     </Button>
   );
 };

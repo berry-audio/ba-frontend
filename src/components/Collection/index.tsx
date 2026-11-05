@@ -106,13 +106,13 @@ const Collection = ({ type, limit = 10, navigation = false }: { type: REF; limit
               slidesPerView: 3.5,
             },
             768: {
-              slidesPerView: 4.5,
+              slidesPerView: 3.5,
             },
             1024: {
-              slidesPerView: 4.5,
+              slidesPerView: 3.5,
             },
             1280: {
-              slidesPerView: 4.5,
+              slidesPerView: 3.5,
             },
           }}
           keyboard={{

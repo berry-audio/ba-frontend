@@ -11,7 +11,7 @@ const ButtonAddToQueue = ({ item }: { item: AnyItem }) => {
 
   return (
     <Button type="ghost" size="sm" onClick={() => handleAddToQueue(item)}>
-      {loading ? <Spinner mode="light" /> : <PlusIcon weight={"bold"} size={ICON_XS} />}
+      {loading ? <Spinner /> : <PlusIcon weight={"bold"} size={ICON_XS} />}
       <div className="ml-2"> Add to Queue</div>
     </Button>
   );

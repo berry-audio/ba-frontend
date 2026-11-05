@@ -15,9 +15,13 @@ export const formSchema = z.object({
   system: z.object({
     hostname: z.string().min(1, "Hostname is required"),
     timezone: z.string().min(6, "Timezone is required"),
+    standby_clock: z.boolean(),
   }),
   playback: z.object({
     background_albumart: z.boolean(),
+  }),
+  source: z.object({
+    restore_source: z.boolean(),
   }),
 });
 
@@ -86,6 +90,23 @@ const SettingsGeneral = () => {
                   <FormItem>
                     <FormLabel className="text-md block font-medium">Now Playing Background Album Art</FormLabel>
                     <div className="pb-4 text-secondary">Shows or hides blurred album art in the background on the Now Playing screen</div>
+                    <FormControl>
+                      <Switch {...field} value={field.value ?? false} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="mb-6">
+              <FormField
+                control={form.control}
+                name="source.restore_source"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-md block font-medium">Restore Source</FormLabel>
+                    <div className="pb-4 text-secondary">Restores last selected source on boot</div>
                     <FormControl>
                       <Switch {...field} value={field.value ?? false} />
                     </FormControl>

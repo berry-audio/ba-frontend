@@ -85,7 +85,7 @@ const GridItem = ({ item: _item, shadow = false, onClick, style, onMeasure, show
 
   return (
     <div
-      className="cursor-pointer relative p-3 lg:p-3 pb-6 hover:bg-hover rounded-md transition-all duration-200"
+      className="cursor-pointer relative p-3.5 lg:p-3.5 pb-6 rounded-md transition-all duration-200"
       onClick={onClickItem}
       ref={divRef}
       style={style}
@@ -115,7 +115,7 @@ const GridItem = ({ item: _item, shadow = false, onClick, style, onMeasure, show
         <div className="flex justify-between mt-2">
           <div className="overflow-hidden text-left">
             {title && (
-              <h2 className="tracking-tight">
+              <h2 className="tracking-tight font-medium">
                 <TruncateText>{title}</TruncateText>
               </h2>
             )}

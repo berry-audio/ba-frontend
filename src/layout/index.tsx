@@ -16,7 +16,6 @@ import { EVENTS } from "@/constants/events";
 import Player from "@/components/Player";
 import Spinner from "@/components/Spinner";
 import OverlayNowPlaying from "@/components/Overlay/OverlayNowPlaying";
-import OverlayStandby from "@/components/Overlay/OverlayStandby";
 import OverlayOffline from "@/components/Overlay/OverlayOffline";
 import Dialog from "@/components/Dialog";
 import DrawerTracklist from "@/components/Drawer/DrawerTracklist";
@@ -144,7 +143,6 @@ export default function Layout({ children }: { children: any }) {
       <DrawerLocalDetail />
       <DrawerTracklist />
       <OverlayNowPlaying />
-      <OverlayStandby />
       <OverlayOffline />
     </div>
   ) : (

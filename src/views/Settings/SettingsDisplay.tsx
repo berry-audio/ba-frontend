@@ -2,6 +2,7 @@ import { useFormActions } from "@/hooks/useFormActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 import { z } from "zod";
 
 import Page from "@/components/Page";
@@ -13,6 +14,7 @@ export const formSchema = z.object({
   display: z.object({
     output_display: z.string().nullable(),
     visualizer_layout: z.number(),
+    standby_clock: z.boolean(),
   }),
 });
 
@@ -62,6 +64,23 @@ const SettingsDisplay = () => {
                     <FormLabel className="text-base block">Default Visualizer</FormLabel>
                     <FormControl>
                       <SelectVisualizer placeholder="Select Visualiser" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="mb-6">
+              <FormField
+                control={form.control}
+                name="display.standby_clock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-md block font-medium">Standby Clock</FormLabel>
+                    <div className="pb-4 text-secondary">Shows clock on standby</div>
+                    <FormControl>
+                      <Switch {...field} value={field.value ?? false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

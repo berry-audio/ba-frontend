@@ -48,7 +48,7 @@ export const Filter = ({ name, filter, onClick }: FilterProps) => {
         <div className="flex items-center">
           <div className="bg-cover text-primary rounded-md w-12 h-12 flex items-center justify-center text-xl mr-3">{getFilterAlphabet(filter)}</div>
           <div>
-            {name}
+            <span className="font-medium">{name}</span>
             <div className="text-secondary text-md">{filter.type}</div>
           </div>
         </div>

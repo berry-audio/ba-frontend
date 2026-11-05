@@ -104,7 +104,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
             <div className="grow ">
               <div className="flex items-center text-left">
                 <div className="flex flex-col overflow-hidden w-0 grow pr-5">
-                  <h2 className="tracking-tight flex items-center">
+                  <h2 className="tracking-tight flex items-center font-medium">
                     <TruncateText>{title}</TruncateText>
                     {selected && !selectable && <MusicNotesIcon className="text-primary inline-block ml-2" weight={"fill"} size={15} />}
                   </h2>
@@ -142,7 +142,7 @@ const ListItem = ({ no, item: _item, selected = false, onClick, selectable = fal
                           getFavourite(item) ? "opacity-100 hover:text-foreground" : "opacity-0 group-hover:opacity-100 hover:text-primary"
                         }`}
                       >
-                        {loadingFavourite ? <Spinner mode="light" /> : <HeartIcon size={ICON_XS} weight={getFavourite(item) ? "fill" : "regular"} />}
+                        {loadingFavourite ? <Spinner /> : <HeartIcon size={ICON_XS} weight={getFavourite(item) ? "fill" : "regular"} />}
                       </button>
                     )}
                     {duration && <div className="ml-4 text-secondary text-sm ">{duration}</div>}

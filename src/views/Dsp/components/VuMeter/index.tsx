@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import { fetchJsonRpc } from "@/util";
 import { useCallback, useEffect, useState } from "react";
 
@@ -53,18 +54,6 @@ function dbToPercent(db: number | null | undefined): number {
   return clamp(value, 0, 100);
 }
 
-// function formatDb(db: number | null | undefined): string {
-//   if (db === undefined || db === null || Number.isNaN(db)) {
-//     return "-inf";
-//   }
-
-//   if (db <= -96) {
-//     return "-inf";
-//   }
-
-//   return db.toFixed(1);
-// }
-
 function MeterRow({ label, rms, peak }: MeterRowProps) {
   const rmsPct = dbToPercent(rms);
   const peakPct = dbToPercent(peak);
@@ -103,14 +92,6 @@ function MeterRow({ label, rms, peak }: MeterRowProps) {
           style={{ left: `${peakPct}%` }}
         />
       </div>
-      {/* <span
-        className="w-13 shrink-0 text-right tabular-nums text-current/50"
-        style={{
-          color: clipped ? "#ff5a4e" : "",
-        }}
-      >
-        {formatDb(peak)}
-      </span> */}
     </div>
   );
 }
@@ -162,7 +143,7 @@ function MeterGroup({ title, rmsArr, peakArr, labels }: MeterGroupProps) {
 
   return (
     <>
-      <div>{title}</div>
+      <div className="font-medium">{title}</div>
       <div className="mb-4">
         <ScaleTicks />
       </div>
@@ -215,7 +196,9 @@ const VuMeter = () => {
           </div>
         </>
       ) : (
-        <div className="py-2">Waiting for levels…</div>
+        <div className="py-2 mt-5">
+          <Spinner />
+        </div>
       )}
     </>
   );
