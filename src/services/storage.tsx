@@ -4,7 +4,10 @@ export const useStorageService = () => {
   const { request } = useSocketRequest();
 
   return {
-    getDirectory:  (uri?: string, limit?: number, offset?:number) => request("storage.directory", {uri, limit, offset}),
+    // v5 backend only returns the storage device list when uri == "storage"
+    // exactly (v4 accepted a missing uri); undefined keys are dropped in
+    // JSON so a bare call must send the explicit root uri.
+    getDirectory:  (uri?: string, limit?: number, offset?:number) => request("storage.directory", {uri: uri ?? "storage", limit, offset}),
     setMount: (dev: string) => request("storage.mount", {dev}),
     setUnMount: (dev: string) => request("storage.unmount", {dev}),
     setShare: (uri: string) => request("storage.share", {uri}),
