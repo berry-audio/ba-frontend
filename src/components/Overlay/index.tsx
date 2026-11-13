@@ -43,22 +43,14 @@ const Overlay = ({
         overlay
           ? "bg-gradient-light bg-gradient-dark w-full h-full absolute flex justify-center items-center text-center top-0 left-0 right-0"
           : `bg-gradient-light bg-gradient-dark w-full ${
-              full
-                ? "top-0 bottom-0"
-                : `top-12 ${
-                    hideplayer
-                      ? "bottom-0"
-                      : "lg:bottom-20.5 bottom-17.5"
-                  }`
+              full ? "top-0 bottom-0" : `top-12 ${hideplayer ? "bottom-0" : "lg:bottom-20.5 bottom-17.5"}`
             } absolute overflow-hidden transform-gpu duration-800 ease-in-out left-0`,
-        show
-          ? "translate-y-0"
-          : "pointer-events-none translate-y-full",
+        show ? "translate-y-0" : "pointer-events-none translate-y-full",
         overlay && !show && "hidden",
-        ` ${className}`
+        ` ${className}`,
       )}
       onClick={onClick}
-      style={{...style, zIndex:zindex}}
+      style={{ ...style, zIndex: zindex }}
     >
       {children}
     </div>

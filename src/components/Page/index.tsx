@@ -32,7 +32,7 @@ const Page = ({ title, backButton = false, backButtonOnClick, rightComponent, wf
   const navigate = useNavigate();
 
   return (
-    <div className="h-full overflow-auto">
+    <div className="h-full">
       <div className="flex justify-between h-12 items-center ">
         <div className="pl-3 flex items-center flex-1 min-w-0">
           {backButton && (

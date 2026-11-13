@@ -136,7 +136,7 @@ export default function Layout({ children }: { children: any }) {
   return connected ? (
     <div className="flex flex-col h-full relative bg-gradient-light bg-gradient-dark">
       <Menu />
-      <div className="flex-1 overflow-hidden">{children}</div>
+      <div className="flex-1">{children}</div>
       <Player />
       <Dialog />
       <DialogSearch />

@@ -65,6 +65,7 @@ export interface Track {
   bit_depth: any;
   size: number | null;
   favourite: boolean;
+  bg_color: string;
 }
 
 export interface Tuner {

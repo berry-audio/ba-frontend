@@ -26,9 +26,9 @@ const MetaDisplay = ({ size = "sm", onClick }: { size?: "sm" | "md"; onClick?: (
               <CoverArt item={current_track.track} loadingPlay={false} disable />
             </div>
 
-            {source.uri && (
+            {current_track && (
               <div className="text-left overflow-hidden">
-                <h2 className="tracking-tight font-medium text-white">{title ? <ScrollingText text={title} /> : source.name}</h2>
+                <h2 className="tracking-tight font-medium text-white">{title ? <ScrollingText text={title} /> : source?.name}</h2>
                 <div className="text-secondary mt-0 lg:-mt-1 text-sm">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
               </div>
             )}
@@ -46,9 +46,9 @@ const MetaDisplay = ({ size = "sm", onClick }: { size?: "sm" | "md"; onClick?: (
           <CoverArt item={current_track.track} loadingPlay={false} disable />
         </div>
 
-        {source.uri && (
+        {current_track && (
           <div className="overflow-hidden max-w-80">
-            <h2 className="tracking-tight font-medium">{title ? <ScrollingText text={title} /> : source.name}</h2>
+            <h2 className="tracking-tight font-medium">{title ? <ScrollingText text={title} /> : source?.name}</h2>
 
             <div className="text-secondary overflow-hidden text-md">{subtitle ? <ScrollingText text={subtitle} /> : <SourceDevice />}</div>
           </div>

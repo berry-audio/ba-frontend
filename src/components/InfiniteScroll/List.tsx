@@ -120,7 +120,7 @@ const List = forwardRef<{ refresh: () => void }, List>(
           </div>
         )}
 
-        <div ref={outerRef} className={`flex-1 overflow-y-auto lg:ml-0 ${alphabets ? "-ml-4" : ""}`}>
+        <div ref={outerRef} className={`flex-1 overflow-y-auto lg:ml-0`}>
           {isLoading && Array.from({ length: 6 }).map((_, i) => <ListItemSkeleton key={i} />)}
           {!isLoading &&
             !items.length &&

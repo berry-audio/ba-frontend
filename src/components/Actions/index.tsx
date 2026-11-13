@@ -116,7 +116,7 @@ const ActionMenu = ({ items }: { items: MenuItem[] }) => {
 
             <div
               className={`fixed bottom-0 left-0 right-0 z-100 transform transition-transform duration-200 ${
-                isDrawerOpen ? "translate-y-0" : "translate-y-full"
+                isDrawerOpen ? "translate-y-0" : "translate-y-full invisible"
               }`}
             >
               <div className="bg-foreground rounded-t-xl max-h-60 overflow-auto">{items.map(renderButton)}</div>
