@@ -12,7 +12,9 @@ export const storageReducer = (state = initialState, action: any): StorageState 
 
   switch (type) {
     case INFO_EVENTS.STORAGE_UPDATED:
-      return { ...state, storages: payload };
+      // backend errors (e.g. bad uri) resolve with no result; keep the
+      // previous list instead of storing undefined and crashing renders
+      return { ...state, storages: payload ?? state.storages };
     case EVENTS.STORAGE_MOUNTED:
     case EVENTS.STORAGE_UNMOUNTED:
       console.log(payload.storage)
